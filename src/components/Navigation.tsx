@@ -28,8 +28,8 @@ export default function Navigation({ locale }: { locale: string }) {
           <Image 
             src="/logo.png" 
             alt="AFA Bernat Desclot Logo" 
-            width={60} 
-            height={60}
+            width={80} 
+            height={80}
             className={styles.logoImage}
           />
           <span className={styles.logoText}>AFA Bernat Desclot</span>

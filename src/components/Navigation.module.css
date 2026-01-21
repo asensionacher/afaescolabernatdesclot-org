@@ -4,7 +4,7 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  padding: 1.5rem 0;
+  padding: 1.75rem 0;
 }
 
 .container {
@@ -20,20 +20,20 @@
 .logo {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
   text-decoration: none;
   flex-shrink: 0;
 }
 
 .logoImage {
-  height: 60px;
-  width: 60px;
+  height: 80px;
+  width: 80px;
   object-fit: contain;
 }
 
 .logoText {
   font-family: var(--font-primary);
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   font-weight: 800;
   color: var(--color-primary);
   white-space: nowrap;
