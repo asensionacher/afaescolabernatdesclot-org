@@ -1,0 +1,154 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "about": "Quiénes Somos",
+    "events": "Eventos",
+    "services": "Servicios",
+    "blog": "Noticias",
+    "contact": "Contacto"
+  },
+  "home": {
+    "title": "AMPA Escuela Bernat Desclot",
+    "subtitle": "Asociación de Madres y Padres de Alumnos",
+    "description": "El AMPA es el órgano de representación de las familias en la escuela y que participa de forma activa en la gestión y modelo educativo de la misma, siendo un puente de comunicación directa entre las familias, la dirección y el profesorado de la escuela.",
+    "cta": "Conócenos"
+  },
+  "about": {
+    "title": "Quiénes Somos",
+    "description": "El AMPA es el órgano de representación de las familias en la escuela y que participa de forma activa en la gestión y modelo educativo de la misma, siendo un puente de comunicación directa entre las familias, la dirección y el profesorado de la escuela.",
+    "descriptionSecondary": "El AMPA está formada por una junta de madres y padres voluntarios, que ceden parte de su tiempo para velar por que nuestra escuela sea la escuela que queremos para nuestras hijas e hijos.",
+    "finalMessage": "La actividad que desarrolla el AMPA es en beneficio de todos nuestros hijos e hijas.",
+    "mission": "Nuestra misión",
+    "missionText": "Trabajamos para mejorar la educación y el bienestar de todos los alumnos de la escuela Bernat Desclot.",
+    "familiesTitle": "Familias Unidas",
+    "familiesText": "Somos padres y madres que trabajamos juntos para mejorar la experiencia educativa de nuestros hijos.",
+    "goalsTitle": "Objetivos Claros",
+    "goalsText": "Fomentar la participación, organizar actividades y colaborar con el Bernat Desclot para el bienestar de los alumnos.",
+    "commitmentTitle": "Compromiso",
+    "commitmentText": "Estamos comprometidos con la educación de calidad y un ambiente escolar positivo y enriquecedor."
+  },
+  "services": {
+    "title": "El AMPA gestiona de forma exclusiva diferentes servicios como son:",
+    "morningCare": {
+      "title": "Servicio de acogida matinal",
+      "description": "De 7.45 a 9h desde el primer día de escuela."
+    },
+    "afternoonCare": {
+      "title": "Servicio de acogida de tardes",
+      "description": "En junio, cuando comienza la jornada intensiva."
+    },
+    "books": {
+      "title": "Libros y Material",
+      "description": "Reserva y distribución de libros de texto, chándals y camisetas de la escuela."
+    },
+    "council": {
+      "title": "Consejo Escolar",
+      "description": "Participación activa en el Consejo Escolar y colaboración conjunta con la escuela."
+    },
+    "camps": {
+      "title": "Colonias y campamentos",
+      "description": "Actividades extraescolares; colonias de verano, primavera e invierno y campamentos, actualmente con la asociación Kampi ki Pugui."
+    },
+    "daily": {
+      "title": "Extraescolares diarias",
+      "description": "Extraescolares diarias con el Consell Esportiu desde este curso 2025-26."
+    },
+    "events": {
+      "title": "Fiestas y Talleres",
+      "description": "Organización de diferentes fiestas y talleres: fiesta de la Castañada y Halloween en octubre; fiesta de Navidad con la visita de los Reyes Magos; chocolatada, concurso de disfraces y participación en la rúa del barrio en Carnaval; concurso de puntos de libro y literario en Sant Jordi; fiesta de la espuma, sopar de germanor y colaboración en la despedida de los alumnos de 6º. (siempre y cuando hayan voluntarios y se puedan organizar)"
+    },
+    "more": {
+      "title": "Y muchísimas cosas más...",
+      "description": "Nuestro equipo de voluntarios está siempre trabajando para traer nuevas actividades y proyectos a la escuela."
+    },
+    "solidarity": {
+      "title": "Proyectos Solidarios",
+      "description": "También fomentamos la participación en proyectos solidarios: colaboramos con la asociación de lucha contra el cáncer infantil Afanoc, participamos en la recogida de ropa que organiza la Fundació Glorr y en la recogida de alimentos para Cruz Roja."
+    },
+    "discounts": {
+      "title": "Descuentos para Socios",
+      "description": "Disfruta de descuentos exclusivos en comercios y servicios del barrio por ser socio del AMPA. Descarga la lista completa de descuentos disponibles.",
+      "download": "Descargar Descuentos"
+    },
+    "extracurricular": {
+      "title": "Actividades Extraescolares",
+      "description": "Colonias de verano, primavera e invierno y campamentos con Kampi ki Pugui. Extraescolares diarias con el Consell Esportiu desde el curso 2025-26"
+    }
+  },
+  "schedule": {
+    "title": "Horario del AMPA",
+    "morning": "Mañanas de lunes a viernes: 9-10h",
+    "afternoon": "Tardes lunes y jueves: 16.45-18h",
+    "signUp": "¡Apúntate!",
+    "download": "Descargar PDF"
+  },
+  "blog": {
+    "title": "Noticias y Eventos",
+    "readMore": "Leer más",
+    "noEvents": "No hay eventos disponibles",
+    "schoolBlog": "Blog de la escuela",
+    "upcomingEvents": "Próximos Eventos"
+  },
+  "contact": {
+    "title": "Contáctanos",
+    "info": "¿Te gustaría colaborar con el AMPA? ¿Tienes ideas para nuevas actividades? ¡Escríbenos! Siempre estamos contentos de recibir sugerencias y nuevas familias. 💌",
+    "email": "Email",
+    "atSchool": "En la Escuela",
+    "atSchoolText": "¡Pregunta en la oficina por el AMPA!"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados",
+    "schoolLink": "Web de la escuela",
+    "openSource": "Esta web es 100% código abierto",
+    "sourceCode": "Código fuente",
+    "legalLinks": "Información Legal",
+    "privacy": "Política de Privacidad",
+    "legal": "Aviso Legal",
+    "cookies": "Política de Cookies"
+  },
+  "cookieBanner": {
+    "message": "Utilizamos cookies propias y de terceros para mejorar tu experiencia de navegación y analizar el tráfico del sitio web.",
+    "accept": "Aceptar todas",
+    "reject": "Rechazar",
+    "customize": "Personalizar",
+    "necessary": "Cookies necesarias",
+    "analytics": "Cookies analíticas",
+    "necessaryDesc": "Esenciales para el funcionamiento del sitio web",
+    "analyticsDesc": "Nos ayudan a entender cómo usas la web"
+  },
+  "privacy": {
+    "title": "Política de Privacidad",
+    "intro": "En el AMPA Escuela Bernat Desclot respetamos tu privacidad y estamos comprometidos con la protección de tus datos personales.",
+    "dataController": "Responsable del tratamiento",
+    "dataControllerText": "AMPA Escuela Bernat Desclot",
+    "dataCollected": "Datos recogidos",
+    "dataCollectedText": "Esta web no recoge datos personales de los usuarios. Si en el futuro implementamos formularios de contacto, solo recogeremos los datos necesarios para responder a tus consultas.",
+    "cookies": "Cookies",
+    "cookiesText": "Utilizamos Google Analytics para analizar el uso del sitio web. Puedes consultar más información en nuestra Política de Cookies.",
+    "rights": "Tus derechos",
+    "rightsText": "Tienes derecho a acceder, rectificar, suprimir, limitar el tratamiento, la portabilidad de los datos y oponerte al tratamiento de tus datos personales."
+  },
+  "legal": {
+    "title": "Aviso Legal",
+    "owner": "Titular del sitio web",
+    "ownerText": "AMPA Escuela Bernat Desclot",
+    "purpose": "Objeto",
+    "purposeText": "Este sitio web tiene como objetivo informar sobre las actividades y servicios del AMPA Escuela Bernat Desclot.",
+    "liability": "Limitación de responsabilidad",
+    "liabilityText": "El AMPA no se hace responsable de los errores u omisiones en el contenido de este sitio web.",
+    "intellectualProperty": "Propiedad intelectual",
+    "intellectualPropertyText": "El código fuente de esta web es de código abierto y está disponible en GitHub. El contenido está protegido por derechos de autor del AMPA Escuela Bernat Desclot."
+  },
+  "cookiesPolicy": {
+    "title": "Política de Cookies",
+    "what": "¿Qué son las cookies?",
+    "whatText": "Las cookies son pequeños archivos de texto que los sitios web almacenan en tu dispositivo para recordar información sobre tu visita.",
+    "types": "Tipos de cookies que utilizamos",
+    "necessary": "Cookies necesarias",
+    "necessaryText": "Estas cookies son esenciales para el funcionamiento del sitio web y no se pueden desactivar.",
+    "analytics": "Cookies analíticas (Google Analytics)",
+    "analyticsText": "Utilizamos Google Analytics para entender cómo los usuarios interactúan con nuestro sitio web. Estos datos nos ayudan a mejorar la experiencia del usuario.",
+    "manage": "Cómo gestionar las cookies",
+    "manageText": "Puedes gestionar tus preferencias de cookies en cualquier momento haciendo clic en el botón de configuración de cookies en el pie de página."
+  }
+}

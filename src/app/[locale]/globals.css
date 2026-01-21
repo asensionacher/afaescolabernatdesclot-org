@@ -1,0 +1,66 @@
+/* ============================================
+   Variables i Colors
+   ============================================ */
+:root {
+    --color-primary: #FF6B9D;
+    --color-secondary: #C44569;
+    --color-accent: #FFA502;
+    --color-success: #26DE81;
+    --color-info: #45AAF2;
+    --color-warning: #FD79A8;
+    
+    --color-bg: #FFF5F7;
+    --color-bg-alt: #FFFFFF;
+    --color-text: #2C3A47;
+    --color-text-light: #778CA3;
+    
+    --font-primary: 'Baloo 2', cursive;
+    --font-secondary: 'Nunito', sans-serif;
+    
+    --shadow-sm: 0 2px 10px rgba(255, 107, 157, 0.1);
+    --shadow-md: 0 4px 20px rgba(255, 107, 157, 0.15);
+    --shadow-lg: 0 8px 30px rgba(255, 107, 157, 0.2);
+    
+    --radius: 20px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   Reset i Base
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-secondary);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-primary);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+a:hover {
+    color: var(--color-secondary);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}

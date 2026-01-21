@@ -1,0 +1,154 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "events": "Events",
+    "services": "Services",
+    "blog": "News and Blog",
+    "contact": "Contact"
+  },
+  "home": {
+    "title": "AMPA Bernat Desclot School",
+    "subtitle": "Parents Association",
+    "description": "The AMPA is the representative body of families at the school and actively participates in the management and educational model, serving as a direct communication bridge between families, management and teaching staff.",
+    "cta": "Learn More"
+  },
+  "about": {
+    "title": "About Us",
+    "description": "The AMPA is the representative body of families at the school and actively participates in the management and educational model, serving as a direct communication bridge between families, management and teaching staff.",
+    "descriptionSecondary": "The AMPA is made up of a board of volunteer mothers and fathers, who dedicate part of their time to ensure that our school is the school we want for our daughters and sons.",
+    "finalMessage": "The activity carried out by the AMPA benefits all our sons and daughters.",
+    "mission": "Our Mission",
+    "missionText": "We work to improve the education and wellbeing of all students at Bernat Desclot school.",
+    "familiesTitle": "United Families",
+    "familiesText": "We are parents who work together to improve our children's educational experience.",
+    "goalsTitle": "Clear Goals",
+    "goalsText": "Foster participation, organize activities and collaborate with Bernat Desclot for students' wellbeing.",
+    "commitmentTitle": "Commitment",
+    "commitmentText": "We are committed to quality education and a positive and enriching school environment."
+  },
+  "services": {
+    "title": "The AMPA exclusively manages different services such as:",
+    "morningCare": {
+      "title": "Morning care service",
+      "description": "From 7.45 to 9am from the first day of school."
+    },
+    "afternoonCare": {
+      "title": "Afternoon care service",
+      "description": "In June, when intensive schedule begins."
+    },
+    "books": {
+      "title": "Books and Materials",
+      "description": "Reservation and distribution of textbooks, tracksuits and school t-shirts."
+    },
+    "council": {
+      "title": "School Council",
+      "description": "Active participation in the School Council and joint collaboration with the school."
+    },
+    "camps": {
+      "title": "Camps and colonies",
+      "description": "Extracurricular activities; summer, spring and winter camps and colonies, currently with Kampi ki Pugui association."
+    },
+    "daily": {
+      "title": "Daily extracurricular activities",
+      "description": "Daily extracurricular activities with the Sports Council from this 2025-26 school year."
+    },
+    "events": {
+      "title": "Parties and Workshops",
+      "description": "Organization of different parties and workshops: Chestnut and Halloween party in October; Christmas party with the visit of the Three Kings; hot chocolate, costume contest and participation in the neighborhood parade at Carnival; bookmark and literary contest at Sant Jordi; foam party, brotherhood dinner and collaboration in the farewell of 6th grade students. (provided there are volunteers and they can be organized)"
+    },
+    "more": {
+      "title": "And so much more...",
+      "description": "Our volunteer team is always working to bring new activities and projects to the school."
+    },
+    "solidarity": {
+      "title": "Solidarity Projects",
+      "description": "We also promote participation in solidarity projects: we collaborate with the childhood cancer association Afanoc, participate in the clothing collection organized by Fundació Glorr and in the food collection for Red Cross."
+    },
+    "discounts": {
+      "title": "Member Discounts",
+      "description": "Enjoy exclusive discounts at local shops and services for being an AMPA member. Download the complete list of available discounts.",
+      "download": "Download Discounts"
+    },
+    "extracurricular": {
+      "title": "Extracurricular Activities",
+      "description": "Summer, spring and winter camps with Kampi ki Pugui. Daily activities with the Sports Council from the 2025-26 school year"
+    }
+  },
+  "schedule": {
+    "title": "AMPA Schedule",
+    "morning": "Mornings Monday to Friday: 9-10am",
+    "afternoon": "Afternoons Monday and Thursday: 4.45-6pm",
+    "signUp": "Sign Up!",
+    "download": "Download PDF"
+  },
+  "blog": {
+    "title": "News and Events",
+    "readMore": "Read more",
+    "noEvents": "No events available",
+    "schoolBlog": "School blog",
+    "upcomingEvents": "Upcoming Events"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "info": "Would you like to collaborate with AMPA? Do you have ideas for new activities? Write to us! We're always happy to receive suggestions and welcome new families. 💌",
+    "email": "Email",
+    "atSchool": "At School",
+    "atSchoolText": "Ask at the office for AMPA!"
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "schoolLink": "School website",
+    "openSource": "This website is 100% open source",
+    "sourceCode": "Source code",
+    "legalLinks": "Legal Information",
+    "privacy": "Privacy Policy",
+    "legal": "Legal Notice",
+    "cookies": "Cookie Policy"
+  },
+  "cookieBanner": {
+    "message": "We use our own and third-party cookies to improve your browsing experience and analyze website traffic.",
+    "accept": "Accept all",
+    "reject": "Reject",
+    "customize": "Customize",
+    "necessary": "Necessary cookies",
+    "analytics": "Analytics cookies",
+    "necessaryDesc": "Essential for website functionality",
+    "analyticsDesc": "Help us understand how you use the website"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "intro": "At AMPA Bernat Desclot School we respect your privacy and are committed to protecting your personal data.",
+    "dataController": "Data controller",
+    "dataControllerText": "AMPA Bernat Desclot School",
+    "dataCollected": "Data collected",
+    "dataCollectedText": "This website does not collect personal data from users. If we implement contact forms in the future, we will only collect the data necessary to respond to your queries.",
+    "cookies": "Cookies",
+    "cookiesText": "We use Google Analytics to analyze website usage. You can find more information in our Cookie Policy.",
+    "rights": "Your rights",
+    "rightsText": "You have the right to access, rectify, delete, limit processing, data portability and object to the processing of your personal data."
+  },
+  "legal": {
+    "title": "Legal Notice",
+    "owner": "Website owner",
+    "ownerText": "AMPA Bernat Desclot School",
+    "purpose": "Purpose",
+    "purposeText": "This website aims to inform about the activities and services of AMPA Bernat Desclot School.",
+    "liability": "Limitation of liability",
+    "liabilityText": "AMPA is not responsible for errors or omissions in the content of this website.",
+    "intellectualProperty": "Intellectual property",
+    "intellectualPropertyText": "The source code of this website is open source and available on GitHub. The content is protected by copyright of AMPA Bernat Desclot School."
+  },
+  "cookiesPolicy": {
+    "title": "Cookie Policy",
+    "what": "What are cookies?",
+    "whatText": "Cookies are small text files that websites store on your device to remember information about your visit.",
+    "types": "Types of cookies we use",
+    "necessary": "Necessary cookies",
+    "necessaryText": "These cookies are essential for the website to function and cannot be disabled.",
+    "analytics": "Analytics cookies (Google Analytics)",
+    "analyticsText": "We use Google Analytics to understand how users interact with our website. This data helps us improve the user experience.",
+    "manage": "How to manage cookies",
+    "manageText": "You can manage your cookie preferences at any time by clicking the cookie settings button in the footer."
+  }
+}
