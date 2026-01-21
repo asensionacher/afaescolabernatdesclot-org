@@ -18,8 +18,13 @@ export default function Navigation({ locale }: { locale: string }) {
   const t = useTranslations('nav');
   const pathname = usePathname();
   const [isLangOpen, setIsLangOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const locales = ['ca', 'es', 'en', 'ar', 'ur'];
+
+  const closeMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <nav className={styles.nav}>
@@ -34,7 +39,19 @@ export default function Navigation({ locale }: { locale: string }) {
           />
           <span className={styles.logoText}>AFA Bernat Desclot</span>
         </Link>
+
+        {/* Hamburger Button */}
+        <button 
+          className={styles.hamburger}
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          <span className={`${styles.hamburgerLine} ${isMobileMenuOpen ? styles.hamburgerLineOpen : ''}`}></span>
+          <span className={`${styles.hamburgerLine} ${isMobileMenuOpen ? styles.hamburgerLineOpen : ''}`}></span>
+          <span className={`${styles.hamburgerLine} ${isMobileMenuOpen ? styles.hamburgerLineOpen : ''}`}></span>
+        </button>
         
+        {/* Desktop Menu */}
         <div className={styles.menu}>
           <Link href="/#qui-som" className={styles.menuLink}>
             {t('about')}
@@ -53,6 +70,30 @@ export default function Navigation({ locale }: { locale: string }) {
           </Link>
         </div>
 
+        {/* Mobile Menu Overlay */}
+        {isMobileMenuOpen && (
+          <div className={styles.mobileMenuOverlay} onClick={closeMenu}>
+            <div className={styles.mobileMenu} onClick={(e) => e.stopPropagation()}>
+              <Link href="/#qui-som" className={styles.mobileMenuLink} onClick={closeMenu}>
+                {t('about')}
+              </Link>
+              <Link href="/#serveis" className={styles.mobileMenuLink} onClick={closeMenu}>
+                {t('services')}
+              </Link>
+              <Link href="/#esdeveniments" className={styles.mobileMenuLink} onClick={closeMenu}>
+                {t('events')}
+              </Link>
+              <Link href="/blog" className={styles.mobileMenuLink} onClick={closeMenu}>
+                Blog
+              </Link>
+              <Link href="/#contacte" className={styles.mobileMenuLink} onClick={closeMenu}>
+                {t('contact')}
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* Language Dropdown */}
         <div className={styles.langDropdown}>
           <button 
             className={styles.langButton}
