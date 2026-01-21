@@ -153,7 +153,7 @@ export default async function BlogPage({
                   return (
                     <article key={post._id} className={styles.eventCard}>
                       {post.mainImage && (
-                        <div className={styles.imageWrapper}>
+                        <Link href={`/blog/${post.slug.current}`} className={styles.imageWrapper}>
                           <Image
                             src={urlFor(post.mainImage).width(600).height(400).url()}
                             alt={title}
@@ -161,11 +161,13 @@ export default async function BlogPage({
                             height={400}
                             className={styles.image}
                           />
-                        </div>
+                        </Link>
                       )}
                       <div className={styles.content}>
                         <time className={styles.date}>{date}</time>
-                        <h2>{title}</h2>
+                        <Link href={`/blog/${post.slug.current}`} className={styles.titleLink}>
+                          <h2>{title}</h2>
+                        </Link>
                         {excerpt && <p>{excerpt}</p>}
                         <Link href={`/blog/${post.slug.current}`} className={styles.readMore}>
                           {t('readMore')} →
