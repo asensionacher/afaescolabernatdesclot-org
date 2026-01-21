@@ -61,10 +61,6 @@ export default function Footer() {
             </button>
           </div>
         </div>
-
-        <div className={styles.section}>
-          <p>&copy; {currentYear} AMPA Bernat Desclot. {t('rights')}</p>
-        </div>
       </div>
     </footer>
   );
