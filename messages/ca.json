@@ -164,6 +164,7 @@
     "bankAccount": "ES80 0182 3366 6102 0035 5360",
     "paymentConcept": "El concepte de l'ingrés/transferència ha de ser:",
     "paymentConceptFormat": "QUOTA AFA 2025-2026 + COGNOMS DE LA FAMÍLIA + CURS/OS INFANT/S",
+    "paymentConceptExample": "Exemple: QUOTA AFA 2025-2026 GARCIA LOPEZ I3 1",
     "uploadReceipt": "Pujar justificant de pagament (opcional)",
     "uploadReceiptHelp": "No és obligatori, però s'agraeix si puges el justificant per a una millor organització.",
     "dataProtection": "Protecció de dades",

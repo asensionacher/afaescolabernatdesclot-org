@@ -166,6 +166,18 @@
   border-left: 4px solid var(--color-accent);
 }
 
+.conceptExample {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  font-family: 'Courier New', monospace;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: #f0f8ff;
+  border-radius: var(--radius);
+  border: 1px dashed var(--color-primary);
+}
+
 .fileInput {
   width: 100%;
   padding: 0.75rem;

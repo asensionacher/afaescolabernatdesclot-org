@@ -680,6 +680,7 @@ export default function RegistrationForm({ locale }: { locale: string }) {
           <p className={styles.bankAccount}>{t('bankAccount')}</p>
           <p className={styles.paymentText}>{t('paymentConcept')}</p>
           <p className={styles.conceptFormat}>{t('paymentConceptFormat')}</p>
+          <p className={styles.conceptExample}>{t('paymentConceptExample')}</p>
         </div>
 
         <div className={styles.formGroup}>

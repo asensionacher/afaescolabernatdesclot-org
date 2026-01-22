@@ -164,6 +164,7 @@
     "bankAccount": "ES80 0182 3366 6102 0035 5360",
     "paymentConcept": "El concepto del ingreso/transferencia debe ser:",
     "paymentConceptFormat": "CUOTA AFA 2025-2026 + APELLIDOS DE LA FAMILIA + CURSO/S DEL/DE LOS ALUMNO/S",
+    "paymentConceptExample": "Ejemplo: CUOTA AFA 2025-2026 GARCIA LOPEZ I3 1",
     "uploadReceipt": "Subir justificante de pago (opcional)",
     "uploadReceiptHelp": "No es obligatorio, pero se agradece si subes el justificante para una mejor organización.",
     "dataProtection": "Protección de datos",
