@@ -11,8 +11,8 @@ export function generateStaticParams() {
 }
 
 export const metadata = {
-  title: 'AFA Bernat Desclot - Escuela Infantil',
-  description: 'Bienvenido a la AFA de la Escuela Infantil Bernat Desclot',
+  title: 'AFA Bernat Desclot - Associació de Famílies d\'Alumnes',
+  description: 'Benvinguts a l\'AFA de l\'Escola Bernat Desclot',
 };
 
 export default async function LocaleLayout({

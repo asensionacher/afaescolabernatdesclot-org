@@ -1,6 +1,6 @@
 # AFA Escola Bernat Desclot
 
-Web oficial de la Asociación de Madres y Padres de Alumnos de la Escuela Bernat Desclot.
+Web oficial de la Asociación de Familias de Alumnos de la Escuela Bernat Desclot.
 
 ## ✨ 100% Open Source
 
