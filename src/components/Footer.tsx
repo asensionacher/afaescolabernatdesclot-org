@@ -6,6 +6,7 @@ import styles from './Footer.module.css';
 
 export default function Footer() {
   const t = useTranslations('footer');
+  const tBlog = useTranslations('blog');
   const currentYear = new Date().getFullYear();
 
   const openCookieSettings = () => {
@@ -40,7 +41,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className={styles.link}
           >
-            Blog de l'escola
+            {tBlog('schoolBlog')}
           </a>
         </div>
 
@@ -57,7 +58,7 @@ export default function Footer() {
               {t('cookies')}
             </Link>
             <button onClick={openCookieSettings} className={styles.cookieButton}>
-              ⚙️ Configurar cookies
+              ⚙️ {t('configureCookies')}
             </button>
           </div>
         </div>

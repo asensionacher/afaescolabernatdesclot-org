@@ -105,7 +105,8 @@
     "legalLinks": "Informació Legal",
     "privacy": "Política de Privacitat",
     "legal": "Avís Legal",
-    "cookies": "Política de Cookies"
+    "cookies": "Política de Cookies",
+    "configureCookies": "Configurar cookies"
   },
   "cookieBanner": {
     "message": "Utilitzem cookies pròpies i de tercers per millorar la teva experiència de navegació i analitzar el trànsit del lloc web.",

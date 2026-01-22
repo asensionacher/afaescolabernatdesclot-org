@@ -105,7 +105,8 @@
     "legalLinks": "Legal Information",
     "privacy": "Privacy Policy",
     "legal": "Legal Notice",
-    "cookies": "Cookie Policy"
+    "cookies": "Cookie Policy",
+    "configureCookies": "Configure cookies"
   },
   "cookieBanner": {
     "message": "We use our own and third-party cookies to improve your browsing experience and analyze website traffic.",
