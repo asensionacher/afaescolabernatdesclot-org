@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/routing';
 import styles from './Navigation.module.css';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const localeNames: Record<string, string> = {
   ca: 'Català',
@@ -19,12 +19,29 @@ export default function Navigation({ locale }: { locale: string }) {
   const pathname = usePathname();
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const langDropdownRef = useRef<HTMLDivElement>(null);
 
   const locales = ['ca', 'es', 'en', 'ar', 'ur'];
 
   const closeMenu = () => {
     setIsMobileMenuOpen(false);
   };
+
+  // Close language dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (langDropdownRef.current && !langDropdownRef.current.contains(event.target as Node)) {
+        setIsLangOpen(false);
+      }
+    }
+
+    if (isLangOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [isLangOpen]);
 
   return (
     <nav className={styles.nav}>
@@ -94,11 +111,10 @@ export default function Navigation({ locale }: { locale: string }) {
         )}
 
         {/* Language Dropdown */}
-        <div className={styles.langDropdown}>
+        <div className={styles.langDropdown} ref={langDropdownRef}>
           <button 
             className={styles.langButton}
             onClick={() => setIsLangOpen(!isLangOpen)}
-            onBlur={() => setTimeout(() => setIsLangOpen(false), 200)}
           >
             {localeNames[locale]} ▼
           </button>
@@ -110,6 +126,7 @@ export default function Navigation({ locale }: { locale: string }) {
                   href={pathname}
                   locale={loc as any}
                   className={`${styles.langOption} ${locale === loc ? styles.activeLang : ''}`}
+                  onClick={() => setIsLangOpen(false)}
                 >
                   {localeNames[loc]}
                 </Link>
