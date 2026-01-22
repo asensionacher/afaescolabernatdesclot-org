@@ -59,19 +59,19 @@ export async function generateMetadata({
   const { locale } = await params;
   
   const titles: Record<string, string> = {
-    ca: 'Blog - AMPA Bernat Desclot',
-    es: 'Blog - AMPA Bernat Desclot',
-    en: 'Blog - AMPA Bernat Desclot',
-    ar: 'المدونة - AMPA Bernat Desclot',
-    ur: 'بلاگ - AMPA Bernat Desclot',
+    ca: 'Blog - AFA Bernat Desclot',
+    es: 'Blog - AFA Bernat Desclot',
+    en: 'Blog - AFA Bernat Desclot',
+    ar: 'المدونة - AFA Bernat Desclot',
+    ur: 'بلاگ - AFA Bernat Desclot',
   };
 
   const descriptions: Record<string, string> = {
-    ca: 'Notícies, activitats i esdeveniments de l\'AMPA Bernat Desclot. Mantén-te informat de tot el que passa a la nostra associació!',
-    es: 'Noticias, actividades y eventos de la AMPA Bernat Desclot. ¡Mantente informado de todo lo que pasa en nuestra asociación!',
-    en: 'News, activities and events from AMPA Bernat Desclot. Stay informed about everything happening in our association!',
-    ar: 'أخبار وأنشطة وفعاليات AMPA Bernat Desclot. ابق على اطلاع بكل ما يحدث في جمعيتنا!',
-    ur: 'AMPA Bernat Desclot کی خبریں، سرگرمیاں اور تقریبات۔ اپنی انجمن میں ہونے والی ہر چیز سے باخبر رہیں!',
+    ca: 'Notícies, activitats i esdeveniments de l\'AFA Bernat Desclot. Mantén-te informat de tot el que passa a la nostra associació!',
+    es: 'Noticias, actividades y eventos de la AFA Bernat Desclot. ¡Mantente informado de todo lo que pasa en nuestra asociación!',
+    en: 'News, activities and events from AFA Bernat Desclot. Stay informed about everything happening in our association!',
+    ar: 'أخبار وأنشطة وفعاليات AFA Bernat Desclot. ابق على اطلاع بكل ما يحدث في جمعيتنا!',
+    ur: 'AFA Bernat Desclot کی خبریں، سرگرمیاں اور تقریبات۔ اپنی انجمن میں ہونے والی ہر چیز سے باخبر رہیں!',
   };
 
   const title = titles[locale] || titles.ca;
@@ -86,13 +86,13 @@ export async function generateMetadata({
       title,
       description,
       url,
-      siteName: 'AMPA Bernat Desclot',
+      siteName: 'AFA Bernat Desclot',
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: 'AMPA Bernat Desclot',
+          alt: 'AFA Bernat Desclot',
         },
       ],
       locale: locale,

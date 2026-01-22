@@ -1,10 +1,10 @@
-# AMPA Escola Bernat Desclot
+# AFA Escola Bernat Desclot
 
 Web oficial de la Asociación de Madres y Padres de Alumnos de la Escuela Bernat Desclot.
 
 ## ✨ 100% Open Source
 
-Este proyecto es totalmente de código abierto y está disponible para que cualquier AMPA o asociación similar pueda utilizarlo, modificarlo y adaptarlo a sus necesidades.
+Este proyecto es totalmente de código abierto y está disponible para que cualquier AFA o asociación similar pueda utilizarlo, modificarlo y adaptarlo a sus necesidades.
 
 ## Características
 
@@ -259,10 +259,10 @@ Este es un proyecto open source. Si deseas contribuir:
 
 ## Licencia
 
-El código fuente está disponible bajo licencia MIT - siéntete libre de usarlo para tu propia AMPA o asociación.
+El código fuente está disponible bajo licencia MIT - siéntete libre de usarlo para tu propia AFA o asociación.
 
-El contenido específico de AMPA Escola Bernat Desclot está protegido por derechos de autor © 2025 AMPA Escola Bernat Desclot.
+El contenido específico de AFA Escola Bernat Desclot está protegido por derechos de autor © 2025 AFA Escola Bernat Desclot.
 
 ## Soporte
 
-Si tienes preguntas o necesitas ayuda para configurar este proyecto para tu AMPA, abre un issue en GitHub.
+Si tienes preguntas o necesitas ayuda para configurar este proyecto para tu AFA, abre un issue en GitHub.

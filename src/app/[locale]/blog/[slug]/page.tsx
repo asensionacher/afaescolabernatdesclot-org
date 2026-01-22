@@ -71,7 +71,7 @@ export async function generateMetadata({
     };
   }
 
-  const title = post.title?.[locale as keyof typeof post.title] || post.title?.ca || 'AMPA Bernat Desclot';
+  const title = post.title?.[locale as keyof typeof post.title] || post.title?.ca || 'AFA Bernat Desclot';
   const description = post.excerpt?.[locale as keyof typeof post.excerpt] || post.excerpt?.ca || 'Asociación de Familias de Alumnos del colegio Bernat Desclot';
   
   // Get image URL from Sanity
@@ -82,13 +82,13 @@ export async function generateMetadata({
   const url = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/${locale}/blog/${slug}`;
 
   return {
-    title: `${title} | AMPA Bernat Desclot`,
+    title: `${title} | AFA Bernat Desclot`,
     description,
     openGraph: {
       title,
       description,
       url,
-      siteName: 'AMPA Bernat Desclot',
+      siteName: 'AFA Bernat Desclot',
       images: [
         {
           url: imageUrl,

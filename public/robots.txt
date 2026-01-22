@@ -1,4 +1,4 @@
-# robots.txt for AMPA Bernat Desclot
+# robots.txt for AFA Bernat Desclot
 
 # Allow all bots to crawl the site
 User-agent: *

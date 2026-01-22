@@ -8,16 +8,16 @@
     "contact": "Contact"
   },
   "home": {
-    "title": "AMPA Bernat Desclot School",
+    "title": "AFA Bernat Desclot School",
     "subtitle": "Parents Association",
-    "description": "The AMPA is the representative body of families at the school and actively participates in the management and educational model, serving as a direct communication bridge between families, management and teaching staff.",
+    "description": "The AFA is the representative body of families at the school and actively participates in the management and educational model, serving as a direct communication bridge between families, management and teaching staff.",
     "cta": "Learn More"
   },
   "about": {
     "title": "About Us",
-    "description": "The AMPA is the representative body of families at the school and actively participates in the management and educational model, serving as a direct communication bridge between families, management and teaching staff.",
-    "descriptionSecondary": "The AMPA is made up of a board of volunteer mothers and fathers, who dedicate part of their time to ensure that our school is the school we want for our daughters and sons.",
-    "finalMessage": "The activity carried out by the AMPA benefits all our sons and daughters.",
+    "description": "The AFA is the representative body of families at the school and actively participates in the management and educational model, serving as a direct communication bridge between families, management and teaching staff.",
+    "descriptionSecondary": "The AFA is made up of a board of volunteer mothers and fathers, who dedicate part of their time to ensure that our school is the school we want for our daughters and sons.",
+    "finalMessage": "The activity carried out by the AFA benefits all our sons and daughters.",
     "mission": "Our Mission",
     "missionText": "We work to improve the education and wellbeing of all students at Bernat Desclot school.",
     "familiesTitle": "United Families",
@@ -28,7 +28,7 @@
     "commitmentText": "We are committed to quality education and a positive and enriching school environment."
   },
   "services": {
-    "title": "The AMPA exclusively manages different services such as:",
+    "title": "The AFA exclusively manages different services such as:",
     "morningCare": {
       "title": "Morning care service",
       "description": "From 7.45 to 9am from the first day of school."
@@ -67,7 +67,7 @@
     },
     "discounts": {
       "title": "Member Discounts",
-      "description": "Enjoy exclusive discounts at local shops and services for being an AMPA member. Download the complete list of available discounts.",
+      "description": "Enjoy exclusive discounts at local shops and services for being an AFA member. Download the complete list of available discounts.",
       "download": "Download Discounts"
     },
     "extracurricular": {
@@ -76,7 +76,7 @@
     }
   },
   "schedule": {
-    "title": "AMPA Schedule",
+    "title": "AFA Schedule",
     "morning": "Mornings Monday to Friday: 9-10am",
     "afternoon": "Afternoons Monday and Thursday: 4.45-6pm",
     "signUp": "Sign Up!",
@@ -91,10 +91,10 @@
   },
   "contact": {
     "title": "Contact Us",
-    "info": "Would you like to collaborate with AMPA? Do you have ideas for new activities? Write to us! We're always happy to receive suggestions and welcome new families. 💌",
+    "info": "Would you like to collaborate with AFA? Do you have ideas for new activities? Write to us! We're always happy to receive suggestions and welcome new families. 💌",
     "email": "Email",
     "atSchool": "At School",
-    "atSchoolText": "Ask at the office for AMPA!"
+    "atSchoolText": "Ask at the office for AFA!"
   },
   "footer": {
     "rights": "All rights reserved",
@@ -118,9 +118,9 @@
   },
   "privacy": {
     "title": "Privacy Policy",
-    "intro": "At AMPA Bernat Desclot School we respect your privacy and are committed to protecting your personal data.",
+    "intro": "At AFA Bernat Desclot School we respect your privacy and are committed to protecting your personal data.",
     "dataController": "Data controller",
-    "dataControllerText": "AMPA Bernat Desclot School",
+    "dataControllerText": "AFA Bernat Desclot School",
     "dataCollected": "Data collected",
     "dataCollectedText": "This website does not collect personal data from users. If we implement contact forms in the future, we will only collect the data necessary to respond to your queries.",
     "cookies": "Cookies",
@@ -131,13 +131,13 @@
   "legal": {
     "title": "Legal Notice",
     "owner": "Website owner",
-    "ownerText": "AMPA Bernat Desclot School",
+    "ownerText": "AFA Bernat Desclot School",
     "purpose": "Purpose",
-    "purposeText": "This website aims to inform about the activities and services of AMPA Bernat Desclot School.",
+    "purposeText": "This website aims to inform about the activities and services of AFA Bernat Desclot School.",
     "liability": "Limitation of liability",
-    "liabilityText": "AMPA is not responsible for errors or omissions in the content of this website.",
+    "liabilityText": "AFA is not responsible for errors or omissions in the content of this website.",
     "intellectualProperty": "Intellectual property",
-    "intellectualPropertyText": "The source code of this website is open source and available on GitHub. The content is protected by copyright of AMPA Bernat Desclot School."
+    "intellectualPropertyText": "The source code of this website is open source and available on GitHub. The content is protected by copyright of AFA Bernat Desclot School."
   },
   "cookiesPolicy": {
     "title": "Cookie Policy",

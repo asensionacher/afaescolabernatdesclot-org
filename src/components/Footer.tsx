@@ -17,7 +17,7 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={styles.container}>
         <div className={styles.section}>
-          <h3>AMPA Bernat Desclot</h3>
+          <h3>AFA Bernat Desclot</h3>
           <p>Escola Bernat Desclot</p>
           <div className={styles.opensource}>
             <p>✨ {t('openSource')}</p>

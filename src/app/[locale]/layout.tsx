@@ -11,8 +11,8 @@ export function generateStaticParams() {
 }
 
 export const metadata = {
-  title: 'AMPA Bernat Desclot - Escuela Infantil',
-  description: 'Bienvenido a la AMPA de la Escuela Infantil Bernat Desclot',
+  title: 'AFA Bernat Desclot - Escuela Infantil',
+  description: 'Bienvenido a la AFA de la Escuela Infantil Bernat Desclot',
 };
 
 export default async function LocaleLayout({

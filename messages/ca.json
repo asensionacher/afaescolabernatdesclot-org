@@ -8,16 +8,16 @@
     "contact": "Contacte"
   },
   "home": {
-    "title": "AMPA Escola Bernat Desclot",
+    "title": "AFA Escola Bernat Desclot",
     "subtitle": "Associació de Mares i Pares d'Alumnes",
-    "description": "L'AMPA és l'òrgan de representació de les famílies a l'escola i que participa de forma activa en la gestió i model educatiu de la mateixa, sent un pont de comunicació directa entre les famílies, la direcció i el professorat de l'escola.",
+    "description": "L'AFA és l'òrgan de representació de les famílies a l'escola i que participa de forma activa en la gestió i model educatiu de la mateixa, sent un pont de comunicació directa entre les famílies, la direcció i el professorat de l'escola.",
     "cta": "Coneix-nos"
   },
   "about": {
     "title": "Qui Som",
-    "description": "L'AMPA és l'òrgan de representació de les famílies a l'escola i que participa de forma activa en la gestió i model educatiu de la mateixa, sent un pont de comunicació directa entre les famílies, la direcció i el professorat de l'escola.",
-    "descriptionSecondary": "L'AMPA està formada per una junta de mares i pares voluntaris, que cedeixen part del seu temps per vetllar perquè la nostra escola sigui l'escola que volem per a les nostres filles i fills.",
-    "finalMessage": "L'activitat que desenvolupa l'AMPA és en benefici de tots els nostres fills i filles.",
+    "description": "L'AFA és l'òrgan de representació de les famílies a l'escola i que participa de forma activa en la gestió i model educatiu de la mateixa, sent un pont de comunicació directa entre les famílies, la direcció i el professorat de l'escola.",
+    "descriptionSecondary": "L'AFA està formada per una junta de mares i pares voluntaris, que cedeixen part del seu temps per vetllar perquè la nostra escola sigui l'escola que volem per a les nostres filles i fills.",
+    "finalMessage": "L'activitat que desenvolupa l'AFA és en benefici de tots els nostres fills i filles.",
     "mission": "La nostra missió",
     "missionText": "Treballem per millorar l'educació i el benestar de tots els alumnes de l'escola Bernat Desclot.",
     "familiesTitle": "Famílies Unides",
@@ -28,7 +28,7 @@
     "commitmentText": "Estem compromesos amb l'educació de qualitat i un ambient escolar positiu i enriquidor."
   },
   "services": {
-    "title": "L'AMPA gestiona de forma exclusiva diferents serveis com són:",
+    "title": "L'AFA gestiona de forma exclusiva diferents serveis com són:",
     "morningCare": {
       "title": "Servei d'acollida matinal",
       "description": "De 7.45 a 9h des del primer dia d'escola."
@@ -67,7 +67,7 @@
     },
     "discounts": {
       "title": "Descomptes per Socis",
-      "description": "Gaudeix de descomptes exclusius en comerços i serveis del barri pel fet de ser soci de l'AMPA. Descarrega la llista completa de descomptes disponibles.",
+      "description": "Gaudeix de descomptes exclusius en comerços i serveis del barri pel fet de ser soci de l'AFA. Descarrega la llista completa de descomptes disponibles.",
       "download": "Descarregar Descomptes"
     },
     "extracurricular": {
@@ -76,7 +76,7 @@
     }
   },
   "schedule": {
-    "title": "Horari de l'AMPA",
+    "title": "Horari de l'AFA",
     "morning": "Matins de dilluns a divendres: 9-10h",
     "afternoon": "Tardes dilluns i dijous: 16.45-18h",
     "signUp": "Apunta't!",
@@ -91,10 +91,10 @@
   },
   "contact": {
     "title": "Contacta amb Nosaltres",
-    "info": "T'agradaria col·laborar amb l'AMPA? Tens idees per a noves activitats? Escriu-nos! Sempre estem contents de rebre suggeriments i noves famílies. 💌",
+    "info": "T'agradaria col·laborar amb l'AFA? Tens idees per a noves activitats? Escriu-nos! Sempre estem contents de rebre suggeriments i noves famílies. 💌",
     "email": "Email",
     "atSchool": "A l'Escola",
-    "atSchoolText": "Pregunta al despatx per l'AMPA!"
+    "atSchoolText": "Pregunta al despatx per l'AFA!"
   },
   "footer": {
     "rights": "Tots els drets reservats",
@@ -118,9 +118,9 @@
   },
   "privacy": {
     "title": "Política de Privacitat",
-    "intro": "A l'AMPA Escola Bernat Desclot respectem la teva privacitat i estem compromesos amb la protecció de les teves dades personals.",
+    "intro": "A l'AFA Escola Bernat Desclot respectem la teva privacitat i estem compromesos amb la protecció de les teves dades personals.",
     "dataController": "Responsable del tractament",
-    "dataControllerText": "AMPA Escola Bernat Desclot",
+    "dataControllerText": "AFA Escola Bernat Desclot",
     "dataCollected": "Dades recollides",
     "dataCollectedText": "Aquesta web no recull dades personals dels usuaris. Si en el futur implementem formularis de contacte, només recollirem les dades necessàries per respondre a les teves consultes.",
     "cookies": "Cookies",
@@ -131,13 +131,13 @@
   "legal": {
     "title": "Avís Legal",
     "owner": "Titular del lloc web",
-    "ownerText": "AMPA Escola Bernat Desclot",
+    "ownerText": "AFA Escola Bernat Desclot",
     "purpose": "Objecte",
-    "purposeText": "Aquest lloc web té com a objectiu informar sobre les activitats i serveis de l'AMPA Escola Bernat Desclot.",
+    "purposeText": "Aquest lloc web té com a objectiu informar sobre les activitats i serveis de l'AFA Escola Bernat Desclot.",
     "liability": "Limitació de responsabilitat",
-    "liabilityText": "L'AMPA no es fa responsable dels errors o omissions en el contingut d'aquest lloc web.",
+    "liabilityText": "L'AFA no es fa responsable dels errors o omissions en el contingut d'aquest lloc web.",
     "intellectualProperty": "Propietat intel·lectual",
-    "intellectualPropertyText": "El codi font d'aquesta web és de codi obert i està disponible a GitHub. El contingut està protegit per drets d'autor de l'AMPA Escola Bernat Desclot."
+    "intellectualPropertyText": "El codi font d'aquesta web és de codi obert i està disponible a GitHub. El contingut està protegit per drets d'autor de l'AFA Escola Bernat Desclot."
   },
   "cookiesPolicy": {
     "title": "Política de Cookies",

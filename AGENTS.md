@@ -1,4 +1,4 @@
-# AGENTS.md - Developer Guide for AMPA Bernat Desclot Website
+# AGENTS.md - Developer Guide for AFA Bernat Desclot Website
 
 This document provides guidelines for AI coding agents and developers working on this codebase.
 

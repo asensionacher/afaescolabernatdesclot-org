@@ -16,11 +16,11 @@ export async function generateMetadata({
   const { locale } = await params;
   
   const titles: Record<string, string> = {
-    ca: 'AMPA Bernat Desclot - Associació de Famílies de Barcelona',
-    es: 'AMPA Bernat Desclot - Asociación de Familias de Barcelona',
-    en: 'AMPA Bernat Desclot - Family Association in Barcelona',
-    ar: 'AMPA Bernat Desclot - جمعية العائلات في برشلونة',
-    ur: 'AMPA Bernat Desclot - بارسلونا میں خاندانی انجمن',
+    ca: 'AFA Bernat Desclot - Associació de Famílies de Barcelona',
+    es: 'AFA Bernat Desclot - Asociación de Familias de Barcelona',
+    en: 'AFA Bernat Desclot - Family Association in Barcelona',
+    ar: 'AFA Bernat Desclot - جمعية العائلات في برشلونة',
+    ur: 'AFA Bernat Desclot - بارسلونا میں خاندانی انجمن',
   };
 
   const descriptions: Record<string, string> = {
@@ -43,13 +43,13 @@ export async function generateMetadata({
       title,
       description,
       url,
-      siteName: 'AMPA Bernat Desclot',
+      siteName: 'AFA Bernat Desclot',
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: 'AMPA Bernat Desclot',
+          alt: 'AFA Bernat Desclot',
         },
       ],
       locale: locale,
