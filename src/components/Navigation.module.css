@@ -156,7 +156,7 @@
 }
 
 .mobileMenuLink:hover {
-  background: rgba(255, 107, 157, 0.1);
+  background: rgba(255, 213, 79, 0.2);
   color: var(--color-primary);
   border-left-color: var(--color-primary);
   transform: translateX(5px);
@@ -212,7 +212,7 @@
   color: var(--color-text);
   text-decoration: none;
   transition: var(--transition);
-  border-bottom: 1px solid rgba(255, 107, 157, 0.1);
+  border-bottom: 1px solid rgba(255, 213, 79, 0.2);
   font-weight: 500;
   white-space: nowrap;
 }
@@ -222,7 +222,7 @@
 }
 
 .langOption:hover {
-  background: rgba(255, 107, 157, 0.1);
+  background: rgba(255, 213, 79, 0.2);
   color: var(--color-primary);
 }
 
