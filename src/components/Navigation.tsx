@@ -49,12 +49,12 @@ export default function Navigation({ locale }: { locale: string }) {
         <Link href="/" className={styles.logo}>
           <Image 
             src="/logo.png" 
-            alt="AFA Bernat Desclot Logo" 
+            alt="AMPA Bernat Desclot Logo" 
             width={80} 
             height={80}
             className={styles.logoImage}
           />
-          <span className={styles.logoText}>AFA Bernat Desclot</span>
+          <span className={styles.logoText}>AMPA Bernat Desclot</span>
         </Link>
 
         {/* Hamburger Button */}
