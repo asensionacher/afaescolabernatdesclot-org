@@ -165,8 +165,8 @@
     "paymentConcept": "El concepte de l'ingrés/transferència ha de ser:",
     "paymentConceptFormat": "QUOTA AFA 2025-2026 + COGNOMS DE LA FAMÍLIA + CURS/OS INFANT/S",
     "paymentConceptExample": "Exemple: QUOTA AFA 2025-2026 GARCIA LOPEZ I3 1",
-    "uploadReceipt": "Pujar justificant de pagament (opcional)",
-    "uploadReceiptHelp": "No és obligatori, però s'agraeix si puges el justificant per a una millor organització.",
+    "uploadReceipt": "Pujar justificant de pagament",
+    "uploadReceiptHelp": "És obligatori pujar el justificant de pagament.",
     "dataProtection": "Protecció de dades",
     "fields": {
       "name": "Nom i cognoms",
@@ -201,6 +201,7 @@
     "acceptDataProtection": "He llegit i accepto la política de protecció de dades i ús d'imatge",
     "submit": "Enviar inscripció",
     "submitting": "Enviant...",
+    "sending": "Enviant la teva inscripció...",
     "success": "Inscripció enviada correctament!",
     "error": "Error en enviar la inscripció. Si us plau, torna-ho a intentar.",
     "validationError": "Hi ha camps obligatoris sense emplenar o amb errors. Si us plau, revisa el formulari.",
@@ -209,6 +210,7 @@
     "invalidPhone": "Telèfon no vàlid (9 dígits)",
     "invalidDni": "DNI/NIE no vàlid (ex: 12345678A o X1234567A)",
     "invalidCatsalut": "Número CATSALUT no vàlid (format: AAAA1234567890)",
-    "mustAcceptData": "Has d'acceptar la política de protecció de dades per continuar"
+    "mustAcceptData": "Has d'acceptar la política de protecció de dades per continuar",
+    "fileTooLarge": "L'arxiu és massa gran (màxim 10MB)"
   }
 }

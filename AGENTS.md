@@ -4,12 +4,13 @@ This document provides guidelines for AI coding agents and developers working on
 
 ## Project Overview
 
-- **Framework**: Next.js 15 with App Router
-- **Language**: TypeScript (strict mode)
-- **CMS**: Sanity v3
-- **i18n**: next-intl (5 languages: ca, es, en, ar, ur)
-- **Styling**: CSS Modules
-- **Package Manager**: pnpm
+- **Framework**: Next.js 15.5.9 with App Router
+- **Language**: TypeScript 5 (strict mode enabled)
+- **CMS**: Sanity v3.68.1
+- **i18n**: next-intl v3.26.2 (5 languages: ca, es, en, ar, ur)
+- **Styling**: CSS Modules (mobile-first approach)
+- **PDF Generation**: jsPDF + pdf-lib
+- **Package Manager**: pnpm v10.28.0
 - **Deployment**: Vercel
 
 ## Build & Development Commands
@@ -17,14 +18,24 @@ This document provides guidelines for AI coding agents and developers working on
 ```bash
 # Development
 pnpm dev                    # Start dev server at http://localhost:3000
+                           # Sanity Studio available at http://localhost:3000/studio
 
 # Build & Production
-pnpm build                  # Build for production (includes type checking)
+pnpm build                  # Build for production (includes type checking and linting)
 pnpm start                  # Start production server
 
 # Code Quality
-pnpm lint                   # Run ESLint
-pnpm lint --fix             # Fix auto-fixable lint issues
+pnpm lint                   # Run ESLint on all files
+pnpm lint --fix             # Auto-fix linting issues
+
+# Dependencies
+pnpm install                # Install all dependencies
+pnpm add <package>          # Add new dependency
+pnpm add -D <package>       # Add dev dependency
+
+# Cleaning
+rm -rf .next                # Clean build cache (use if build fails)
+rm -rf node_modules .next && pnpm install  # Full clean install
 
 # Note: No test suite configured yet
 ```
@@ -252,12 +263,19 @@ if (!post) {
 Required variables (see `.env.local.example`):
 
 ```env
+# Sanity CMS
 NEXT_PUBLIC_SANITY_PROJECT_ID=cpaqkfmb
 NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_API_VERSION=2024-01-21
 SANITY_API_TOKEN=<token>
+
+# Analytics & Base URL
 NEXT_PUBLIC_GA_ID=<ga-id>
 NEXT_PUBLIC_BASE_URL=https://yourdomain.com
+
+# Telegram Bot (for registration form)
+TELEGRAM_BOT_TOKEN=<bot-token>
+TELEGRAM_CHAT_ID=<chat-id>
 ```
 
 ## Git Workflow
@@ -285,6 +303,29 @@ git push origin main
 3. ❌ Don't forget multilingual fallbacks (always fallback to `ca`)
 4. ❌ Don't hardcode text - use translations
 5. ❌ Don't place favicons in `/public` - use `/src/app/`
+
+## Registration Form & PDF Generation
+
+The registration form (`/inscripcion`) has special requirements:
+
+- **Form Flow**: Validation → Signature Modal → Submit with loading overlay
+- **PDF Structure**: 
+  1. Page 1: Guardian data, address, student information
+  2. Page 2: Full data protection policy + signature + seal
+  3. Page 3: Payment receipt (combined using pdf-lib)
+- **File Uploads**: Payment receipt required (max 10MB, PDF/JPG/PNG)
+- **Telegram Integration**: Sends combined PDF to Telegram bot
+- **Test Mode**: Development-only button fills form with 3 test students
+
+### PDF Libraries Used:
+- `jspdf`: Generate registration form pages
+- `pdf-lib`: Combine PDFs and embed images
+
+### API Route Configuration:
+```typescript
+export const maxDuration = 60; // 60 seconds timeout
+export const dynamic = 'force-dynamic';
+```
 
 ## Resources
 

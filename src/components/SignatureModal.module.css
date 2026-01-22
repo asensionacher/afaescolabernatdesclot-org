@@ -1,0 +1,135 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal {
+  background: white;
+  border-radius: var(--radius);
+  padding: 2rem;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.title {
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  text-align: center;
+}
+
+.instruction {
+  margin: 0 0 1rem 0;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+}
+
+.guardianInfo {
+  margin: 0 0 1rem 0;
+  padding: 0.75rem;
+  background: var(--color-background);
+  border-radius: var(--radius);
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.canvas {
+  width: 100%;
+  height: 250px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+  cursor: crosshair;
+  touch-action: none;
+  background: #fafafa;
+  margin-bottom: 1.5rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+}
+
+.clearButton,
+.cancelButton,
+.confirmButton {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.clearButton {
+  background: var(--color-background);
+  color: var(--color-text);
+  border: 2px solid var(--color-border);
+}
+
+.clearButton:hover {
+  background: var(--color-border);
+}
+
+.cancelButton {
+  background: #6c757d;
+  color: white;
+}
+
+.cancelButton:hover {
+  background: #5a6268;
+}
+
+.confirmButton {
+  background: var(--color-primary);
+  color: white;
+}
+
+.confirmButton:hover {
+  background: var(--color-primary-dark);
+}
+
+.confirmButton:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@media (max-width: 640px) {
+  .modal {
+    padding: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .canvas {
+    height: 200px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .clearButton,
+  .cancelButton,
+  .confirmButton {
+    width: 100%;
+  }
+}

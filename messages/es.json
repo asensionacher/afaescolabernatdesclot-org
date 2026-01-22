@@ -165,8 +165,8 @@
     "paymentConcept": "El concepto del ingreso/transferencia debe ser:",
     "paymentConceptFormat": "CUOTA AFA 2025-2026 + APELLIDOS DE LA FAMILIA + CURSO/S DEL/DE LOS ALUMNO/S",
     "paymentConceptExample": "Ejemplo: CUOTA AFA 2025-2026 GARCIA LOPEZ I3 1",
-    "uploadReceipt": "Subir justificante de pago (opcional)",
-    "uploadReceiptHelp": "No es obligatorio, pero se agradece si subes el justificante para una mejor organización.",
+    "uploadReceipt": "Subir justificante de pago",
+    "uploadReceiptHelp": "Es obligatorio subir el justificante de pago.",
     "dataProtection": "Protección de datos",
     "fields": {
       "name": "Nombre y apellidos",
@@ -201,6 +201,7 @@
     "acceptDataProtection": "He leído y acepto la política de protección de datos y uso de imagen",
     "submit": "Enviar inscripción",
     "submitting": "Enviando...",
+    "sending": "Enviando tu inscripción...",
     "success": "¡Inscripción enviada correctamente!",
     "error": "Error al enviar la inscripción. Por favor, inténtalo de nuevo.",
     "validationError": "Hay campos obligatorios sin rellenar o con errores. Por favor, revisa el formulario.",
@@ -209,6 +210,7 @@
     "invalidPhone": "Teléfono no válido (9 dígitos)",
     "invalidDni": "DNI/NIE no válido (ej: 12345678A o X1234567A)",
     "invalidCatsalut": "Número CATSALUT no válido (formato: AAAA1234567890)",
-    "mustAcceptData": "Debes aceptar la política de protección de datos para continuar"
+    "mustAcceptData": "Debes aceptar la política de protección de datos para continuar",
+    "fileTooLarge": "El archivo es demasiado grande (máximo 10MB)"
   }
 }

@@ -33,7 +33,7 @@ export async function generateMetadata({
 
   const title = titles[locale] || titles.ca;
   const description = descriptions[locale] || descriptions.ca;
-  const imageUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/logo.png`;
+  const imageUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/logo.webp`;
   const url = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/${locale}`;
 
   return {

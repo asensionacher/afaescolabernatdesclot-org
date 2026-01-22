@@ -48,7 +48,7 @@ export default function Navigation({ locale }: { locale: string }) {
       <div className={styles.container}>
         <Link href="/" className={styles.logo}>
           <Image 
-            src="/logo.png" 
+            src="/logo.webp" 
             alt="AFA Bernat Desclot Logo" 
             width={80} 
             height={80}

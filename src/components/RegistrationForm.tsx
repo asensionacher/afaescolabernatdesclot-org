@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import SignatureModal from './SignatureModal';
 import styles from './RegistrationForm.module.css';
 
 interface Student {
@@ -36,6 +37,8 @@ export default function RegistrationForm({ locale }: { locale: string }) {
   const t = useTranslations('registration');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error' | 'validation-error'>('idle');
+  const [showSignatureModal, setShowSignatureModal] = useState(false);
+  const [signatureDataUrl, setSignatureDataUrl] = useState<string | null>(null);
   
   const [formData, setFormData] = useState<FormData>({
     guardian1Name: '',
@@ -251,6 +254,11 @@ export default function RegistrationForm({ locale }: { locale: string }) {
       newErrors.acceptData = t('mustAcceptData');
     }
 
+    // Payment receipt validation (now required)
+    if (!formData.paymentReceipt) {
+      newErrors.paymentReceipt = t('required');
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -268,7 +276,14 @@ export default function RegistrationForm({ locale }: { locale: string }) {
       return;
     }
 
-    console.log('Validation passed, submitting...');
+    console.log('Validation passed, opening signature modal...');
+    // Open signature modal instead of submitting directly
+    setShowSignatureModal(true);
+  };
+
+  const handleSignatureConfirm = async (signature: string) => {
+    setSignatureDataUrl(signature);
+    setShowSignatureModal(false);
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
@@ -297,20 +312,37 @@ export default function RegistrationForm({ locale }: { locale: string }) {
         locale
       }));
       
-      // Add payment receipt file if present
+      // Add payment receipt file
       if (formData.paymentReceipt) {
         formDataToSend.append('paymentReceipt', formData.paymentReceipt);
       }
 
+      // Add signature
+      formDataToSend.append('signature', signature);
+
+      console.log('Sending form data...');
+      
       const response = await fetch('/api/register', {
         method: 'POST',
-        body: formDataToSend, // Send FormData instead of JSON
+        body: formDataToSend,
       });
 
       console.log('Response status:', response.status);
 
       if (response.ok) {
         console.log('Form submitted successfully');
+        
+        // Download PDF for user
+        const result = await response.json();
+        if (result.pdfBase64) {
+          const link = document.createElement('a');
+          link.href = `data:application/pdf;base64,${result.pdfBase64}`;
+          link.download = result.filename || 'inscripcion_afa.pdf';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+        
         setSubmitStatus('success');
         // Reset form
         setFormData({
@@ -332,13 +364,20 @@ export default function RegistrationForm({ locale }: { locale: string }) {
           acceptData: false,
           paymentReceipt: undefined
         });
+        setSignatureDataUrl(null);
+        
+        // Clear file input
+        const fileInput = document.getElementById('receipt') as HTMLInputElement;
+        if (fileInput) fileInput.value = '';
       } else {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
         console.error('Server error:', errorData);
+        alert(`Error: ${errorData.error || 'Error desconocido al enviar el formulario'}`);
         setSubmitStatus('error');
       }
     } catch (error) {
       console.error('Error submitting form:', error);
+      alert(`Error de red: ${error instanceof Error ? error.message : 'No se pudo conectar con el servidor'}`);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -347,8 +386,77 @@ export default function RegistrationForm({ locale }: { locale: string }) {
 
   const grades = ['I3', 'I4', 'I5', '1', '2', '3', '4', '5', '6'];
 
+  // Development helper: Fill form with test data
+  const fillTestData = () => {
+    setFormData({
+      guardian1Name: 'Joan Garcia López',
+      guardian1Dni: '12345678A',
+      guardian1Email: 'joan.garcia@example.com',
+      guardian1Phone: '600123456',
+      guardian2Name: 'Maria Pérez Sánchez',
+      guardian2Dni: '87654321B',
+      guardian2Email: 'maria.perez@example.com',
+      guardian2Phone: '600654321',
+      address: 'Carrer de Provença',
+      number: '123',
+      floor: '2º 1ª',
+      postalCode: '08908',
+      city: 'Hospitalet de Llobregat',
+      province: 'Barcelona',
+      students: [
+        {
+          id: '1',
+          name: 'Marc',
+          surname: 'Garcia Pérez',
+          catsalut: 'AAAA1234567890',
+          grade: 'I3'
+        },
+        {
+          id: '2',
+          name: 'Laura',
+          surname: 'Garcia Pérez',
+          catsalut: 'BBBB9876543210',
+          grade: '2'
+        },
+        {
+          id: '3',
+          name: 'Pau',
+          surname: 'Garcia Pérez',
+          catsalut: 'CCCC5555666677',
+          grade: '5'
+        }
+      ],
+      acceptData: true,
+      paymentReceipt: formData.paymentReceipt // Keep the existing file if any
+    });
+  };
+
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
+      {/* Development Test Button */}
+      {process.env.NODE_ENV === 'development' && (
+        <div style={{ marginBottom: '1rem', padding: '1rem', background: '#fff3cd', borderRadius: 'var(--radius)' }}>
+          <button
+            type="button"
+            onClick={fillTestData}
+            style={{
+              background: '#ffc107',
+              color: '#000',
+              border: 'none',
+              padding: '0.5rem 1rem',
+              borderRadius: 'var(--radius)',
+              cursor: 'pointer',
+              fontWeight: 'bold'
+            }}
+          >
+            🧪 Rellenar datos de prueba (3 alumnos)
+          </button>
+          <span style={{ marginLeft: '1rem', fontSize: '0.875rem', color: '#856404' }}>
+            Solo visible en desarrollo
+          </span>
+        </div>
+      )}
+
       {/* Validation Error Message */}
       {submitStatus === 'validation-error' && (
         <div className={styles.errorMessage} style={{ marginBottom: '20px' }}>
@@ -685,21 +793,45 @@ export default function RegistrationForm({ locale }: { locale: string }) {
 
         <div className={styles.formGroup}>
           <label htmlFor="receipt" className={styles.label}>
-            {t('uploadReceipt')}
+            {t('uploadReceipt')} <span className={styles.required}>*</span>
           </label>
           <input
             type="file"
             id="receipt"
             accept=".pdf,.jpg,.jpeg,.png"
-            className={styles.fileInput}
+            className={`${styles.fileInput} ${errors.paymentReceipt ? styles.inputError : ''}`}
             onChange={(e) => {
               const file = e.target.files?.[0];
               if (file) {
+                // Validate file size (max 10MB)
+                const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+                if (file.size > maxSize) {
+                  setErrors(prev => ({ 
+                    ...prev, 
+                    paymentReceipt: t('fileTooLarge') || 'El archivo es demasiado grande (máx 10MB)' 
+                  }));
+                  e.target.value = ''; // Clear the input
+                  return;
+                }
+                
                 setFormData({ ...formData, paymentReceipt: file });
+                // Clear error when file is selected
+                if (errors.paymentReceipt) {
+                  setErrors(prev => {
+                    const newErrors = { ...prev };
+                    delete newErrors.paymentReceipt;
+                    return newErrors;
+                  });
+                }
               }
             }}
           />
-          <span className={styles.helpText}>{t('uploadReceiptHelp')}</span>
+          {errors.paymentReceipt && <span className={styles.error}>{errors.paymentReceipt}</span>}
+          {formData.paymentReceipt && (
+            <span className={styles.helpText}>
+              📎 {formData.paymentReceipt.name} ({(formData.paymentReceipt.size / 1024).toFixed(0)} KB)
+            </span>
+          )}
         </div>
       </section>
 
@@ -751,6 +883,23 @@ export default function RegistrationForm({ locale }: { locale: string }) {
           <p className={styles.errorMessage}>{t('error')}</p>
         )}
       </div>
+
+      {/* Signature Modal */}
+      <SignatureModal
+        isOpen={showSignatureModal}
+        onClose={() => setShowSignatureModal(false)}
+        onConfirm={handleSignatureConfirm}
+        guardianName={formData.guardian1Name}
+        locale={locale}
+      />
+
+      {/* Loading Overlay */}
+      {isSubmitting && (
+        <div className={styles.loadingOverlay}>
+          <div className={styles.loadingSpinner}></div>
+          <p className={styles.loadingText}>{t('sending')}</p>
+        </div>
+      )}
     </form>
   );
 }

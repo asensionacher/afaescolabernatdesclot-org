@@ -77,7 +77,7 @@ export async function generateMetadata({
   // Get image URL from Sanity
   const imageUrl = post.mainImage 
     ? urlFor(post.mainImage).width(1200).height(630).url()
-    : `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/logo.png`;
+    : `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/logo.webp`;
 
   const url = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/${locale}/blog/${slug}`;
 

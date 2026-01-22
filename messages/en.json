@@ -165,8 +165,8 @@
     "paymentConcept": "The payment reference must be (in Spanish or Catalan):",
     "paymentConceptFormat": "CUOTA AFA 2025-2026 + FAMILY SURNAME + STUDENT GRADE(S)",
     "paymentConceptExample": "Example: CUOTA AFA 2025-2026 GARCIA LOPEZ I3 1",
-    "uploadReceipt": "Upload payment receipt (optional)",
-    "uploadReceiptHelp": "Not required, but appreciated if you upload the receipt for better organization.",
+    "uploadReceipt": "Upload payment receipt",
+    "uploadReceiptHelp": "Uploading the payment receipt is required.",
     "dataProtection": "Data Protection",
     "fields": {
       "name": "Full name",
@@ -201,6 +201,7 @@
     "acceptDataProtection": "I have read and accept the data protection and image use policy",
     "submit": "Submit registration",
     "submitting": "Submitting...",
+    "sending": "Sending your registration...",
     "success": "Registration sent successfully!",
     "error": "Error sending registration. Please try again.",
     "validationError": "There are required fields missing or with errors. Please review the form.",
@@ -209,6 +210,7 @@
     "invalidPhone": "Invalid phone (9 digits)",
     "invalidDni": "Invalid DNI/NIE (ex: 12345678A or X1234567A)",
     "invalidCatsalut": "Invalid CATSALUT number (format: AAAA1234567890)",
-    "mustAcceptData": "You must accept the data protection policy to continue"
+    "mustAcceptData": "You must accept the data protection policy to continue",
+    "fileTooLarge": "File is too large (maximum 10MB)"
   }
 }
