@@ -292,8 +292,8 @@ export default async function HomePage({
               <div className={styles.contactCard}>
                 <div className={styles.contactIcon}>✉️</div>
                 <h3>{tContact('email')}</h3>
-                <a href="mailto:ampaescolabernatdesclot@gmail.com">
-                  ampaescolabernatdesclot@gmail.com
+                <a href="mailto:afaescolabernatdesclot@gmail.com">
+                  afaescolabernatdesclot@gmail.com
                 </a>
               </div>
               <div className={styles.contactCard}>
