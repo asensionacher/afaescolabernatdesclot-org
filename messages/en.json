@@ -80,7 +80,8 @@
     "morning": "Mornings Monday to Friday: 9-10am",
     "afternoon": "Afternoons Monday and Thursday: 4.45-6pm",
     "signUp": "Sign Up!",
-    "download": "Download PDF"
+    "download": "Download PDF",
+    "onlineForm": "📱 Online form"
   },
   "blog": {
     "title": "News and Events",
@@ -150,5 +151,63 @@
     "analyticsText": "We use Google Analytics to understand how users interact with our website. This data helps us improve the user experience.",
     "manage": "How to manage cookies",
     "manageText": "You can manage your cookie preferences at any time by clicking the cookie settings button in the footer."
+  },
+  "registration": {
+    "title": "AFA Registration Form",
+    "subtitle": "Fill out the following form to register for AFA Bernat Desclot",
+    "guardian1": "Parent/Guardian 1",
+    "guardian2": "Parent/Guardian 2 (Optional)",
+    "homeAddress": "Students' Home Address",
+    "students": "Students",
+    "paymentInfo": "Payment Information",
+    "paymentInfoText": "To become a member family of the AFA during the 2025-2026 school year, you must make a payment of 30 euros by bank transfer to the AFA BERNAT DESCLOT account:",
+    "bankAccount": "ES80 0182 3366 6102 0035 5360",
+    "paymentConcept": "The payment reference must be:",
+    "paymentConceptFormat": "AFA MEMBERSHIP 2025-2026 + FAMILY SURNAME + STUDENT GRADE(S)",
+    "uploadReceipt": "Upload payment receipt (optional)",
+    "uploadReceiptHelp": "Not required, but appreciated if you upload the receipt for better organization.",
+    "dataProtection": "Data Protection",
+    "fields": {
+      "name": "Full name",
+      "dni": "DNI/NIE",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "number": "Number",
+      "floor": "Floor",
+      "postalCode": "Postal code",
+      "city": "City",
+      "province": "Province",
+      "studentName": "Student's first name",
+      "studentSurname": "Student's surname",
+      "catsalut": "CATSALUT Number",
+      "grade": "Grade"
+    },
+    "grades": {
+      "I3": "I3",
+      "I4": "I4",
+      "I5": "I5",
+      "1": "1st",
+      "2": "2nd",
+      "3": "3rd",
+      "4": "4th",
+      "5": "5th",
+      "6": "6th"
+    },
+    "addStudent": "Add student",
+    "removeStudent": "Remove student",
+    "dataProtectionText": "Personal data protection:\n\nIn compliance with current laws and Regulation (EU) 2016/679 of the European Parliament and Council of April 27, 2016 on the protection of individuals with regard to the processing of personal data and free movement of such data, we inform you that the personal data provided in this form will be incorporated into a physical and automated file \"AFA Members\" for which AFA Bernat Desclot School is responsible, whose purpose is the management of member registration, communication and management of activities promoted by AFA.\n\nThe data provided will be kept for the years necessary to comply with legal obligations. Data will not be provided to third parties except in the case of a legal obligation.\n\nYou have the right to obtain confirmation about how AFA Bernat Desclot School is processing your personal data, therefore you have the right to access them, rectify them or request their deletion when they are no longer necessary. Interested parties may exercise their rights by sending a written and signed request with name, surname and ID, with precise instructions for this purpose to the postal address indicated above or to the email afaescolabernatdesclot@gmail.com.\n\nAll information related to data protection is included in the registration and reservation forms provided by AFA to members, thus facilitating the express consent of the user so that AFA Bernat Desclot can carry out the purposes of the file.\n\nAuthorization regarding the use of Images:\n\nGiven that the right to one's own image is recognized in article 18.1 of the Constitution and collected by Organic Law 1/1982, of May 5, on the right to honor, personal and family privacy and one's own image, AFA requests consent from mothers, fathers or legal guardians to edit and publish photographs where their children appear clearly identifiable, in physical or digital materials and spaces owned by AFA.\n\nAny information, idea or material, of any kind, sent to AFA Bernat Desclot by the user will be considered public and not confidential, and may be used freely by AFA Bernat Desclot.",
+    "acceptDataProtection": "I have read and accept the data protection and image use policy",
+    "submit": "Submit registration",
+    "submitting": "Submitting...",
+    "success": "Registration sent successfully!",
+    "error": "Error sending registration. Please try again.",
+    "validationError": "There are required fields missing or with errors. Please review the form.",
+    "required": "This field is required",
+    "invalidEmail": "Invalid email",
+    "invalidPhone": "Invalid phone (9 digits)",
+    "invalidDni": "Invalid DNI/NIE (ex: 12345678A or X1234567A)",
+    "invalidCatsalut": "Invalid CATSALUT number (format: AAAA1234567890)",
+    "mustAcceptData": "You must accept the data protection policy to continue"
   }
 }

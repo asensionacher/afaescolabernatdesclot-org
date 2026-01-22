@@ -80,7 +80,8 @@
     "morning": "Matins de dilluns a divendres: 9-10h",
     "afternoon": "Tardes dilluns i dijous: 16.45-18h",
     "signUp": "Apunta't!",
-    "download": "Descarregar PDF"
+    "download": "Descarregar PDF",
+    "onlineForm": "📱 Formulari online"
   },
   "blog": {
     "title": "Blog i Notícies",
@@ -150,5 +151,63 @@
     "analyticsText": "Utilitzem Google Analytics per entendre com els usuaris interactuen amb el nostre lloc web. Aquestes dades ens ajuden a millorar l'experiència de l'usuari.",
     "manage": "Com gestionar les cookies",
     "manageText": "Pots gestionar les teves preferències de cookies en qualsevol moment fent clic al botó de configuració de cookies al peu de pàgina."
+  },
+  "registration": {
+    "title": "Formulari d'inscripció a l'AFA",
+    "subtitle": "Omple el següent formulari per donar-te d'alta a l'AFA Bernat Desclot",
+    "guardian1": "Pare/Mare/Tutor Legal 1",
+    "guardian2": "Pare/Mare/Tutor Legal 2 (Opcional)",
+    "homeAddress": "Adreça de casa dels alumnes",
+    "students": "Alumnes",
+    "paymentInfo": "Informació de pagament",
+    "paymentInfoText": "Per ser família sòcia de l'AFA durant el curs escolar 2025-2026 cal fer el pagament de 30 euros via transferència al compte de l'AFA BERNAT DESCLOT:",
+    "bankAccount": "ES80 0182 3366 6102 0035 5360",
+    "paymentConcept": "El concepte de l'ingrés/transferència ha de ser:",
+    "paymentConceptFormat": "QUOTA AFA 2025-2026 + COGNOMS DE LA FAMÍLIA + CURS/OS INFANT/S",
+    "uploadReceipt": "Pujar justificant de pagament (opcional)",
+    "uploadReceiptHelp": "No és obligatori, però s'agraeix si puges el justificant per a una millor organització.",
+    "dataProtection": "Protecció de dades",
+    "fields": {
+      "name": "Nom i cognoms",
+      "dni": "DNI/NIE",
+      "email": "Correu electrònic",
+      "phone": "Telèfon",
+      "address": "Adreça",
+      "number": "Número",
+      "floor": "Pis",
+      "postalCode": "Codi postal",
+      "city": "Municipi",
+      "province": "Província",
+      "studentName": "Nom de l'alumne",
+      "studentSurname": "Cognoms de l'alumne",
+      "catsalut": "Número CATSALUT",
+      "grade": "Curs"
+    },
+    "grades": {
+      "I3": "I3",
+      "I4": "I4",
+      "I5": "I5",
+      "1": "1r",
+      "2": "2n",
+      "3": "3r",
+      "4": "4t",
+      "5": "5è",
+      "6": "6è"
+    },
+    "addStudent": "Afegir alumne",
+    "removeStudent": "Eliminar alumne",
+    "dataProtectionText": "Protecció de dades de caràcter personal:\n\nEn compliment de les lleis vigents al nostre país i el Reglament (UE) 2016/679 del Parlament Europeu i del Consell de 27 d'abril de 2016 relatiu a la protecció de les persones físiques en el que respecta al tractament de dades personals i a la lliure circulació d'aquestes dades, l'informem que les dades personals facilitades en aquest formulari s'incorporaran a un arxiu físic i a un fitxer automatitzat \"Associats AFA\" del qual és responsable l'AFA Escola Bernat Desclot, la finalitat dels quals és la gestió del registre d'associats, la comunicació i la gestió de les activitats promogudes per l'AFA.\n\nLes dades facilitades es conservaran durant els anys necessaris per a complir amb les obligacions legals. Les dades no seran facilitades a tercers a excepció de la existència d'una obligació legal.\n\nVostè te dret a obtenir la confirmació sobre com l'AFA de l'Escola Bernat Desclot estem tractant les seves dades personals, per tant té dret a accedir a elles, rectificar-les o sol·licitar la seva eliminació quan ja no siguin necessàries. Els interessats podran exercir els seus drets enviant una sol·licitud escrita i signada amb el nom, cognoms i DNI, amb les instruccions precises per a aquest efecte a l'adreça postal abans indicada o al correu electrònic afaescolabernatdesclot@gmail.com.\n\nTota la informació relacionada amb la protecció de dades està inclosa en els formularis d'inscripció i reserva proporcionats per l'AFA als socis facilitant així el consentiment exprés de l'usuari per tal que AFA Bernat Desclot pugi dur a terme les finalitats del fitxer.\n\nAutorització relativa a l'ús de la Imatge:\n\nDonat que el dret a la pròpia imatge és reconegut en l'article 18.1 de la Constitució I recollit per la Llei orgànica 1/1982, de 5 de maig, sobre el dret a l'honor, a la intimitat personal i familiar i a la pròpia imatge, l'AFA demana el consentiment a les mares, als pares o els tutors legals per editar i publicar fotografies on apareguin els seus fills/es on siguin clarament identificables, en materials ja siguin físics o digitals i espais propis de l'AFA.\n\nQualsevol informació, idea o material, de qualsevol tipus, que sigui remès a AFA Bernat Desclot per l'usuari serà considerat públic i no confidencial, i podrà ser utilitzat lliurement per AFA Bernat Desclot.",
+    "acceptDataProtection": "He llegit i accepto la política de protecció de dades i ús d'imatge",
+    "submit": "Enviar inscripció",
+    "submitting": "Enviant...",
+    "success": "Inscripció enviada correctament!",
+    "error": "Error en enviar la inscripció. Si us plau, torna-ho a intentar.",
+    "validationError": "Hi ha camps obligatoris sense emplenar o amb errors. Si us plau, revisa el formulari.",
+    "required": "Aquest camp és obligatori",
+    "invalidEmail": "Correu electrònic no vàlid",
+    "invalidPhone": "Telèfon no vàlid (9 dígits)",
+    "invalidDni": "DNI/NIE no vàlid (ex: 12345678A o X1234567A)",
+    "invalidCatsalut": "Número CATSALUT no vàlid (format: AAAA1234567890)",
+    "mustAcceptData": "Has d'acceptar la política de protecció de dades per continuar"
   }
 }
