@@ -2,24 +2,25 @@
    Variables i Colors
    ============================================ */
 :root {
-    --color-primary: #FF6B9D;
-    --color-secondary: #C44569;
-    --color-accent: #FFA502;
+    /* Colores principales de la escuela */
+    --color-primary: #003B5C;        /* Azul marino oscuro */
+    --color-secondary: #005A87;      /* Azul marino medio */
+    --color-accent: #FFD54F;         /* Amarillo suave/dorado */
     --color-success: #26DE81;
     --color-info: #45AAF2;
-    --color-warning: #FD79A8;
+    --color-warning: #FFB74D;        /* Amarillo/naranja advertencia */
     
-    --color-bg: #FFF5F7;
+    --color-bg: #FFF9E6;             /* Fondo amarillo muy suave */
     --color-bg-alt: #FFFFFF;
-    --color-text: #2C3A47;
-    --color-text-light: #778CA3;
+    --color-text: #1A1A2E;           /* Texto oscuro para legibilidad */
+    --color-text-light: #5A6B7D;     /* Texto secundario */
     
     --font-primary: 'Baloo 2', cursive;
     --font-secondary: 'Nunito', sans-serif;
     
-    --shadow-sm: 0 2px 10px rgba(255, 107, 157, 0.1);
-    --shadow-md: 0 4px 20px rgba(255, 107, 157, 0.15);
-    --shadow-lg: 0 8px 30px rgba(255, 107, 157, 0.2);
+    --shadow-sm: 0 2px 10px rgba(0, 59, 92, 0.1);
+    --shadow-md: 0 4px 20px rgba(0, 59, 92, 0.15);
+    --shadow-lg: 0 8px 30px rgba(0, 59, 92, 0.2);
     
     --radius: 20px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
