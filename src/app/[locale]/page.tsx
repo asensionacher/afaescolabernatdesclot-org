@@ -318,12 +318,13 @@ export default async function HomePage({
                   >
                     {tSchedule('download')}
                   </a>
-                  <Link 
+                  {/* Online form link hidden - URL still accessible for those who know it */}
+                  {/* <Link 
                     href="/inscripcion"
                     className={styles.onlineFormLink}
                   >
                     {tSchedule('onlineForm')}
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
             </div>
