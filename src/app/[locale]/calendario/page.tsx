@@ -33,13 +33,13 @@ export default async function CalendarPage({ params }: { params: Promise<{ local
   return (
     <>
       <Navigation locale={locale} />
-      <main style={{ padding: '2rem 0', background: 'var(--color-background)', minHeight: 'calc(100vh - 80px - 200px)' }}>
+      <main style={{ padding: '2rem 0', background: 'var(--color-bg)', minHeight: 'calc(100vh - 80px - 200px)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1rem' }}>
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <h1 style={{ fontSize: '2.5rem', fontWeight: '700', color: 'var(--color-text)', marginBottom: '1rem' }}>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--color-primary)', marginBottom: '1rem', fontFamily: 'var(--font-primary)' }}>
               {tPage('title')}
             </h1>
-            <p style={{ fontSize: '1.125rem', color: 'var(--color-text-light)', maxWidth: '600px', margin: '0 auto' }}>
+            <p style={{ fontSize: '1.2rem', color: 'var(--color-text-light)', maxWidth: '600px', margin: '0 auto', lineHeight: '1.8' }}>
               {tPage('description')}
             </p>
           </div>
