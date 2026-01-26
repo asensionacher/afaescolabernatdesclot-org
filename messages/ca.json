@@ -1,10 +1,9 @@
 {
   "nav": {
-    "home": "Inici",
-    "about": "Qui Som",
-    "events": "Esdeveniments",
+    "about": "Qui som",
     "services": "Serveis",
-    "blog": "Blog i Notícies",
+    "calendar": "Calendari",
+    "events": "Esdeveniments",
     "contact": "Contacte"
   },
   "home": {
@@ -90,12 +89,49 @@
     "schoolBlog": "Blog de l'escola",
     "upcomingEvents": "Propers Esdeveniments"
   },
+  "calendar": {
+    "previousMonth": "Mes anterior",
+    "nextMonth": "Mes següent",
+    "noEvents": "No hi ha esdeveniments aquest mes",
+    "pastEvent": "Esdeveniment passat",
+    "event": "esdeveniment",
+    "events": "esdeveniments",
+    "subscribeCalendar": "Subscriu-te al calendari",
+    "viewFullCalendar": "Veure calendari complet",
+    "months": [
+      "Gener",
+      "Febrer",
+      "Març",
+      "Abril",
+      "Maig",
+      "Juny",
+      "Juliol",
+      "Agost",
+      "Setembre",
+      "Octubre",
+      "Novembre",
+      "Desembre"
+    ],
+    "weekDays": [
+      "Dl",
+      "Dt",
+      "Dc",
+      "Dj",
+      "Dv",
+      "Ds",
+      "Dg"
+    ]
+  },
+  "calendarPage": {
+    "title": "Calendari d'Esdeveniments",
+    "description": "Consulta tots els esdeveniments de l'AFA i subscriu-te per rebre actualitzacions automàtiques"
+  },
   "contact": {
     "title": "Contacta amb Nosaltres",
     "info": "T'agradaria col·laborar amb l'AFA? Tens idees per a noves activitats? Escriu-nos! Sempre estem contents de rebre suggeriments i noves famílies. 💌",
     "email": "Email",
     "atSchool": "A l'Escola",
-    "atSchoolText": "Pregunta al despatx per l'AFA!"
+    "atSchoolText": "Pregunta al despatx de la Lola!"
   },
   "footer": {
     "rights": "Tots els drets reservats",

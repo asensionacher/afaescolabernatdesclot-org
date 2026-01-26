@@ -1,8 +1,9 @@
 import { getTranslations } from 'next-intl/server';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import UpcomingEvents from '@/components/UpcomingEvents';
 import { Link } from '@/i18n/routing';
-import { getUpcomingEvents, getRecentPosts } from '@/lib/sanity';
+import { getAllEvents, getRecentPosts } from '@/lib/sanity';
 import styles from './page.module.css';
 import type { Metadata } from 'next';
 
@@ -70,37 +71,17 @@ export default async function HomePage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const currentLocale = locale as Locale;
   const t = await getTranslations('home');
   const tAbout = await getTranslations('about');
   const tServices = await getTranslations('services');
   const tBlog = await getTranslations('blog');
   const tContact = await getTranslations('contact');
   const tSchedule = await getTranslations('schedule');
+  const tCalendar = await getTranslations('calendar');
   
   // Fetch events and blog posts from Sanity
-  const events = await getUpcomingEvents(3);
+  const events = await getAllEvents();
   const posts = await getRecentPosts(3);
-
-  // Format date for event badges
-  const formatEventDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const day = date.getDate();
-    
-    // Map locale codes to valid BCP 47 language tags
-    const localeMap: { [key: string]: string } = {
-      'ca': 'ca-ES',
-      'es': 'es-ES',
-      'en': 'en-US',
-      'ar': 'ar-SA',
-      'ur': 'ur-PK'
-    };
-    
-    const validLocale = localeMap[currentLocale] || 'ca-ES';
-    const month = date.toLocaleDateString(validLocale, { month: 'short' });
-    const time = date.toLocaleTimeString(validLocale, { hour: '2-digit', minute: '2-digit', hour12: false });
-    return { day, month, time };
-  };
 
   return (
     <>
@@ -241,45 +222,14 @@ export default async function HomePage({
         <section id="esdeveniments" className={styles.sectionAlt}>
           <div className={styles.container}>
             <h2>📅 {tBlog('upcomingEvents')}</h2>
-            {events.length > 0 ? (
-              <div className={styles.eventsGrid}>
-                {events.map((event) => {
-                  const { day, month, time } = formatEventDate(event.eventDate);
-                  const eventCard = (
-                    <div key={event._id} className={`${styles.eventCard} ${event.externalUrl ? styles.eventCardClickable : ''}`}>
-                      <div className={styles.eventDate}>
-                        <div className={styles.eventMonth}>{month}</div>
-                        <div className={styles.eventDay}>{day}</div>
-                        <div className={styles.eventTime}>{time}</div>
-                      </div>
-                      <div className={styles.eventContent}>
-                        <h3>{event.title[currentLocale]}</h3>
-                        <p>{event.excerpt?.[currentLocale]}</p>
-                      </div>
-                    </div>
-                  );
-                  
-                  // If event has external URL, wrap in anchor tag
-                  if (event.externalUrl) {
-                    return (
-                      <a 
-                        key={event._id}
-                        href={event.externalUrl} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className={styles.eventLink}
-                      >
-                        {eventCard}
-                      </a>
-                    );
-                  }
-                  
-                  return eventCard;
-                })}
-              </div>
-            ) : (
-              <p className={styles.noContent}>{tBlog('noEvents')}</p>
-            )}
+            <UpcomingEvents 
+              events={events}
+              locale={locale}
+              translations={{
+                viewFullCalendar: tCalendar('viewFullCalendar'),
+                noEvents: tCalendar('noEvents'),
+              }}
+            />
           </div>
         </section>
 

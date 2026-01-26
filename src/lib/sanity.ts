@@ -91,7 +91,7 @@ export async function getUpcomingEvents(limit = 10): Promise<Event[]> {
 
 // Fetch all events
 export async function getAllEvents(): Promise<Event[]> {
-  const query = `*[_type == "event"] | order(eventDate desc) {
+  const query = `*[_type == "event"] | order(eventDate asc) {
     _id,
     _type,
     title,

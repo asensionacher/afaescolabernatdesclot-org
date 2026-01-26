@@ -1,10 +1,9 @@
 {
   "nav": {
-    "home": "Home",
-    "about": "About Us",
-    "events": "Events",
+    "about": "About us",
     "services": "Services",
-    "blog": "News and Blog",
+    "calendar": "Calendar",
+    "events": "Events",
     "contact": "Contact"
   },
   "home": {
@@ -90,12 +89,49 @@
     "schoolBlog": "School blog",
     "upcomingEvents": "Upcoming Events"
   },
+  "calendar": {
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month",
+    "noEvents": "No events this month",
+    "pastEvent": "Past event",
+    "event": "event",
+    "events": "events",
+    "subscribeCalendar": "Subscribe to calendar",
+    "viewFullCalendar": "View full calendar",
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ],
+    "weekDays": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat",
+      "Sun"
+    ]
+  },
+  "calendarPage": {
+    "title": "Events Calendar",
+    "description": "View all AFA events and subscribe to receive automatic updates"
+  },
   "contact": {
     "title": "Contact Us",
     "info": "Would you like to collaborate with AFA? Do you have ideas for new activities? Write to us! We're always happy to receive suggestions and welcome new families. 💌",
     "email": "Email",
     "atSchool": "At School",
-    "atSchoolText": "Ask at the office for AFA!"
+    "atSchoolText": "Ask at Lola's office!"
   },
   "footer": {
     "rights": "All rights reserved",

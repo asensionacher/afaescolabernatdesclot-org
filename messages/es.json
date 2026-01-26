@@ -1,10 +1,9 @@
 {
   "nav": {
-    "home": "Inicio",
-    "about": "Quiénes Somos",
-    "events": "Eventos",
+    "about": "Quiénes somos",
     "services": "Servicios",
-    "blog": "Noticias",
+    "calendar": "Calendario",
+    "events": "Eventos",
     "contact": "Contacto"
   },
   "home": {
@@ -90,12 +89,49 @@
     "schoolBlog": "Blog de la escuela",
     "upcomingEvents": "Próximos Eventos"
   },
+  "calendar": {
+    "previousMonth": "Mes anterior",
+    "nextMonth": "Mes siguiente",
+    "noEvents": "No hay eventos este mes",
+    "pastEvent": "Evento pasado",
+    "event": "evento",
+    "events": "eventos",
+    "subscribeCalendar": "Suscribirse al calendario",
+    "viewFullCalendar": "Ver calendario completo",
+    "months": [
+      "Enero",
+      "Febrero",
+      "Marzo",
+      "Abril",
+      "Mayo",
+      "Junio",
+      "Julio",
+      "Agosto",
+      "Septiembre",
+      "Octubre",
+      "Noviembre",
+      "Diciembre"
+    ],
+    "weekDays": [
+      "Lu",
+      "Ma",
+      "Mi",
+      "Ju",
+      "Vi",
+      "Sá",
+      "Do"
+    ]
+  },
+  "calendarPage": {
+    "title": "Calendario de Eventos",
+    "description": "Consulta todos los eventos de la AFA y suscríbete para recibir actualizaciones automáticas"
+  },
   "contact": {
     "title": "Contáctanos",
     "info": "¿Te gustaría colaborar con el AFA? ¿Tienes ideas para nuevas actividades? ¡Escríbenos! Siempre estamos contentos de recibir sugerencias y nuevas familias. 💌",
     "email": "Email",
     "atSchool": "En la Escuela",
-    "atSchoolText": "¡Pregunta en la oficina por el AFA!"
+    "atSchoolText": "¡Pregunta en el despacho de Lola!"
   },
   "footer": {
     "rights": "Todos los derechos reservados",
