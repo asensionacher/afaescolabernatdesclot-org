@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import styles from './page.module.css';
 import type { Metadata } from 'next';
+import YouTubeEmbed from '@/components/YouTubeEmbed';
 
 interface Post {
   _id: string;
@@ -130,6 +131,13 @@ export default async function PostPage({
     day: 'numeric',
   });
 
+  // Custom components for PortableText
+  const portableTextComponents = {
+    types: {
+      youtube: YouTubeEmbed,
+    },
+  };
+
   return (
     <>
       <Navigation locale={locale} />
@@ -155,7 +163,7 @@ export default async function PostPage({
             )}
 
             <div className={styles.content}>
-              <PortableText value={body} />
+              <PortableText value={body} components={portableTextComponents} />
             </div>
           </div>
         </article>

@@ -35,31 +35,46 @@ export const localeBlockContent = {
       name: 'ca',
       type: 'array',
       title: 'Català',
-      of: [{ type: 'block' }],
+      of: [
+        { type: 'block' },
+        { type: 'youtube' },
+      ],
     },
     {
       name: 'es',
       type: 'array',
       title: 'Español',
-      of: [{ type: 'block' }],
+      of: [
+        { type: 'block' },
+        { type: 'youtube' },
+      ],
     },
     {
       name: 'en',
       type: 'array',
       title: 'English',
-      of: [{ type: 'block' }],
+      of: [
+        { type: 'block' },
+        { type: 'youtube' },
+      ],
     },
     {
       name: 'ar',
       type: 'array',
       title: 'العربية',
-      of: [{ type: 'block' }],
+      of: [
+        { type: 'block' },
+        { type: 'youtube' },
+      ],
     },
     {
       name: 'ur',
       type: 'array',
       title: 'اردو',
-      of: [{ type: 'block' }],
+      of: [
+        { type: 'block' },
+        { type: 'youtube' },
+      ],
     },
   ],
 }
