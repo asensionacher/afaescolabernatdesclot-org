@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import SignatureModal from './SignatureModal';
 import styles from './RegistrationForm.module.css';
@@ -68,6 +68,32 @@ export default function RegistrationForm({ locale }: { locale: string }) {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Generate dynamic payment concept
+  const paymentConcept = useMemo(() => {
+    // Get first student's surname(s) - could be one or two surnames
+    const firstStudent = formData.students[0];
+    const studentSurnames = firstStudent?.surname.trim() || '';
+    
+    // Get all students' grades
+    const grades = formData.students
+      .map(s => s.grade.trim())
+      .filter(g => g !== '')
+      .join(' ');
+    
+    // Check if we have enough data for a dynamic concept
+    // We need at least the student surname(s) and at least one grade
+    const hasEnoughData = studentSurnames && grades;
+    
+    if (hasEnoughData) {
+      // Format: QUOTA AFA 2025-2026 SURNAME1 SURNAME2 GRADE1 GRADE2 ...
+      // The surname field can contain one or two surnames
+      return `QUOTA AFA 2025-2026 ${studentSurnames} ${grades}`;
+    }
+    
+    // Return null to show default example
+    return null;
+  }, [formData.students]);
 
   const addStudent = () => {
     setFormData({
@@ -788,7 +814,13 @@ export default function RegistrationForm({ locale }: { locale: string }) {
           <p className={styles.bankAccount}>{t('bankAccount')}</p>
           <p className={styles.paymentText}>{t('paymentConcept')}</p>
           <p className={styles.conceptFormat}>{t('paymentConceptFormat')}</p>
-          <p className={styles.conceptExample}>{t('paymentConceptExample')}</p>
+          {paymentConcept ? (
+            <p className={styles.conceptDynamic}>
+              <strong>{paymentConcept}</strong>
+            </p>
+          ) : (
+            <p className={styles.conceptExample}>{t('paymentConceptExample')}</p>
+          )}
         </div>
 
         <div className={styles.formGroup}>
