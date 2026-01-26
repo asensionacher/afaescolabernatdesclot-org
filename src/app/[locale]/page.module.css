@@ -515,22 +515,42 @@
 
 .signUpCard h3 {
   color: var(--color-secondary);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   font-size: 1.5rem;
 }
 
+/* Button group for side-by-side layout */
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+@media (min-width: 480px) {
+  .buttonGroup {
+    flex-direction: row;
+    gap: 1rem;
+  }
+}
+
 .signUpButton {
-  display: inline-block;
-  padding: 0.75rem 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 0.75rem 1.5rem;
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   color: white !important;
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1rem;
   border-radius: var(--radius);
   text-decoration: none !important;
   transition: var(--transition);
   box-shadow: var(--shadow-sm);
-  margin-top: 0.5rem;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .signUpButton:hover {
@@ -541,22 +561,29 @@
 }
 
 .onlineFormLink {
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 0.5rem 1.5rem;
-  background: var(--color-accent);
-  color: white !important;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  background: white;
+  color: var(--color-primary) !important;
+  font-weight: 700;
   font-size: 1rem;
+  border: 2px solid var(--color-primary);
   border-radius: var(--radius);
   text-decoration: none !important;
   transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  white-space: nowrap;
 }
 
 .onlineFormLink:hover {
-  background: #e67e22;
-  transform: translateY(-2px);
+  background: var(--color-primary);
   color: white !important;
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
   text-decoration: none !important;
 }
 

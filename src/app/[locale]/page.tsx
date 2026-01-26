@@ -261,19 +261,21 @@ export default async function HomePage({
                 <div className={styles.signUpCard}>
                   <div className={styles.signUpIcon}>📝</div>
                   <h3>{tSchedule('signUp')}</h3>
-                  <a 
-                    href="/documents/formulario-inscripcion.pdf" 
-                    download
-                    className={styles.signUpButton}
-                  >
-                    {tSchedule('download')}
-                  </a>
-                  <Link 
-                    href="/inscripcion"
-                    className={styles.onlineFormLink}
-                  >
-                    {tSchedule('onlineForm')}
-                  </Link>
+                  <div className={styles.buttonGroup}>
+                    <a 
+                      href="/documents/formulario-inscripcion.pdf" 
+                      download
+                      className={styles.signUpButton}
+                    >
+                      {tSchedule('download')}
+                    </a>
+                    <Link 
+                      href="/inscripcion"
+                      className={styles.onlineFormLink}
+                    >
+                      {tSchedule('onlineForm')}
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
