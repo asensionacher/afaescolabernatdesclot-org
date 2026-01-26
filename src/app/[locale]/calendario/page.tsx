@@ -57,6 +57,13 @@ export default async function CalendarPage({ params }: { params: Promise<{ local
               subscribeCalendar: tCalendar('subscribeCalendar'),
               months: tCalendar.raw('months') as string[],
               weekDays: tCalendar.raw('weekDays') as string[],
+              subscribeModal: tCalendar.raw('subscribeModal') as {
+                title: string;
+                description: string;
+                copyUrl: string;
+                urlCopied: string;
+                close: string;
+              },
             }}
           />
         </div>

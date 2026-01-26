@@ -98,6 +98,13 @@
     "events": "eventos",
     "subscribeCalendar": "Suscribirse al calendario",
     "viewFullCalendar": "Ver calendario completo",
+    "subscribeModal": {
+      "title": "Suscribirse al Calendario",
+      "description": "Copia esta URL e impórtala en tu aplicación de calendario para recibir actualizaciones automáticas de los eventos.",
+      "copyUrl": "Copiar URL",
+      "urlCopied": "URL copiada!",
+      "close": "Cerrar"
+    },
     "months": [
       "Enero",
       "Febrero",

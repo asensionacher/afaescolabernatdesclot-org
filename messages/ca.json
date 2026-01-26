@@ -98,6 +98,13 @@
     "events": "esdeveniments",
     "subscribeCalendar": "Subscriu-te al calendari",
     "viewFullCalendar": "Veure calendari complet",
+    "subscribeModal": {
+      "title": "Subscriu-te al Calendari",
+      "description": "Copia aquesta URL i importa-la a la teva aplicació de calendari per rebre actualitzacions automàtiques dels esdeveniments.",
+      "copyUrl": "Copiar URL",
+      "urlCopied": "URL copiada!",
+      "close": "Tancar"
+    },
     "months": [
       "Gener",
       "Febrer",

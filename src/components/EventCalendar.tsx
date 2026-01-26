@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { Event } from '@/lib/sanity';
+import SubscribeModal from './SubscribeModal';
 import styles from './EventCalendar.module.css';
 
 type Locale = 'ca' | 'es' | 'en' | 'ar' | 'ur';
@@ -19,12 +20,20 @@ interface EventCalendarProps {
     subscribeCalendar: string;
     months: string[];
     weekDays: string[];
+    subscribeModal: {
+      title: string;
+      description: string;
+      copyUrl: string;
+      urlCopied: string;
+      close: string;
+    };
   };
 }
 
 export default function EventCalendar({ events, locale, translations }: EventCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const calendarRef = useRef<HTMLDivElement>(null);
   const currentLocale = locale as Locale;
 
@@ -131,18 +140,21 @@ export default function EventCalendar({ events, locale, translations }: EventCal
     return date.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', hour12: false });
   };
 
+  // Generate calendar URL
+  const calendarUrl = `webcal://${typeof window !== 'undefined' ? window.location.host : 'afaescolabernatdesclot.org'}/api/calendar.ics?locale=${currentLocale}`;
+
   return (
-    <div ref={calendarRef} className={styles.calendarWrapper}>
-      {/* Subscribe to Calendar button - moved to top */}
-      <div className={styles.subscribeSection}>
-        <a 
-          href={`webcal://${typeof window !== 'undefined' ? window.location.host : 'afaescolabernatdesclot.org'}/api/calendar.ics?locale=${currentLocale}`}
-          className={styles.subscribeButton}
-          title={translations.subscribeCalendar}
-        >
-          📅 {translations.subscribeCalendar}
-        </a>
-      </div>
+    <>
+      <div ref={calendarRef} className={styles.calendarWrapper}>
+        {/* Subscribe to Calendar button - moved to top */}
+        <div className={styles.subscribeSection}>
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            className={styles.subscribeButton}
+          >
+            📅 {translations.subscribeCalendar}
+          </button>
+        </div>
 
       {/* Calendar header with month/year navigation */}
       <div className={styles.calendarHeader}>
@@ -277,5 +289,14 @@ export default function EventCalendar({ events, locale, translations }: EventCal
         )}
       </div>
     </div>
+
+    <SubscribeModal
+      isOpen={isModalOpen}
+      onClose={() => setIsModalOpen(false)}
+      calendarUrl={calendarUrl}
+      locale={locale}
+      translations={translations.subscribeModal}
+    />
+  </>
   );
 }

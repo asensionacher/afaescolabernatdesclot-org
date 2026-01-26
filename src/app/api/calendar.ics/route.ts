@@ -126,8 +126,9 @@ export async function GET(request: NextRequest) {
         eventLines.push(`URL:${event.externalUrl}`);
       }
 
-      // Add location if you have it in your schema
-      eventLines.push('LOCATION:Escola Bernat Desclot\\, Barcelona');
+      // Add location with full address and GPS coordinates
+      eventLines.push('LOCATION:CEIP Bernat Desclot\\, Carrer de l\'Aprestadora\\, 35\\, 08902 L\'Hospitalet de Llobregat\\, Barcelona');
+      eventLines.push('GEO:41.3633139;2.1283367');
       
       // Set status and transparency
       eventLines.push('STATUS:CONFIRMED');
