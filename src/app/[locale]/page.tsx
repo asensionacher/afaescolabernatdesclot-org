@@ -228,6 +228,7 @@ export default async function HomePage({
               translations={{
                 viewFullCalendar: tCalendar('viewFullCalendar'),
                 noEvents: tCalendar('noEvents'),
+                allDay: tCalendar('allDay'),
               }}
             />
           </div>

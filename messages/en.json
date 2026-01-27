@@ -96,6 +96,7 @@
     "pastEvent": "Past event",
     "event": "event",
     "events": "events",
+    "allDay": "All day",
     "subscribeCalendar": "Subscribe to calendar",
     "viewFullCalendar": "View full calendar",
     "subscribeModal": {

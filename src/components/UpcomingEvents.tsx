@@ -12,6 +12,7 @@ interface UpcomingEventsProps {
   translations: {
     viewFullCalendar: string;
     noEvents: string;
+    allDay: string;
   };
 }
 
@@ -51,7 +52,7 @@ export default function UpcomingEvents({ events, locale, translations }: Upcomin
     
     // Same date = all-day event
     if (startDateStr === endDateStr) {
-      return null; // All-day event, don't show time
+      return translations.allDay; // All-day event
     }
     
     // Multi-day event: show start date/time - end date/time
@@ -88,7 +89,7 @@ export default function UpcomingEvents({ events, locale, translations }: Upcomin
               </div>
               <div className={styles.eventInfo}>
                 <h3 className={styles.eventTitle}>{title}</h3>
-                {timeRange && <p className={styles.eventTime}>{timeRange}</p>}
+                <p className={styles.eventTime}>{timeRange}</p>
                 {excerpt && <p className={styles.eventExcerpt}>{excerpt}</p>}
               </div>
             </div>

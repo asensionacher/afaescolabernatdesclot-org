@@ -298,6 +298,14 @@
   line-height: 1;
 }
 
+.eventMonth {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+  letter-spacing: 0.5px;
+}
+
 .eventInfo {
   flex: 1;
   display: flex;

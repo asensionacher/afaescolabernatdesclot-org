@@ -96,6 +96,7 @@
     "pastEvent": "حدث سابق",
     "event": "حدث",
     "events": "أحداث",
+    "allDay": "طوال اليوم",
     "subscribeCalendar": "الاشتراك في التقويم",
     "viewFullCalendar": "عرض التقويم الكامل",
     "subscribeModal": {

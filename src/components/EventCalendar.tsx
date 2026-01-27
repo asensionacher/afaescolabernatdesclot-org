@@ -17,6 +17,7 @@ interface EventCalendarProps {
     pastEvent: string;
     event: string;
     events: string;
+    allDay: string;
     subscribeCalendar: string;
     months: string[];
     weekDays: string[];
@@ -169,7 +170,7 @@ export default function EventCalendar({ events, locale, translations }: EventCal
     
     // Same date = all-day event
     if (startDateStr === endDateStr) {
-      return null; // All-day event, don't show time
+      return translations.allDay; // All-day event
     }
     
     // Multi-day event: show start date/time - end date/time
@@ -291,16 +292,15 @@ export default function EventCalendar({ events, locale, translations }: EventCal
                 >
                   <div className={styles.eventDate}>
                     <div className={styles.eventDay}>{day}</div>
+                    <div className={styles.eventMonth}>{translations.months[eventDate.getMonth()].substring(0, 3)}</div>
                   </div>
                   <div className={styles.eventInfo}>
                     <h5 className={styles.eventTitle}>
                       {event.title?.[currentLocale] || event.title?.ca || 'Sense títol'}
                     </h5>
-                    {timeRange && (
-                      <p className={styles.eventTime}>
-                        {timeRange}
-                      </p>
-                    )}
+                    <p className={styles.eventTime}>
+                      {timeRange}
+                    </p>
                     {event.excerpt?.[currentLocale] && (
                       <p className={styles.eventExcerpt}>
                         {event.excerpt[currentLocale]}
