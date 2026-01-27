@@ -95,28 +95,41 @@ export async function GET(request: NextRequest) {
 
     // Add each event
     for (const event of events) {
-      const eventDate = new Date(event.eventDate);
+      // Use startDate and endDate, fallback to eventDate if not available
+      const startDate = new Date(event.startDate || event.eventDate);
+      const endDate = new Date(event.endDate || event.eventDate);
       
       // Get title and description in the requested locale with fallback
       const title = event.title?.[locale] || event.title?.ca || event.title?.es || event.title?.en || 'Event';
       const description = event.excerpt?.[locale] || event.excerpt?.ca || event.excerpt?.es || event.excerpt?.en || '';
       
-      // Set event as all-day event (DATE format instead of DATE-TIME)
-      const dateStr = eventDate.toISOString().split('T')[0].replace(/-/g, '');
-      
-      // Calculate end date (next day for all-day events)
-      const endDate = new Date(eventDate);
-      endDate.setDate(endDate.getDate() + 1);
-      const endDateStr = endDate.toISOString().split('T')[0].replace(/-/g, '');
+      // Check if start and end dates are the same (all-day event)
+      const startDateStr = startDate.toISOString().split('T')[0];
+      const endDateStr = endDate.toISOString().split('T')[0];
+      const isAllDayEvent = startDateStr === endDateStr;
 
       const eventLines = [
         'BEGIN:VEVENT',
         `UID:${generateUID(event._id, domain)}`,
         `DTSTAMP:${timestamp}`,
-        `DTSTART;VALUE=DATE:${dateStr}`,
-        `DTEND;VALUE=DATE:${endDateStr}`,
-        `SUMMARY:${escapeICalText(title)}`,
       ];
+
+      if (isAllDayEvent) {
+        // All-day event: use DATE format
+        const dateFormatted = startDateStr.replace(/-/g, '');
+        const nextDay = new Date(startDate);
+        nextDay.setDate(nextDay.getDate() + 1);
+        const nextDayFormatted = nextDay.toISOString().split('T')[0].replace(/-/g, '');
+        
+        eventLines.push(`DTSTART;VALUE=DATE:${dateFormatted}`);
+        eventLines.push(`DTEND;VALUE=DATE:${nextDayFormatted}`);
+      } else {
+        // Timed event: use DATE-TIME format
+        eventLines.push(`DTSTART:${formatICalDate(startDate)}`);
+        eventLines.push(`DTEND:${formatICalDate(endDate)}`);
+      }
+
+      eventLines.push(`SUMMARY:${escapeICalText(title)}`);
 
       if (description) {
         eventLines.push(`DESCRIPTION:${escapeICalText(description)}`);

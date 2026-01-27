@@ -21,6 +21,8 @@ export interface Event {
     current: string
   }
   eventDate: string
+  startDate: string
+  endDate: string
   publishedAt?: string
   excerpt?: {
     ca: string
@@ -80,6 +82,8 @@ export async function getUpcomingEvents(limit = 10): Promise<Event[]> {
     title,
     slug,
     eventDate,
+    startDate,
+    endDate,
     publishedAt,
     excerpt,
     externalUrl,
@@ -97,6 +101,8 @@ export async function getAllEvents(): Promise<Event[]> {
     title,
     slug,
     eventDate,
+    startDate,
+    endDate,
     publishedAt,
     excerpt,
     externalUrl,

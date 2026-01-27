@@ -116,6 +116,26 @@ export default defineType({
       description: 'Fecha y hora en que tendrá lugar el evento',
     }),
     defineField({
+      name: 'startDate',
+      title: 'Fecha de inicio',
+      type: 'datetime',
+      description: 'Fecha y hora de inicio del evento',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'endDate',
+      title: 'Fecha de fin',
+      type: 'datetime',
+      description: 'Fecha y hora de finalización del evento. Si es igual a la fecha de inicio, se mostrará como evento de todo el día.',
+      validation: (Rule) => Rule.required().custom((endDate, context) => {
+        const startDate = (context.document as any)?.startDate;
+        if (endDate && startDate && new Date(endDate) < new Date(startDate)) {
+          return 'La fecha de fin debe ser igual o posterior a la fecha de inicio';
+        }
+        return true;
+      }),
+    }),
+    defineField({
       name: 'publishedAt',
       title: 'Published at',
       type: 'datetime',
