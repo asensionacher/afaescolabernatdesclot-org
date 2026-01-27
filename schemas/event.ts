@@ -109,13 +109,6 @@ export default defineType({
       },
     }),
     defineField({
-      name: 'eventDate',
-      title: 'Fecha del evento',
-      type: 'datetime',
-      validation: (Rule) => Rule.required(),
-      description: 'Fecha y hora en que tendrá lugar el evento',
-    }),
-    defineField({
       name: 'startDate',
       title: 'Fecha de inicio',
       type: 'datetime',
@@ -165,7 +158,7 @@ export default defineType({
     select: {
       title: 'title.ca',
       media: 'mainImage',
-      date: 'eventDate',
+      date: 'startDate',
     },
     prepare(selection) {
       const { title, media, date } = selection

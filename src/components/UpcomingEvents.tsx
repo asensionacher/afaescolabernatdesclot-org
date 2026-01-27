@@ -19,9 +19,9 @@ export default function UpcomingEvents({ events, locale, translations }: Upcomin
   const currentLocale = locale as Locale;
   const now = new Date();
   
-  // Filter future events and take only 6
+  // Filter future or ongoing events (endDate >= now) and take only 6
   const upcomingEvents = events
-    .filter(event => new Date(event.eventDate) >= now)
+    .filter(event => new Date(event.endDate) >= now)
     .slice(0, 6);
 
   const formatDate = (dateString: string) => {
@@ -29,6 +29,35 @@ export default function UpcomingEvents({ events, locale, translations }: Upcomin
     const day = date.getDate();
     const month = date.toLocaleDateString(locale, { month: 'short' });
     return { day, month };
+  };
+
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', hour12: false });
+  };
+
+  const formatDateShort = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(locale, { day: 'numeric', month: 'short' });
+  };
+
+  const formatTimeRange = (startDate: string, endDate: string) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    
+    // Get date strings (YYYY-MM-DD)
+    const startDateStr = start.toISOString().split('T')[0];
+    const endDateStr = end.toISOString().split('T')[0];
+    
+    // Same date = all-day event
+    if (startDateStr === endDateStr) {
+      return null; // All-day event, don't show time
+    }
+    
+    // Multi-day event: show start date/time - end date/time
+    const startPart = `${formatDateShort(startDate)} ${formatTime(startDate)}`;
+    const endPart = `${formatDateShort(endDate)} ${formatTime(endDate)}`;
+    return `${startPart} - ${endPart}`;
   };
 
   if (upcomingEvents.length === 0) {
@@ -46,7 +75,8 @@ export default function UpcomingEvents({ events, locale, translations }: Upcomin
     <div className={styles.container}>
       <div className={styles.eventsGrid}>
         {upcomingEvents.map((event) => {
-          const { day, month } = formatDate(event.eventDate);
+          const { day, month } = formatDate(event.startDate);
+          const timeRange = formatTimeRange(event.startDate, event.endDate);
           const title = event.title?.[currentLocale] || event.title?.ca || 'Sense títol';
           const excerpt = event.excerpt?.[currentLocale] || event.excerpt?.ca || '';
 
@@ -58,6 +88,7 @@ export default function UpcomingEvents({ events, locale, translations }: Upcomin
               </div>
               <div className={styles.eventInfo}>
                 <h3 className={styles.eventTitle}>{title}</h3>
+                {timeRange && <p className={styles.eventTime}>{timeRange}</p>}
                 {excerpt && <p className={styles.eventExcerpt}>{excerpt}</p>}
               </div>
             </div>

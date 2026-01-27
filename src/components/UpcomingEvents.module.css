@@ -77,6 +77,13 @@
   line-height: 1.4;
 }
 
+.eventTime {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  margin: 0;
+}
+
 .eventExcerpt {
   font-size: 0.875rem;
   color: var(--color-text-light);

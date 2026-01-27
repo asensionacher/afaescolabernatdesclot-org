@@ -60,32 +60,44 @@ export default function EventCalendar({ events, locale, translations }: EventCal
     return new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
   }, [currentDate]);
 
-  // Filter events for current month (only future events)
+  // Filter events for current month (only future or ongoing events)
   const monthEvents = useMemo(() => {
     const now = new Date();
+    const firstOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const lastOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+
     return events.filter(event => {
-      const eventDate = new Date(event.eventDate);
-      const isCurrentMonth = eventDate.getMonth() === currentDate.getMonth() &&
-                             eventDate.getFullYear() === currentDate.getFullYear();
-      const isFuture = eventDate >= now;
-      return isCurrentMonth && isFuture;
+      const start = new Date(event.startDate);
+      const end = new Date(event.endDate);
+
+      // Event must not have finished yet
+      if (end < now) return false;
+
+      // Event intersects with current month: start <= lastOfMonth && end >= firstOfMonth
+      return start <= lastOfMonth && end >= firstOfMonth;
     });
   }, [events, currentDate]);
 
-  // Check if event is in the past
-  const isPastEvent = (eventDate: string) => {
-    const event = new Date(eventDate);
+  // Check if event is in the past (based on endDate)
+  const isPastEvent = (endDate: string) => {
+    const eventEnd = new Date(endDate);
     const now = new Date();
-    return event < now;
+    return eventEnd < now;
   };
 
-  // Get events for a specific day (all events, including past)
+  // Get events for a specific day (all events, including past and multi-day events)
   const getEventsForDay = (day: number) => {
+    const dateForDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+    dateForDay.setHours(0, 0, 0, 0);
+
     return events.filter(event => {
-      const eventDate = new Date(event.eventDate);
-      return eventDate.getDate() === day &&
-             eventDate.getMonth() === currentDate.getMonth() &&
-             eventDate.getFullYear() === currentDate.getFullYear();
+      const start = new Date(event.startDate);
+      const end = new Date(event.endDate);
+      start.setHours(0, 0, 0, 0);
+      end.setHours(0, 0, 0, 0);
+
+      // Event spans this day if: start <= dateForDay <= end
+      return start <= dateForDay && dateForDay <= end;
     });
   };
 
@@ -138,6 +150,32 @@ export default function EventCalendar({ events, locale, translations }: EventCal
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', hour12: false });
+  };
+
+  // Format date short (e.g., "15 ene")
+  const formatDateShort = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(locale, { day: 'numeric', month: 'short' });
+  };
+
+  // Format time range for events
+  const formatTimeRange = (startDate: string, endDate: string) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    
+    // Get date strings (YYYY-MM-DD)
+    const startDateStr = start.toISOString().split('T')[0];
+    const endDateStr = end.toISOString().split('T')[0];
+    
+    // Same date = all-day event
+    if (startDateStr === endDateStr) {
+      return null; // All-day event, don't show time
+    }
+    
+    // Multi-day event: show start date/time - end date/time
+    const startPart = `${formatDateShort(startDate)} ${formatTime(startDate)}`;
+    const endPart = `${formatDateShort(endDate)} ${formatTime(endDate)}`;
+    return `${startPart} - ${endPart}`;
   };
 
   // Generate calendar URL
@@ -196,8 +234,8 @@ export default function EventCalendar({ events, locale, translations }: EventCal
           const dayEvents = day ? getEventsForDay(day) : [];
           const hasEvents = dayEvents.length > 0;
           const isTodayDate = day ? isToday(day) : false;
-          const hasPastEvents = dayEvents.some(e => isPastEvent(e.eventDate));
-          const allPast = dayEvents.length > 0 && dayEvents.every(e => isPastEvent(e.eventDate));
+          const hasPastEvents = dayEvents.some(e => isPastEvent(e.endDate));
+          const allPast = dayEvents.length > 0 && dayEvents.every(e => isPastEvent(e.endDate));
           const isSelected = day === selectedDay;
 
           return (
@@ -220,7 +258,7 @@ export default function EventCalendar({ events, locale, translations }: EventCal
                       {dayEvents.map((event, idx) => (
                         <div 
                           key={event._id} 
-                          className={`${styles.tooltipItem} ${isPastEvent(event.eventDate) ? styles.tooltipPast : ''}`}
+                          className={`${styles.tooltipItem} ${isPastEvent(event.endDate) ? styles.tooltipPast : ''}`}
                         >
                           {event.title?.[currentLocale] || event.title?.ca || ''}
                         </div>
@@ -242,8 +280,9 @@ export default function EventCalendar({ events, locale, translations }: EventCal
         {monthEvents.length > 0 ? (
           <div className={styles.eventsList}>
             {monthEvents.map((event) => {
-              const eventDate = new Date(event.eventDate);
+              const eventDate = new Date(event.startDate);
               const day = eventDate.getDate();
+              const timeRange = formatTimeRange(event.startDate, event.endDate);
 
               const eventCard = (
                 <div 
@@ -257,6 +296,11 @@ export default function EventCalendar({ events, locale, translations }: EventCal
                     <h5 className={styles.eventTitle}>
                       {event.title?.[currentLocale] || event.title?.ca || 'Sense títol'}
                     </h5>
+                    {timeRange && (
+                      <p className={styles.eventTime}>
+                        {timeRange}
+                      </p>
+                    )}
                     {event.excerpt?.[currentLocale] && (
                       <p className={styles.eventExcerpt}>
                         {event.excerpt[currentLocale]}

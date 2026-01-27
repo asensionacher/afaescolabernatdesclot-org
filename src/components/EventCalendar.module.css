@@ -312,6 +312,13 @@
   margin: 0 0 0.5rem 0;
 }
 
+.eventTime {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  margin: 0 0 0.5rem 0;
+}
+
 .eventExcerpt {
   font-size: 0.875rem;
   color: var(--color-text-light);

@@ -95,15 +95,16 @@ export async function GET(request: NextRequest) {
 
     // Add each event
     for (const event of events) {
-      // Use startDate and endDate, fallback to eventDate if not available
-      const startDate = new Date(event.startDate || event.eventDate);
-      const endDate = new Date(event.endDate || event.eventDate);
+      // Use startDate and endDate
+      const startDate = new Date(event.startDate);
+      const endDate = new Date(event.endDate);
       
       // Get title and description in the requested locale with fallback
       const title = event.title?.[locale] || event.title?.ca || event.title?.es || event.title?.en || 'Event';
       const description = event.excerpt?.[locale] || event.excerpt?.ca || event.excerpt?.es || event.excerpt?.en || '';
       
       // Check if start and end dates are the same (all-day event)
+      // If different dates, it's a multi-day or timed event
       const startDateStr = startDate.toISOString().split('T')[0];
       const endDateStr = endDate.toISOString().split('T')[0];
       const isAllDayEvent = startDateStr === endDateStr;
@@ -115,7 +116,7 @@ export async function GET(request: NextRequest) {
       ];
 
       if (isAllDayEvent) {
-        // All-day event: use DATE format
+        // All-day event: use DATE format (no time)
         const dateFormatted = startDateStr.replace(/-/g, '');
         const nextDay = new Date(startDate);
         nextDay.setDate(nextDay.getDate() + 1);
@@ -124,7 +125,8 @@ export async function GET(request: NextRequest) {
         eventLines.push(`DTSTART;VALUE=DATE:${dateFormatted}`);
         eventLines.push(`DTEND;VALUE=DATE:${nextDayFormatted}`);
       } else {
-        // Timed event: use DATE-TIME format
+        // Timed event or multi-day event: use DATE-TIME format
+        // For multi-day events, the calendar app will show it spanning multiple days
         eventLines.push(`DTSTART:${formatICalDate(startDate)}`);
         eventLines.push(`DTEND:${formatICalDate(endDate)}`);
       }

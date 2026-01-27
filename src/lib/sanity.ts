@@ -20,7 +20,6 @@ export interface Event {
   slug: {
     current: string
   }
-  eventDate: string
   startDate: string
   endDate: string
   publishedAt?: string
@@ -76,12 +75,11 @@ export async function getUpcomingEvents(limit = 10): Promise<Event[]> {
   now.setHours(0, 0, 0, 0); // Set to start of day
   const todayISO = now.toISOString();
   
-  const query = `*[_type == "event" && eventDate >= $today] | order(eventDate asc) [0...${limit}] {
+  const query = `*[_type == "event" && startDate >= $today] | order(startDate asc) [0...${limit}] {
     _id,
     _type,
     title,
     slug,
-    eventDate,
     startDate,
     endDate,
     publishedAt,
@@ -95,12 +93,11 @@ export async function getUpcomingEvents(limit = 10): Promise<Event[]> {
 
 // Fetch all events
 export async function getAllEvents(): Promise<Event[]> {
-  const query = `*[_type == "event"] | order(eventDate asc) {
+  const query = `*[_type == "event"] | order(startDate asc) {
     _id,
     _type,
     title,
     slug,
-    eventDate,
     startDate,
     endDate,
     publishedAt,
