@@ -292,7 +292,6 @@ export default function EventCalendar({ events, locale, translations }: EventCal
                 >
                   <div className={styles.eventDate}>
                     <div className={styles.eventDay}>{day}</div>
-                    <div className={styles.eventMonth}>{translations.months[eventDate.getMonth()].substring(0, 3)}</div>
                   </div>
                   <div className={styles.eventInfo}>
                     <h5 className={styles.eventTitle}>
