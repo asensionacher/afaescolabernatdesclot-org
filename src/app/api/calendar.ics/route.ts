@@ -103,11 +103,9 @@ export async function GET(request: NextRequest) {
       const title = event.title?.[locale] || event.title?.ca || event.title?.es || event.title?.en || 'Event';
       const description = event.excerpt?.[locale] || event.excerpt?.ca || event.excerpt?.es || event.excerpt?.en || '';
       
-      // Check if start and end dates are the same (all-day event)
-      // If different dates, it's a multi-day or timed event
-      const startDateStr = startDate.toISOString().split('T')[0];
-      const endDateStr = endDate.toISOString().split('T')[0];
-      const isAllDayEvent = startDateStr === endDateStr;
+      // Check if startDate and endDate are EXACTLY the same (date AND time)
+      // Only then it's an all-day event
+      const isAllDayEvent = startDate.getTime() === endDate.getTime();
 
       const eventLines = [
         'BEGIN:VEVENT',
@@ -117,6 +115,7 @@ export async function GET(request: NextRequest) {
 
       if (isAllDayEvent) {
         // All-day event: use DATE format (no time)
+        const startDateStr = startDate.toISOString().split('T')[0];
         const dateFormatted = startDateStr.replace(/-/g, '');
         const nextDay = new Date(startDate);
         nextDay.setDate(nextDay.getDate() + 1);

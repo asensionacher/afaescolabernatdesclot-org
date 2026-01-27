@@ -164,13 +164,20 @@ export default function EventCalendar({ events, locale, translations }: EventCal
     const start = new Date(startDate);
     const end = new Date(endDate);
     
+    // Check if startDate and endDate are EXACTLY the same (date AND time)
+    if (start.getTime() === end.getTime()) {
+      return translations.allDay; // All-day event
+    }
+    
     // Get date strings (YYYY-MM-DD)
     const startDateStr = start.toISOString().split('T')[0];
     const endDateStr = end.toISOString().split('T')[0];
     
-    // Same date = all-day event
+    // Same date but different time = event with specific hours
     if (startDateStr === endDateStr) {
-      return translations.allDay; // All-day event
+      const startTime = formatTime(startDate);
+      const endTime = formatTime(endDate);
+      return `${startTime} - ${endTime}`;
     }
     
     // Multi-day event: show start date/time - end date/time
