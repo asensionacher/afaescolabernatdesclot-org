@@ -54,6 +54,7 @@ export default async function CalendarPage({ params }: { params: Promise<{ local
               pastEvent: tCalendar('pastEvent'),
               event: tCalendar('event'),
               events: tCalendar('events'),
+              allDay: tCalendar('allDay'),
               subscribeCalendar: tCalendar('subscribeCalendar'),
               months: tCalendar.raw('months') as string[],
               weekDays: tCalendar.raw('weekDays') as string[],
