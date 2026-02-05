@@ -9,7 +9,9 @@ export async function verifyPassword(password: string): Promise<boolean> {
   const correctPassword = process.env.ACTAS_PASSWORD
   
   if (!correctPassword) {
-    console.error('ACTAS_PASSWORD not configured')
+    if (process.env.NODE_ENV === 'development') {
+      console.error('ACTAS_PASSWORD not configured in .env.local')
+    }
     return false
   }
   

@@ -2,12 +2,6 @@ import { createClient } from 'next-sanity'
 
 const token = process.env.SANITY_API_TOKEN
 
-if (!token) {
-  console.warn('⚠️ SANITY_API_TOKEN is not set!')
-} else {
-  console.log('✅ SANITY_API_TOKEN is configured')
-}
-
 export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
@@ -235,20 +229,11 @@ export async function getMeetingReportById(id: string): Promise<MeetingReport | 
 
 // Create a new meeting report
 export async function createMeetingReport(data: Omit<MeetingReport, '_id' | '_type' | 'createdAt' | 'closedAt'>): Promise<MeetingReport> {
-  console.log('📝 Creating meeting report with data:', JSON.stringify(data, null, 2))
-  
-  try {
-    const result = await clientWithToken.create({
-      _type: 'meetingReport',
-      ...data,
-      createdAt: new Date().toISOString(),
-    }) as MeetingReport
-    console.log('✅ Successfully created:', result)
-    return result
-  } catch (error) {
-    console.error('❌ Failed to create meeting report:', error)
-    throw error
-  }
+  return clientWithToken.create({
+    _type: 'meetingReport',
+    ...data,
+    createdAt: new Date().toISOString(),
+  }) as Promise<MeetingReport>
 }
 
 // Update an existing meeting report
@@ -266,12 +251,5 @@ export async function closeMeetingReport(id: string): Promise<MeetingReport> {
 
 // Delete a draft meeting report
 export async function deleteMeetingReport(id: string): Promise<void> {
-  console.log('🗑️ Deleting document from Sanity:', id)
-  try {
-    await clientWithToken.delete(id)
-    console.log('✅ Document deleted successfully from Sanity:', id)
-  } catch (error) {
-    console.error('❌ Failed to delete from Sanity:', error)
-    throw error
-  }
+  await clientWithToken.delete(id)
 }

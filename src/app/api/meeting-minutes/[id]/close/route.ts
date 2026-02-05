@@ -22,12 +22,12 @@ export async function POST(_request: NextRequest, { params }: RouteParams) {
     const report = await getMeetingReportById(id)
 
     if (!report) {
-      return NextResponse.json({ error: 'Parte no encontrado' }, { status: 404 })
+      return NextResponse.json({ error: 'Acta no trobada' }, { status: 404 })
     }
 
     if (report.status === 'closed') {
       return NextResponse.json(
-        { error: 'El parte ya está cerrado' },
+        { error: "L'acta ja està tancada" },
         { status: 400 }
       )
     }
@@ -36,9 +36,8 @@ export async function POST(_request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json(closedReport)
   } catch (error) {
-    console.error('Error closing meeting report:', error)
     return NextResponse.json(
-      { error: 'Error al cerrar el parte' },
+      { error: "Error al tancar l'acta" },
       { status: 500 }
     )
   }

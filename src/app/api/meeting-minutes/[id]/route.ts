@@ -22,12 +22,12 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     const report = await getMeetingReportById(id)
 
     if (!report) {
-      return NextResponse.json({ error: 'Parte no encontrado' }, { status: 404 })
+      return NextResponse.json({ error: 'Acta no trobada' }, { status: 404 })
     }
 
     if (report.status === 'closed') {
       return NextResponse.json(
-        { error: 'No se puede editar un parte cerrado' },
+        { error: 'No es pot editar una acta tancada' },
         { status: 400 }
       )
     }
@@ -37,9 +37,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json(updatedReport)
   } catch (error) {
-    console.error('Error updating meeting report:', error)
     return NextResponse.json(
-      { error: 'Error al actualizar el parte' },
+      { error: "Error al actualitzar l'acta" },
       { status: 500 }
     )
   }
@@ -54,36 +53,26 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
     }
 
     const { id } = await params
-    console.log('🗑️ Attempting to delete meeting report:', id)
     
     const report = await getMeetingReportById(id)
 
     if (!report) {
-      console.log('❌ Report not found:', id)
-      return NextResponse.json({ error: 'Parte no encontrado' }, { status: 404 })
+      return NextResponse.json({ error: 'Acta no trobada' }, { status: 404 })
     }
 
     if (report.status === 'closed') {
-      console.log('❌ Cannot delete closed report:', id)
       return NextResponse.json(
-        { error: 'No se puede eliminar un parte cerrado' },
+        { error: 'No es pot eliminar una acta tancada' },
         { status: 400 }
       )
     }
 
-    console.log('📝 Deleting report:', { id, title: report.title, status: report.status })
     await deleteMeetingReport(id)
-    console.log('✅ Report deleted successfully:', id)
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('❌ Error deleting meeting report:', error)
-    console.error('Error details:', {
-      name: error instanceof Error ? error.name : 'Unknown',
-      message: error instanceof Error ? error.message : String(error),
-    })
     return NextResponse.json(
-      { error: 'Error al eliminar el parte', details: error instanceof Error ? error.message : String(error) },
+      { error: "Error al eliminar l'acta" },
       { status: 500 }
     )
   }

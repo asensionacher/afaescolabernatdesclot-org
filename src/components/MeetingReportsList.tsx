@@ -28,7 +28,6 @@ export default function MeetingReportsList() {
       setReports(data)
     } catch (err) {
       setError('Error en carregar les actes')
-      console.error(err)
     } finally {
       setLoading(false)
     }
@@ -52,7 +51,6 @@ export default function MeetingReportsList() {
       await fetchReports()
     } catch (err) {
       alert("Error en eliminar l'acta")
-      console.error(err)
     }
   }
 
@@ -69,7 +67,6 @@ export default function MeetingReportsList() {
       await fetchReports()
     } catch (err) {
       alert("Error en tancar l'acta")
-      console.error(err)
     }
   }
 
@@ -106,8 +103,6 @@ export default function MeetingReportsList() {
         signerRole: 'Vicepresidenta AMPA'
       }
 
-      console.log('🧪 Creating test report with data:', testData)
-
       const response = await fetch('/api/meeting-minutes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -116,12 +111,8 @@ export default function MeetingReportsList() {
 
       if (!response.ok) {
         const errorData = await response.json()
-        console.error('❌ Error response:', errorData)
         throw new Error(errorData.details || errorData.error || 'Error al crear acta de prova')
       }
-
-      const result = await response.json()
-      console.log('✅ Test report created:', result)
 
       alert('✅ Acta de prova creada correctament!')
       
@@ -130,7 +121,6 @@ export default function MeetingReportsList() {
         await fetchReports()
       }, 500)
     } catch (err) {
-      console.error('❌ Error creating test report:', err)
       alert('❌ Error al crear l\'acta de prova: ' + (err instanceof Error ? err.message : String(err)))
     } finally {
       setCreatingTest(false)

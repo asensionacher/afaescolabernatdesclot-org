@@ -214,11 +214,10 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     return new NextResponse(pdfBuffer, {
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="parte_${report.meetingDate.split('T')[0]}.pdf"`,
+        'Content-Disposition': `attachment; filename="acta_${report.meetingDate.split('T')[0]}.pdf"`,
       },
     })
   } catch (error) {
-    console.error('Error generating PDF:', error)
     return NextResponse.json(
       { error: 'Error al generar el PDF' },
       { status: 500 }

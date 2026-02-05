@@ -25,7 +25,6 @@ export default function LoginForm() {
       }
     } catch (err) {
       setError('Error en iniciar sessió')
-      console.error(err)
     } finally {
       setLoading(false)
     }

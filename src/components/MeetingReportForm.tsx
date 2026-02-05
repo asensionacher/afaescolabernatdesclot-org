@@ -97,8 +97,6 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
           })),
       }
 
-      console.log('📤 Sending payload:', payload)
-
       const url = isEdit ? `/api/meeting-minutes/${initialData?._id}` : '/api/meeting-minutes'
       const method = isEdit ? 'PATCH' : 'POST'
 
@@ -108,21 +106,14 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
         body: JSON.stringify(payload),
       })
 
-      console.log('📥 Response status:', response.status)
-
       if (!response.ok) {
         const data = await response.json()
-        console.error('❌ Server error:', data)
         throw new Error(data.error || 'Error en guardar')
       }
-
-      const result = await response.json()
-      console.log('✅ Success:', result)
 
       router.push('/actas')
       router.refresh()
     } catch (err) {
-      console.error('❌ Full error:', err)
       setError(err instanceof Error ? err.message : "Error en guardar l'acta")
     } finally {
       setLoading(false)
