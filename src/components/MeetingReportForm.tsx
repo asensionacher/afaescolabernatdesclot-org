@@ -22,7 +22,9 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
 
   const [formData, setFormData] = useState({
     title: initialData?.title || '',
-    meetingDate: initialData?.meetingDate ? initialData.meetingDate.split('T')[0] : '',
+    meetingDate: initialData?.meetingDate 
+      ? new Date(initialData.meetingDate).toISOString().slice(0, 16) 
+      : '',
     content: initialData?.content || '',
     signerName: initialData?.signerName || '',
     signerRole: initialData?.signerRole || '',
@@ -112,7 +114,7 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
 
   const quillFormats = [
     'bold', 'italic', 'underline',
-    'list', 'bullet'
+    'list'
   ]
 
   return (
@@ -139,10 +141,10 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
 
         <div className={styles.field}>
           <label className={styles.label}>
-            Data de la reunió <span className={styles.required}>*</span>
+            Data i hora de la reunió <span className={styles.required}>*</span>
           </label>
           <input
-            type="date"
+            type="datetime-local"
             name="meetingDate"
             value={formData.meetingDate}
             onChange={handleChange}
