@@ -31,7 +31,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     const pdfBuffer = generateActaPDF(report)
 
     // Return PDF
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(pdfBuffer as unknown as BodyInit, {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="acta_${report.meetingDate.split('T')[0]}.pdf"`,
