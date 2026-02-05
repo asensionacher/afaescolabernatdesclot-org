@@ -6,20 +6,20 @@ import styles from './nuevo.module.css'
 
 export const dynamic = 'force-dynamic'
 
-export default async function NuevoPartePage() {
+export default async function NuevaActaPage() {
   const authenticated = await isAuthenticated()
 
   if (!authenticated) {
-    redirect('/partes')
+    redirect('/actas')
   }
 
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <Link href="/partes" className={styles.backLink}>
+        <Link href="/actas" className={styles.backLink}>
           ← Tornar a la llista
         </Link>
-        <h1 className={styles.title}>Nou Parte de Reunió</h1>
+        <h1 className={styles.title}>Nova Acta de Reunió</h1>
       </header>
 
       <MeetingReportForm />

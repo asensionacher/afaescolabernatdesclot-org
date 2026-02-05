@@ -8,9 +8,8 @@
   max-width: 1200px;
   margin: 0 auto 2.5rem;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  flex-wrap: wrap;
   gap: 1.5rem;
 }
 
@@ -20,6 +19,7 @@
   font-weight: 800;
   color: var(--color-primary);
   margin: 0;
+  text-align: center;
 }
 
 .actions {
@@ -223,8 +223,7 @@
 
 @media (max-width: 768px) {
   .header {
-    flex-direction: column;
-    align-items: stretch;
+    gap: 1rem;
   }
 
   .title {
@@ -233,6 +232,7 @@
 
   .actions {
     flex-direction: column;
+    width: 100%;
   }
 
   .grid {

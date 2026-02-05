@@ -2,14 +2,14 @@
 
 import { cookies } from 'next/headers'
 
-const SESSION_COOKIE = 'partes_auth'
+const SESSION_COOKIE = 'actas_auth'
 const SESSION_DURATION = 60 * 60 * 24 // 24 hours in seconds
 
 export async function verifyPassword(password: string): Promise<boolean> {
-  const correctPassword = process.env.PARTES_PASSWORD
+  const correctPassword = process.env.ACTAS_PASSWORD
   
   if (!correctPassword) {
-    console.error('PARTES_PASSWORD not configured')
+    console.error('ACTAS_PASSWORD not configured')
     return false
   }
   

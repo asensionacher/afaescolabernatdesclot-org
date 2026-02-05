@@ -8,17 +8,17 @@ import styles from './editar.module.css'
 
 export const dynamic = 'force-dynamic'
 
-interface EditarPartePageProps {
+interface EditarActaPageProps {
   params: Promise<{
     id: string
   }>
 }
 
-export default async function EditarPartePage({ params }: EditarPartePageProps) {
+export default async function EditarActaPage({ params }: EditarActaPageProps) {
   const authenticated = await isAuthenticated()
 
   if (!authenticated) {
-    redirect('/partes')
+    redirect('/actas')
   }
 
   const { id } = await params
@@ -29,16 +29,16 @@ export default async function EditarPartePage({ params }: EditarPartePageProps) 
   }
 
   if (report.status === 'closed') {
-    redirect('/partes')
+    redirect('/actas')
   }
 
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <Link href="/partes" className={styles.backLink}>
+        <Link href="/actas" className={styles.backLink}>
           ← Tornar a la llista
         </Link>
-        <h1 className={styles.title}>Editar Parte de Reunió</h1>
+        <h1 className={styles.title}>Editar Acta de Reunió</h1>
       </header>
 
       <MeetingReportForm initialData={report} isEdit />

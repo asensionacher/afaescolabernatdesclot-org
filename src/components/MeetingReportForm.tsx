@@ -31,7 +31,12 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
   })
 
   const [attendees, setAttendees] = useState<Attendee[]>(
-    initialData?.attendees || [{ studentName: '', course: '', attendantName: '' }]
+    initialData?.attendees || [{ 
+      _key: 'attendee-' + Math.random().toString(36).substr(2, 9),
+      studentName: '', 
+      course: '', 
+      attendantName: '' 
+    }]
   )
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,12 +57,21 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
 
   const handleAttendeeChange = (index: number, field: keyof Attendee, value: string) => {
     const newAttendees = [...attendees]
-    newAttendees[index] = { ...newAttendees[index], [field]: value }
+    // Preserve _key when updating fields
+    newAttendees[index] = { 
+      ...newAttendees[index], 
+      [field]: value 
+    }
     setAttendees(newAttendees)
   }
 
   const addAttendee = () => {
-    setAttendees([...attendees, { studentName: '', course: '', attendantName: '' }])
+    setAttendees([...attendees, { 
+      _key: 'attendee-' + Math.random().toString(36).substr(2, 9),
+      studentName: '', 
+      course: '', 
+      attendantName: '' 
+    }])
   }
 
   const removeAttendee = (index: number) => {
@@ -75,12 +89,17 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
       const payload = {
         ...formData,
         meetingDate: new Date(formData.meetingDate).toISOString(),
-        attendees: attendees.filter(
-          (a) => a.studentName.trim() && a.course.trim() && a.attendantName.trim()
-        ),
+        attendees: attendees
+          .filter(a => a.studentName.trim() && a.course.trim() && a.attendantName.trim())
+          .map(a => ({
+            ...a,
+            _key: a._key || 'attendee-' + Math.random().toString(36).substr(2, 9)
+          })),
       }
 
-      const url = isEdit ? `/api/meeting-reports/${initialData?._id}` : '/api/meeting-reports'
+      console.log('📤 Sending payload:', payload)
+
+      const url = isEdit ? `/api/meeting-minutes/${initialData?._id}` : '/api/meeting-minutes'
       const method = isEdit ? 'PATCH' : 'POST'
 
       const response = await fetch(url, {
@@ -89,16 +108,22 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
         body: JSON.stringify(payload),
       })
 
+      console.log('📥 Response status:', response.status)
+
       if (!response.ok) {
         const data = await response.json()
+        console.error('❌ Server error:', data)
         throw new Error(data.error || 'Error en guardar')
       }
 
-      router.push('/partes')
+      const result = await response.json()
+      console.log('✅ Success:', result)
+
+      router.push('/actas')
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error en guardar el parte')
-      console.error(err)
+      console.error('❌ Full error:', err)
+      setError(err instanceof Error ? err.message : "Error en guardar l'acta")
     } finally {
       setLoading(false)
     }
@@ -158,7 +183,7 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
         <h2 className={styles.sectionTitle}>Assistents</h2>
         
         {attendees.map((attendee, index) => (
-          <div key={index} className={styles.attendeeCard}>
+          <div key={attendee._key || index} className={styles.attendeeCard}>
             <div className={styles.attendeeHeader}>
               <span className={styles.attendeeNumber}>Assistent {index + 1}</span>
               {attendees.length > 1 && (
@@ -271,14 +296,14 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
       <div className={styles.actions}>
         <button
           type="button"
-          onClick={() => router.push('/partes')}
+          onClick={() => router.push('/actas')}
           className={styles.cancelButton}
           disabled={loading}
         >
           Cancel·lar
         </button>
         <button type="submit" className={styles.submitButton} disabled={loading}>
-          {loading ? 'Guardant...' : isEdit ? 'Guardar canvis' : 'Crear parte'}
+          {loading ? 'Guardant...' : isEdit ? 'Guardar canvis' : "Crear acta"}
         </button>
       </div>
     </form>

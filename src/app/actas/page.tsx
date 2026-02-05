@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
 
-export default async function PartesPage() {
+export default async function ActasPage() {
   const authenticated = await isAuthenticated()
 
   if (!authenticated) {

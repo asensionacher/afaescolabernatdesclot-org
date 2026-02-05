@@ -54,26 +54,36 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
     }
 
     const { id } = await params
+    console.log('🗑️ Attempting to delete meeting report:', id)
+    
     const report = await getMeetingReportById(id)
 
     if (!report) {
+      console.log('❌ Report not found:', id)
       return NextResponse.json({ error: 'Parte no encontrado' }, { status: 404 })
     }
 
     if (report.status === 'closed') {
+      console.log('❌ Cannot delete closed report:', id)
       return NextResponse.json(
         { error: 'No se puede eliminar un parte cerrado' },
         { status: 400 }
       )
     }
 
+    console.log('📝 Deleting report:', { id, title: report.title, status: report.status })
     await deleteMeetingReport(id)
+    console.log('✅ Report deleted successfully:', id)
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Error deleting meeting report:', error)
+    console.error('❌ Error deleting meeting report:', error)
+    console.error('Error details:', {
+      name: error instanceof Error ? error.name : 'Unknown',
+      message: error instanceof Error ? error.message : String(error),
+    })
     return NextResponse.json(
-      { error: 'Error al eliminar el parte' },
+      { error: 'Error al eliminar el parte', details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     )
   }

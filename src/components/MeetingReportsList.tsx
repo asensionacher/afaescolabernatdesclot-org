@@ -10,6 +10,8 @@ export default function MeetingReportsList() {
   const [reports, setReports] = useState<MeetingReport[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [creatingTest, setCreatingTest] = useState(false)
+  const isDevelopment = process.env.NODE_ENV === 'development'
 
   useEffect(() => {
     fetchReports()
@@ -17,12 +19,15 @@ export default function MeetingReportsList() {
 
   const fetchReports = async () => {
     try {
-      const response = await fetch('/api/meeting-reports')
-      if (!response.ok) throw new Error('Error en carregar els partes')
+      // Add timestamp to prevent caching
+      const response = await fetch('/api/meeting-minutes?t=' + Date.now(), {
+        cache: 'no-store'
+      })
+      if (!response.ok) throw new Error('Error en carregar les actes')
       const data = await response.json()
       setReports(data)
     } catch (err) {
-      setError('Error en carregar els partes')
+      setError('Error en carregar les actes')
       console.error(err)
     } finally {
       setLoading(false)
@@ -35,10 +40,10 @@ export default function MeetingReportsList() {
   }
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Estàs segur que vols eliminar aquest parte?')) return
+    if (!confirm("Estàs segur que vols eliminar aquesta acta?")) return
 
     try {
-      const response = await fetch(`/api/meeting-reports/${id}`, {
+      const response = await fetch(`/api/meeting-minutes/${id}`, {
         method: 'DELETE',
       })
       
@@ -46,16 +51,16 @@ export default function MeetingReportsList() {
       
       await fetchReports()
     } catch (err) {
-      alert('Error en eliminar el parte')
+      alert("Error en eliminar l'acta")
       console.error(err)
     }
   }
 
   const handleClose = async (id: string) => {
-    if (!confirm('Estàs segur que vols tancar aquest parte? No podràs editar-lo després.')) return
+    if (!confirm("Estàs segur que vols tancar aquesta acta? No podràs editar-la després.")) return
 
     try {
-      const response = await fetch(`/api/meeting-reports/${id}/close`, {
+      const response = await fetch(`/api/meeting-minutes/${id}/close`, {
         method: 'POST',
       })
       
@@ -63,8 +68,72 @@ export default function MeetingReportsList() {
       
       await fetchReports()
     } catch (err) {
-      alert('Error en tancar el parte')
+      alert("Error en tancar l'acta")
       console.error(err)
+    }
+  }
+
+  const createTestReport = async () => {
+    if (!confirm('🧪 Crear una acta de prova?')) return
+
+    setCreatingTest(true)
+    try {
+      const testData = {
+        title: 'Reunió Extraordinària de l\'AMPA',
+        meetingDate: new Date().toISOString(),
+        attendees: [
+          {
+            _key: 'attendee-' + Math.random().toString(36).substr(2, 9),
+            studentName: 'Maria García López',
+            course: '1er ESO',
+            attendantName: 'Pere García'
+          },
+          {
+            _key: 'attendee-' + Math.random().toString(36).substr(2, 9),
+            studentName: 'Joan Martínez Sánchez',
+            course: '2on ESO',
+            attendantName: 'Anna Martínez'
+          },
+          {
+            _key: 'attendee-' + Math.random().toString(36).substr(2, 9),
+            studentName: 'Laura Fernández Vila',
+            course: '3er ESO',
+            attendantName: 'Carles Fernández'
+          }
+        ],
+        content: '<p><strong>Ordre del dia:</strong></p><ol><li>Benvinguda i presentació</li><li>Proposta de activitats extraescolars</li><li>Aprovació del pressupost</li></ol><p><br></p><p><strong>Desenvolupament:</strong></p><p>S\'obre la sessió amb l\'assistència dels familiars presents. Es presenten les propostes d\'activitats per al proper trimestre, incloent excursions educatives i tallers culturals.</p><p><br></p><p><em>Es debat sobre les opcions presentades i s\'arriba a un consens sobre les prioritats.</em></p><p><br></p><p><u>Acords presos:</u></p><ul><li>Aprovar el pressupost de 2.500€ per activitats</li><li>Organitzar visita al museu el proper mes</li><li>Crear comissió per gestionar tallers</li></ul>',
+        signerName: 'Elena Gómez Ruiz',
+        signerRole: 'Vicepresidenta AMPA'
+      }
+
+      console.log('🧪 Creating test report with data:', testData)
+
+      const response = await fetch('/api/meeting-minutes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(testData),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('❌ Error response:', errorData)
+        throw new Error(errorData.details || errorData.error || 'Error al crear acta de prova')
+      }
+
+      const result = await response.json()
+      console.log('✅ Test report created:', result)
+
+      alert('✅ Acta de prova creada correctament!')
+      
+      // Wait a moment for Sanity to sync, then refresh
+      setTimeout(async () => {
+        await fetchReports()
+      }, 500)
+    } catch (err) {
+      console.error('❌ Error creating test report:', err)
+      alert('❌ Error al crear l\'acta de prova: ' + (err instanceof Error ? err.message : String(err)))
+    } finally {
+      setCreatingTest(false)
     }
   }
 
@@ -79,10 +148,24 @@ export default function MeetingReportsList() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1 className={styles.title}>Partes de Reunió</h1>
+        <h1 className={styles.title}>Actes de Reunió</h1>
         <div className={styles.actions}>
-          <Link href="/partes/nuevo" className={styles.buttonPrimary}>
-            + Nou Parte
+          {isDevelopment && (
+            <button 
+              onClick={createTestReport} 
+              className={styles.buttonSecondary}
+              disabled={creatingTest}
+              style={{ 
+                backgroundColor: '#9C27B0', 
+                borderColor: '#9C27B0',
+                opacity: creatingTest ? 0.6 : 1 
+              }}
+            >
+              {creatingTest ? '🧪 Creant...' : '🧪 Acta de Prova'}
+            </button>
+          )}
+          <Link href="/actas/nuevo" className={styles.buttonPrimary}>
+            + Nova Acta
           </Link>
           <button onClick={handleLogout} className={styles.buttonSecondary}>
             Tancar Sessió
@@ -95,9 +178,9 @@ export default function MeetingReportsList() {
       <div className={styles.grid}>
         {reports.length === 0 ? (
           <div className={styles.empty}>
-            <p>No hi ha partes de reunió encara.</p>
-            <Link href="/partes/nuevo" className={styles.buttonPrimary}>
-              Crear el primer
+            <p>No hi ha actes de reunió encara.</p>
+            <Link href="/actas/nuevo" className={styles.buttonPrimary}>
+              Crear la primera
             </Link>
           </div>
         ) : (
@@ -127,7 +210,7 @@ export default function MeetingReportsList() {
 
               <div className={styles.cardFooter}>
                 <a
-                  href={`/api/meeting-reports/${report._id}/pdf`}
+                  href={`/api/meeting-minutes/${report._id}/pdf`}
                   className={styles.buttonSmall}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -138,7 +221,7 @@ export default function MeetingReportsList() {
                 {report.status === 'draft' && (
                   <>
                     <Link
-                      href={`/partes/${report._id}/editar`}
+                      href={`/actas/${report._id}/editar`}
                       className={styles.buttonSmall}
                     >
                       ✏️ Editar

@@ -34,7 +34,7 @@ export default function LoginForm() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <h1 className={styles.title}>Partes de Reunió</h1>
+        <h1 className={styles.title}>Actes de Reunió</h1>
         <p className={styles.subtitle}>Introdueix la contrasenya per accedir</p>
         
         <form onSubmit={handleSubmit} className={styles.form}>
