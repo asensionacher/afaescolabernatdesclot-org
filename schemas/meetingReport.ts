@@ -2,117 +2,65 @@ import { defineField, defineType } from 'sanity'
 
 export default defineType({
   name: 'meetingReport',
-  title: 'Partes de Reunión',
+  title: 'Partes de Reunió',
   type: 'document',
   fields: [
     defineField({
       name: 'title',
-      title: 'Título de la reunión',
+      title: 'Títol de la reunió',
       type: 'string',
-      description: 'Ej: REUNIÓ PROPOSTES I VOTACIÓ DISFRESSA',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'location',
-      title: 'Ubicación',
-      type: 'string',
-      description: 'Ej: RUA CARNAVAL 2026',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'meetingDate',
-      title: 'Fecha de la reunión',
+      title: 'Data de la reunió',
       type: 'datetime',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'meetingTime',
-      title: 'Hora de la reunión',
-      type: 'string',
-      description: 'Ej: 16:45',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'meetingPlace',
-      title: 'Lugar de la reunión',
-      type: 'string',
-      description: 'Ej: biblioteca de l\'Escola Bernat Desclot',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: 'attendees',
-      title: 'Asistentes',
+      title: 'Assistents',
       type: 'array',
       of: [
         {
           type: 'object',
           fields: [
-            { name: 'studentName', type: 'string', title: 'Nombre del alumno/a' },
-            { name: 'course', type: 'string', title: 'Curso' },
-            { name: 'attendantName', type: 'string', title: 'Nombre del asistente' },
+            { name: 'studentName', type: 'string', title: "Nom de l'alumne/a" },
+            { name: 'course', type: 'string', title: 'Curs' },
+            { name: 'attendantName', type: 'string', title: "Nom de l'assistent" },
           ],
         },
       ],
       validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
-      name: 'convocationInfo',
-      title: 'Información de convocatoria',
-      type: 'text',
-      description: 'Texto de convocatoria previa',
-      rows: 3,
-    }),
-    defineField({
-      name: 'welcomeMessage',
-      title: 'Mensaje de bienvenida',
-      type: 'text',
-      description: 'Mensaje inicial en cursiva',
-      rows: 3,
-    }),
-    defineField({
-      name: 'topics',
-      title: 'Temas de disfressa',
-      type: 'array',
-      of: [{ type: 'string' }],
-      description: 'Lista de temas valorados para disfressa',
-    }),
-    defineField({
       name: 'content',
-      title: 'Contenido de la reunión',
+      title: 'Contingut de la reunió (HTML)',
       type: 'text',
-      description: 'Desarrollo de la reunión',
-      rows: 10,
+      description: 'Contingut amb format HTML (negritas, cursivas, llistes, etc.)',
+      rows: 15,
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'questions',
-      title: '¿Hubo preguntas?',
-      type: 'boolean',
-      description: 'Marcar si hubo preguntas por parte de los asistentes',
-      initialValue: false,
-    }),
-    defineField({
       name: 'signerName',
-      title: 'Nombre del firmante',
+      title: 'Nom del signant',
       type: 'string',
-      description: 'Ej: Elena Gómez',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'signerRole',
-      title: 'Rol del firmante',
+      title: 'Rol del signant',
       type: 'string',
-      description: 'Ej: Vicepresidenta AMPA',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'status',
-      title: 'Estado',
+      title: 'Estat',
       type: 'string',
       options: {
         list: [
-          { title: 'Borrador', value: 'draft' },
-          { title: 'Cerrado', value: 'closed' },
+          { title: 'Esborrany', value: 'draft' },
+          { title: 'Tancat', value: 'closed' },
         ],
       },
       initialValue: 'draft',
@@ -120,14 +68,14 @@ export default defineType({
     }),
     defineField({
       name: 'createdAt',
-      title: 'Fecha de creación',
+      title: 'Data de creació',
       type: 'datetime',
       initialValue: () => new Date().toISOString(),
       readOnly: true,
     }),
     defineField({
       name: 'closedAt',
-      title: 'Fecha de cierre',
+      title: 'Data de tancament',
       type: 'datetime',
       readOnly: true,
     }),
@@ -142,20 +90,15 @@ export default defineType({
       const { title, date, status } = selection
       return {
         title: title,
-        subtitle: `${date ? new Date(date).toLocaleDateString('ca-ES') : 'Sin fecha'} - ${status === 'draft' ? '📝 Borrador' : '✅ Cerrado'}`,
+        subtitle: `${date ? new Date(date).toLocaleDateString('ca-ES') : 'Sense data'} - ${status === 'draft' ? '📝 Esborrany' : '✅ Tancat'}`,
       }
     },
   },
   orderings: [
     {
-      title: 'Fecha de reunión (más reciente primero)',
+      title: 'Data de reunió (més recent primer)',
       name: 'meetingDateDesc',
       by: [{ field: 'meetingDate', direction: 'desc' }],
-    },
-    {
-      title: 'Fecha de reunión (más antigua primero)',
-      name: 'meetingDateAsc',
-      by: [{ field: 'meetingDate', direction: 'asc' }],
     },
   ],
 })

@@ -111,15 +111,15 @@ export default function MeetingReportsList() {
               </div>
 
               <div className={styles.cardBody}>
-                <p className={styles.location}>{report.location}</p>
                 <p className={styles.date}>
                   {new Date(report.meetingDate).toLocaleDateString('ca-ES', {
                     day: 'numeric',
                     month: 'long',
                     year: 'numeric',
-                  })} - {report.meetingTime}
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
                 </p>
-                <p className={styles.place}>{report.meetingPlace}</p>
                 <p className={styles.attendees}>
                   {report.attendees.length} assistent{report.attendees.length !== 1 ? 's' : ''}
                 </p>

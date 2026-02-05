@@ -176,16 +176,9 @@ export interface MeetingReport {
   _id: string
   _type: 'meetingReport'
   title: string
-  location: string
   meetingDate: string
-  meetingTime: string
-  meetingPlace: string
   attendees: Attendee[]
-  convocationInfo?: string
-  welcomeMessage?: string
-  topics?: string[]
   content: string
-  questions: boolean
   signerName: string
   signerRole: string
   status: 'draft' | 'closed'
@@ -199,16 +192,9 @@ export async function getAllMeetingReports(): Promise<MeetingReport[]> {
     _id,
     _type,
     title,
-    location,
     meetingDate,
-    meetingTime,
-    meetingPlace,
     attendees,
-    convocationInfo,
-    welcomeMessage,
-    topics,
     content,
-    questions,
     signerName,
     signerRole,
     status,
@@ -225,16 +211,9 @@ export async function getMeetingReportById(id: string): Promise<MeetingReport | 
     _id,
     _type,
     title,
-    location,
     meetingDate,
-    meetingTime,
-    meetingPlace,
     attendees,
-    convocationInfo,
-    welcomeMessage,
-    topics,
     content,
-    questions,
     signerName,
     signerRole,
     status,

@@ -2,8 +2,13 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import dynamic from 'next/dynamic'
 import type { MeetingReport, Attendee } from '@/lib/sanity'
 import styles from './MeetingReportForm.module.css'
+import 'react-quill/dist/quill.snow.css'
+
+// Import Quill dynamically to avoid SSR issues
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
 interface MeetingReportFormProps {
   initialData?: MeetingReport
@@ -17,15 +22,8 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
 
   const [formData, setFormData] = useState({
     title: initialData?.title || '',
-    location: initialData?.location || '',
     meetingDate: initialData?.meetingDate ? initialData.meetingDate.split('T')[0] : '',
-    meetingTime: initialData?.meetingTime || '',
-    meetingPlace: initialData?.meetingPlace || '',
-    convocationInfo: initialData?.convocationInfo || '',
-    welcomeMessage: initialData?.welcomeMessage || '',
-    topics: initialData?.topics || [],
     content: initialData?.content || '',
-    questions: initialData?.questions || false,
     signerName: initialData?.signerName || '',
     signerRole: initialData?.signerRole || '',
   })
@@ -34,15 +32,19 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
     initialData?.attendees || [{ studentName: '', course: '', attendantName: '' }]
   )
 
-  const [topicInput, setTopicInput] = useState('')
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target
-    const checked = (e.target as HTMLInputElement).checked
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
 
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: value,
+    }))
+  }
+
+  const handleContentChange = (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      content: value,
     }))
   }
 
@@ -60,23 +62,6 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
     if (attendees.length > 1) {
       setAttendees(attendees.filter((_, i) => i !== index))
     }
-  }
-
-  const addTopic = () => {
-    if (topicInput.trim()) {
-      setFormData((prev) => ({
-        ...prev,
-        topics: [...prev.topics, topicInput.trim()],
-      }))
-      setTopicInput('')
-    }
-  }
-
-  const removeTopic = (index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      topics: prev.topics.filter((_, i) => i !== index),
-    }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -117,6 +102,19 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
     }
   }
 
+  const quillModules = {
+    toolbar: [
+      ['bold', 'italic', 'underline'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['clean']
+    ],
+  }
+
+  const quillFormats = [
+    'bold', 'italic', 'underline',
+    'list', 'bullet'
+  ]
+
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       {error && <div className={styles.error}>{error}</div>}
@@ -141,61 +139,14 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
 
         <div className={styles.field}>
           <label className={styles.label}>
-            Ubicació <span className={styles.required}>*</span>
+            Data de la reunió <span className={styles.required}>*</span>
           </label>
           <input
-            type="text"
-            name="location"
-            value={formData.location}
+            type="date"
+            name="meetingDate"
+            value={formData.meetingDate}
             onChange={handleChange}
             className={styles.input}
-            placeholder="Ex: RUA CARNAVAL 2026"
-            required
-          />
-        </div>
-
-        <div className={styles.fieldRow}>
-          <div className={styles.field}>
-            <label className={styles.label}>
-              Data <span className={styles.required}>*</span>
-            </label>
-            <input
-              type="date"
-              name="meetingDate"
-              value={formData.meetingDate}
-              onChange={handleChange}
-              className={styles.input}
-              required
-            />
-          </div>
-
-          <div className={styles.field}>
-            <label className={styles.label}>
-              Hora <span className={styles.required}>*</span>
-            </label>
-            <input
-              type="text"
-              name="meetingTime"
-              value={formData.meetingTime}
-              onChange={handleChange}
-              className={styles.input}
-              placeholder="Ex: 16:45"
-              required
-            />
-          </div>
-        </div>
-
-        <div className={styles.field}>
-          <label className={styles.label}>
-            Lloc de la reunió <span className={styles.required}>*</span>
-          </label>
-          <input
-            type="text"
-            name="meetingPlace"
-            value={formData.meetingPlace}
-            onChange={handleChange}
-            className={styles.input}
-            placeholder="Ex: biblioteca de l'Escola Bernat Desclot"
             required
           />
         </div>
@@ -262,97 +213,22 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
       </div>
 
       <div className={styles.section}>
-        <h2 className={styles.sectionTitle}>Informació de convocatòria</h2>
-
-        <div className={styles.field}>
-          <label className={styles.label}>Text de convocatòria</label>
-          <textarea
-            name="convocationInfo"
-            value={formData.convocationInfo}
-            onChange={handleChange}
-            className={styles.textarea}
-            rows={3}
-            placeholder="Informació sobre la convocatòria prèvia"
-          />
-        </div>
-
-        <div className={styles.field}>
-          <label className={styles.label}>Missatge de benvinguda (cursiva)</label>
-          <textarea
-            name="welcomeMessage"
-            value={formData.welcomeMessage}
-            onChange={handleChange}
-            className={styles.textarea}
-            rows={3}
-            placeholder="Missatge inicial que apareixerà en cursiva"
-          />
-        </div>
-      </div>
-
-      <div className={styles.section}>
-        <h2 className={styles.sectionTitle}>Temes de disfressa</h2>
-
-        <div className={styles.topicInput}>
-          <input
-            type="text"
-            value={topicInput}
-            onChange={(e) => setTopicInput(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTopic())}
-            className={styles.input}
-            placeholder="Ex: Fer un grup de comparsa"
-          />
-          <button type="button" onClick={addTopic} className={styles.addButton}>
-            Afegir tema
-          </button>
-        </div>
-
-        {formData.topics.length > 0 && (
-          <ul className={styles.topicsList}>
-            {formData.topics.map((topic, index) => (
-              <li key={index} className={styles.topicItem}>
-                <span>{topic}</span>
-                <button
-                  type="button"
-                  onClick={() => removeTopic(index)}
-                  className={styles.removeButton}
-                >
-                  ✕
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-
-      <div className={styles.section}>
         <h2 className={styles.sectionTitle}>Contingut de la reunió</h2>
 
         <div className={styles.field}>
           <label className={styles.label}>
-            Desenvolupament de la reunió <span className={styles.required}>*</span>
+            Contingut <span className={styles.required}>*</span>
           </label>
-          <textarea
-            name="content"
-            value={formData.content}
-            onChange={handleChange}
-            className={styles.textarea}
-            rows={10}
-            placeholder="Descriu el desenvolupament de la reunió..."
-            required
-          />
-        </div>
-
-        <div className={styles.field}>
-          <label className={styles.checkboxLabel}>
-            <input
-              type="checkbox"
-              name="questions"
-              checked={formData.questions}
-              onChange={handleChange}
-              className={styles.checkbox}
+          <div className={styles.editorWrapper}>
+            <ReactQuill
+              theme="snow"
+              value={formData.content}
+              onChange={handleContentChange}
+              modules={quillModules}
+              formats={quillFormats}
+              placeholder="Escriu el contingut de la reunió aquí. Pots utilitzar negretes, cursives i llistes..."
             />
-            <span>Hi va haver preguntes per part dels assistents?</span>
-          </label>
+          </div>
         </div>
       </div>
 

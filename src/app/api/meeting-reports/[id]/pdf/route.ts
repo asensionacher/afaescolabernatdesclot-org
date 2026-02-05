@@ -51,127 +51,140 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     const maxWidth = pageWidth - 2 * margin
     let y = 20
 
-    // Header - Title
-    doc.setFontSize(14)
+    // Helper function to check if we need a new page
+    const checkNewPage = (requiredSpace: number = 10) => {
+      if (y + requiredSpace > 270) {
+        doc.addPage()
+        y = 20
+      }
+    }
+
+    // Header - Organization name
+    doc.setFontSize(16)
     doc.setFont('helvetica', 'bold')
     doc.text('AMPA ESCOLA BERNAT DESCLOT', pageWidth / 2, y, { align: 'center' })
     y += 10
 
+    // Title
+    doc.setFontSize(14)
     doc.text(report.title, pageWidth / 2, y, { align: 'center' })
-    y += 10
-
-    doc.text(report.location, pageWidth / 2, y, { align: 'center' })
     y += 15
 
     // Meeting Date
     doc.setFontSize(11)
     doc.setFont('helvetica', 'normal')
-    doc.text(`Data: ${formatDate(report.meetingDate)}`, margin, y)
-    y += 10
+    const formattedDate = new Date(report.meetingDate).toLocaleDateString('ca-ES', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    })
+    doc.text(`Data: ${formattedDate}`, margin, y)
+    y += 12
 
     // Attendees section
-    doc.setFont('helvetica', 'bold')
-    doc.text('Assistents:', margin, y)
-    y += 7
+    if (report.attendees && report.attendees.length > 0) {
+      checkNewPage(20)
+      
+      doc.setFontSize(12)
+      doc.setFont('helvetica', 'bold')
+      doc.text('Assistents:', margin, y)
+      y += 8
 
-    // Attendees table
-    const tableStartX = margin
-    const colWidths = [60, 30, 70]
-    
-    // Table header
-    doc.setFontSize(10)
-    doc.setFont('helvetica', 'bold')
-    doc.text("Nom de l'alumno/a", tableStartX, y)
-    doc.text('Curs', tableStartX + colWidths[0], y)
-    doc.text("Nom de l'assistent", tableStartX + colWidths[0] + colWidths[1], y)
-    y += 5
+      // Attendees table
+      const tableStartX = margin
+      const colWidths = [60, 30, 70]
+      
+      // Table header
+      doc.setFontSize(10)
+      doc.setFont('helvetica', 'bold')
+      doc.text("Nom de l'alumne/a", tableStartX, y)
+      doc.text('Curs', tableStartX + colWidths[0], y)
+      doc.text("Nom de l'assistent", tableStartX + colWidths[0] + colWidths[1], y)
+      y += 5
 
-    // Table rows
-    doc.setFont('helvetica', 'normal')
-    doc.setFontSize(9)
+      // Table rows
+      doc.setFont('helvetica', 'normal')
+      doc.setFontSize(9)
 
-    report.attendees.forEach((attendee) => {
-      // Draw borders
-      doc.rect(tableStartX, y - 4, colWidths[0], 6)
-      doc.rect(tableStartX + colWidths[0], y - 4, colWidths[1], 6)
-      doc.rect(tableStartX + colWidths[0] + colWidths[1], y - 4, colWidths[2], 6)
+      report.attendees.forEach((attendee) => {
+        checkNewPage(8)
+        
+        // Draw borders
+        doc.rect(tableStartX, y - 4, colWidths[0], 6)
+        doc.rect(tableStartX + colWidths[0], y - 4, colWidths[1], 6)
+        doc.rect(tableStartX + colWidths[0] + colWidths[1], y - 4, colWidths[2], 6)
 
-      // Draw text
-      doc.text(attendee.studentName, tableStartX + 1, y)
-      doc.text(attendee.course, tableStartX + colWidths[0] + 1, y)
-      doc.text(attendee.attendantName, tableStartX + colWidths[0] + colWidths[1] + 1, y)
-      y += 6
-    })
+        // Draw text
+        doc.text(attendee.studentName, tableStartX + 1, y)
+        doc.text(attendee.course, tableStartX + colWidths[0] + 1, y)
+        doc.text(attendee.attendantName, tableStartX + colWidths[0] + colWidths[1] + 1, y)
+        y += 6
+      })
 
-    y += 10
+      y += 12
+    }
 
-    // Convocation info
-    if (report.convocationInfo) {
+    // Content section - parse HTML from Quill editor
+    if (report.content) {
+      checkNewPage(15)
+      
+      doc.setFontSize(12)
+      doc.setFont('helvetica', 'bold')
+      doc.text('Contingut:', margin, y)
+      y += 8
+
+      // Simple HTML parser for basic formatting
+      // Remove HTML tags and convert to plain text with basic formatting
+      const htmlContent = report.content
+      
+      // Convert HTML to lines with basic formatting
+      const tempDiv = htmlContent
+        .replace(/<br\s*\/?>/gi, '\n')
+        .replace(/<\/p>/gi, '\n\n')
+        .replace(/<p>/gi, '')
+        .replace(/<strong>(.*?)<\/strong>/gi, '$1') // Keep bold text (jsPDF doesn't support inline bold easily)
+        .replace(/<em>(.*?)<\/em>/gi, '$1') // Keep italic text
+        .replace(/<u>(.*?)<\/u>/gi, '$1') // Keep underlined text
+        .replace(/<li>(.*?)<\/li>/gi, '  • $1\n')
+        .replace(/<\/?ul>/gi, '\n')
+        .replace(/<\/?ol>/gi, '\n')
+        .replace(/<[^>]*>/g, '') // Remove remaining HTML tags
+        .replace(/&nbsp;/g, ' ')
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+      
       doc.setFontSize(10)
       doc.setFont('helvetica', 'normal')
-      const convocationLines = doc.splitTextToSize(report.convocationInfo, maxWidth)
-      doc.text(convocationLines, margin, y)
-      y += convocationLines.length * 5 + 5
-    }
-
-    // Welcome message (italic)
-    if (report.welcomeMessage) {
-      doc.setFont('helvetica', 'italic')
-      const welcomeLines = doc.splitTextToSize(report.welcomeMessage, maxWidth)
-      doc.text(welcomeLines, margin, y)
-      y += welcomeLines.length * 5 + 5
-    }
-
-    // Topics
-    if (report.topics && report.topics.length > 0) {
-      doc.setFont('helvetica', 'normal')
-      doc.text('Es van valorar diferents tematiques de disfressa:', margin, y)
-      y += 7
-
-      report.topics.forEach((topic) => {
-        doc.text(`• ${topic}`, margin + 5, y)
+      
+      const contentLines = doc.splitTextToSize(tempDiv.trim(), maxWidth)
+      
+      contentLines.forEach((line: string) => {
+        checkNewPage()
+        doc.text(line, margin, y)
         y += 5
       })
-      y += 5
+
+      y += 10
     }
 
-    // Main content
+    // Signature section
+    checkNewPage(20)
+    
+    y += 5
+    doc.setFontSize(10)
     doc.setFont('helvetica', 'normal')
-    const contentLines = doc.splitTextToSize(report.content, maxWidth)
+    doc.text('Signat per:', margin, y)
+    y += 7
     
-    contentLines.forEach((line: string) => {
-      if (y > 270) {
-        doc.addPage()
-        y = 20
-      }
-      doc.text(line, margin, y)
-      y += 5
-    })
-
-    y += 10
-
-    // Questions
-    const questionsText = report.questions
-      ? 'Si que hi ha preguntes per part dels assistents i es dona per finalitzada la reunio.'
-      : 'No hi ha preguntes per part dels assistents i es dona per finalitzada la reunio.'
-    
-    if (y > 270) {
-      doc.addPage()
-      y = 20
-    }
-
-    const questionsLines = doc.splitTextToSize(questionsText, maxWidth)
-    doc.text(questionsLines, margin, y)
-    y += questionsLines.length * 5 + 15
-
-    // Signature
-    if (y > 250) {
-      doc.addPage()
-      y = 20
-    }
-
+    doc.setFont('helvetica', 'bold')
     doc.text(report.signerName, margin, y)
     y += 5
+    
+    doc.setFont('helvetica', 'normal')
     doc.text(report.signerRole, margin, y)
 
     // Generate PDF buffer
