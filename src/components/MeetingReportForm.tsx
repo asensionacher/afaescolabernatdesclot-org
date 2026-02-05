@@ -5,10 +5,10 @@ import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import type { MeetingReport, Attendee } from '@/lib/sanity'
 import styles from './MeetingReportForm.module.css'
-import 'react-quill/dist/quill.snow.css'
+import 'react-quill-new/dist/quill.snow.css'
 
 // Import Quill dynamically to avoid SSR issues
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false })
 
 interface MeetingReportFormProps {
   initialData?: MeetingReport
