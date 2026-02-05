@@ -1,10 +1,20 @@
 import { createClient } from 'next-sanity'
 
+const token = process.env.SANITY_API_TOKEN
+
 export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2024-01-21',
   useCdn: true,
+})
+
+export const clientWithToken = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '',
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+  apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2024-01-21',
+  useCdn: false,
+  token: token,
 })
 
 export interface Event {
@@ -153,4 +163,111 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
   }`
   
   return client.fetch(query, { slug })
+}
+
+// Meeting Reports Types and Functions
+export interface Attendee {
+  studentName: string
+  course: string
+  attendantName: string
+}
+
+export interface MeetingReport {
+  _id: string
+  _type: 'meetingReport'
+  title: string
+  location: string
+  meetingDate: string
+  meetingTime: string
+  meetingPlace: string
+  attendees: Attendee[]
+  convocationInfo?: string
+  welcomeMessage?: string
+  topics?: string[]
+  content: string
+  questions: boolean
+  signerName: string
+  signerRole: string
+  status: 'draft' | 'closed'
+  createdAt: string
+  closedAt?: string
+}
+
+// Fetch all meeting reports
+export async function getAllMeetingReports(): Promise<MeetingReport[]> {
+  const query = `*[_type == "meetingReport"] | order(meetingDate desc) {
+    _id,
+    _type,
+    title,
+    location,
+    meetingDate,
+    meetingTime,
+    meetingPlace,
+    attendees,
+    convocationInfo,
+    welcomeMessage,
+    topics,
+    content,
+    questions,
+    signerName,
+    signerRole,
+    status,
+    createdAt,
+    closedAt
+  }`
+  
+  return client.fetch(query)
+}
+
+// Fetch single meeting report by ID
+export async function getMeetingReportById(id: string): Promise<MeetingReport | null> {
+  const query = `*[_type == "meetingReport" && _id == $id][0] {
+    _id,
+    _type,
+    title,
+    location,
+    meetingDate,
+    meetingTime,
+    meetingPlace,
+    attendees,
+    convocationInfo,
+    welcomeMessage,
+    topics,
+    content,
+    questions,
+    signerName,
+    signerRole,
+    status,
+    createdAt,
+    closedAt
+  }`
+  
+  return client.fetch(query, { id })
+}
+
+// Create a new meeting report
+export async function createMeetingReport(data: Omit<MeetingReport, '_id' | '_type' | 'createdAt' | 'closedAt'>): Promise<MeetingReport> {
+  return clientWithToken.create({
+    _type: 'meetingReport',
+    ...data,
+    createdAt: new Date().toISOString(),
+  })
+}
+
+// Update an existing meeting report
+export async function updateMeetingReport(id: string, data: Partial<MeetingReport>): Promise<MeetingReport> {
+  return clientWithToken.patch(id).set(data).commit()
+}
+
+// Close a meeting report
+export async function closeMeetingReport(id: string): Promise<MeetingReport> {
+  return clientWithToken.patch(id).set({
+    status: 'closed',
+    closedAt: new Date().toISOString(),
+  }).commit()
+}
+
+// Delete a draft meeting report
+export async function deleteMeetingReport(id: string): Promise<void> {
+  await clientWithToken.delete(id)
 }
