@@ -17,9 +17,9 @@ export default async function NuevoPartePage() {
     <div className={styles.container}>
       <header className={styles.header}>
         <Link href="/partes" className={styles.backLink}>
-          ← Volver a la lista
+          ← Tornar a la llista
         </Link>
-        <h1 className={styles.title}>Nuevo Parte de Reunión</h1>
+        <h1 className={styles.title}>Nou Parte de Reunió</h1>
       </header>
 
       <MeetingReportForm />

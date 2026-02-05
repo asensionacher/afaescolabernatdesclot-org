@@ -18,11 +18,11 @@ export default function MeetingReportsList() {
   const fetchReports = async () => {
     try {
       const response = await fetch('/api/meeting-reports')
-      if (!response.ok) throw new Error('Error al cargar los partes')
+      if (!response.ok) throw new Error('Error en carregar els partes')
       const data = await response.json()
       setReports(data)
     } catch (err) {
-      setError('Error al cargar los partes')
+      setError('Error en carregar els partes')
       console.error(err)
     } finally {
       setLoading(false)
@@ -35,35 +35,35 @@ export default function MeetingReportsList() {
   }
 
   const handleDelete = async (id: string) => {
-    if (!confirm('¿Estás seguro de que quieres eliminar este parte?')) return
+    if (!confirm('Estàs segur que vols eliminar aquest parte?')) return
 
     try {
       const response = await fetch(`/api/meeting-reports/${id}`, {
         method: 'DELETE',
       })
       
-      if (!response.ok) throw new Error('Error al eliminar')
+      if (!response.ok) throw new Error('Error en eliminar')
       
       await fetchReports()
     } catch (err) {
-      alert('Error al eliminar el parte')
+      alert('Error en eliminar el parte')
       console.error(err)
     }
   }
 
   const handleClose = async (id: string) => {
-    if (!confirm('¿Estás seguro de que quieres cerrar este parte? No podrás editarlo después.')) return
+    if (!confirm('Estàs segur que vols tancar aquest parte? No podràs editar-lo després.')) return
 
     try {
       const response = await fetch(`/api/meeting-reports/${id}/close`, {
         method: 'POST',
       })
       
-      if (!response.ok) throw new Error('Error al cerrar')
+      if (!response.ok) throw new Error('Error en tancar')
       
       await fetchReports()
     } catch (err) {
-      alert('Error al cerrar el parte')
+      alert('Error en tancar el parte')
       console.error(err)
     }
   }
@@ -71,7 +71,7 @@ export default function MeetingReportsList() {
   if (loading) {
     return (
       <div className={styles.container}>
-        <div className={styles.loading}>Cargando...</div>
+        <div className={styles.loading}>Carregant...</div>
       </div>
     )
   }
@@ -79,13 +79,13 @@ export default function MeetingReportsList() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1 className={styles.title}>Partes de Reunión</h1>
+        <h1 className={styles.title}>Partes de Reunió</h1>
         <div className={styles.actions}>
           <Link href="/partes/nuevo" className={styles.buttonPrimary}>
-            + Nuevo Parte
+            + Nou Parte
           </Link>
           <button onClick={handleLogout} className={styles.buttonSecondary}>
-            Cerrar Sesión
+            Tancar Sessió
           </button>
         </div>
       </header>
@@ -95,9 +95,9 @@ export default function MeetingReportsList() {
       <div className={styles.grid}>
         {reports.length === 0 ? (
           <div className={styles.empty}>
-            <p>No hay partes de reunión todavía.</p>
+            <p>No hi ha partes de reunió encara.</p>
             <Link href="/partes/nuevo" className={styles.buttonPrimary}>
-              Crear el primero
+              Crear el primer
             </Link>
           </div>
         ) : (
@@ -106,7 +106,7 @@ export default function MeetingReportsList() {
               <div className={styles.cardHeader}>
                 <h2 className={styles.cardTitle}>{report.title}</h2>
                 <span className={`${styles.badge} ${styles[report.status]}`}>
-                  {report.status === 'draft' ? '📝 Borrador' : '✅ Cerrado'}
+                  {report.status === 'draft' ? '📝 Esborrany' : '✅ Tancat'}
                 </span>
               </div>
 
@@ -121,7 +121,7 @@ export default function MeetingReportsList() {
                 </p>
                 <p className={styles.place}>{report.meetingPlace}</p>
                 <p className={styles.attendees}>
-                  {report.attendees.length} asistente{report.attendees.length !== 1 ? 's' : ''}
+                  {report.attendees.length} assistent{report.attendees.length !== 1 ? 's' : ''}
                 </p>
               </div>
 
@@ -132,7 +132,7 @@ export default function MeetingReportsList() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  📄 Descargar PDF
+                  📄 Descarregar PDF
                 </a>
                 
                 {report.status === 'draft' && (
@@ -147,7 +147,7 @@ export default function MeetingReportsList() {
                       onClick={() => handleClose(report._id)}
                       className={styles.buttonSmall}
                     >
-                      🔒 Cerrar
+                      🔒 Tancar
                     </button>
                     <button
                       onClick={() => handleDelete(report._id)}

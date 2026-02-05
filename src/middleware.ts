@@ -5,8 +5,9 @@ import { NextRequest } from 'next/server';
 const intlMiddleware = createMiddleware(routing);
 
 export default function middleware(request: NextRequest) {
-  // Excluir /studio de la internacionalización
-  if (request.nextUrl.pathname.startsWith('/studio')) {
+  // Excluir /studio y /partes de la internacionalización
+  if (request.nextUrl.pathname.startsWith('/studio') || 
+      request.nextUrl.pathname.startsWith('/partes')) {
     return;
   }
   

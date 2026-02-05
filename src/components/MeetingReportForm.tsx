@@ -104,13 +104,13 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
 
       if (!response.ok) {
         const data = await response.json()
-        throw new Error(data.error || 'Error al guardar')
+        throw new Error(data.error || 'Error en guardar')
       }
 
       router.push('/partes')
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al guardar el parte')
+      setError(err instanceof Error ? err.message : 'Error en guardar el parte')
       console.error(err)
     } finally {
       setLoading(false)
@@ -122,11 +122,11 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
       {error && <div className={styles.error}>{error}</div>}
 
       <div className={styles.section}>
-        <h2 className={styles.sectionTitle}>Información básica</h2>
+        <h2 className={styles.sectionTitle}>Informació bàsica</h2>
 
         <div className={styles.field}>
           <label className={styles.label}>
-            Título de la reunión <span className={styles.required}>*</span>
+            Títol de la reunió <span className={styles.required}>*</span>
           </label>
           <input
             type="text"
@@ -134,14 +134,14 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
             value={formData.title}
             onChange={handleChange}
             className={styles.input}
-            placeholder="Ej: REUNIÓ PROPOSTES I VOTACIÓ DISFRESSA"
+            placeholder="Ex: REUNIÓ PROPOSTES I VOTACIÓ DISFRESSA"
             required
           />
         </div>
 
         <div className={styles.field}>
           <label className={styles.label}>
-            Ubicación <span className={styles.required}>*</span>
+            Ubicació <span className={styles.required}>*</span>
           </label>
           <input
             type="text"
@@ -149,7 +149,7 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
             value={formData.location}
             onChange={handleChange}
             className={styles.input}
-            placeholder="Ej: RUA CARNAVAL 2026"
+            placeholder="Ex: RUA CARNAVAL 2026"
             required
           />
         </div>
@@ -157,7 +157,7 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
         <div className={styles.fieldRow}>
           <div className={styles.field}>
             <label className={styles.label}>
-              Fecha <span className={styles.required}>*</span>
+              Data <span className={styles.required}>*</span>
             </label>
             <input
               type="date"
@@ -179,7 +179,7 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
               value={formData.meetingTime}
               onChange={handleChange}
               className={styles.input}
-              placeholder="Ej: 16:45"
+              placeholder="Ex: 16:45"
               required
             />
           </div>
@@ -187,7 +187,7 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
 
         <div className={styles.field}>
           <label className={styles.label}>
-            Lugar de la reunión <span className={styles.required}>*</span>
+            Lloc de la reunió <span className={styles.required}>*</span>
           </label>
           <input
             type="text"
@@ -195,19 +195,19 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
             value={formData.meetingPlace}
             onChange={handleChange}
             className={styles.input}
-            placeholder="Ej: biblioteca de l'Escola Bernat Desclot"
+            placeholder="Ex: biblioteca de l'Escola Bernat Desclot"
             required
           />
         </div>
       </div>
 
       <div className={styles.section}>
-        <h2 className={styles.sectionTitle}>Asistentes</h2>
+        <h2 className={styles.sectionTitle}>Assistents</h2>
         
         {attendees.map((attendee, index) => (
           <div key={index} className={styles.attendeeCard}>
             <div className={styles.attendeeHeader}>
-              <span className={styles.attendeeNumber}>Asistente {index + 1}</span>
+              <span className={styles.attendeeNumber}>Assistent {index + 1}</span>
               {attendees.length > 1 && (
                 <button
                   type="button"
@@ -221,76 +221,76 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
 
             <div className={styles.fieldRow}>
               <div className={styles.field}>
-                <label className={styles.label}>Nombre del alumno/a</label>
+                <label className={styles.label}>Nom de l'alumne/a</label>
                 <input
                   type="text"
                   value={attendee.studentName}
                   onChange={(e) => handleAttendeeChange(index, 'studentName', e.target.value)}
                   className={styles.input}
-                  placeholder="Ej: Raul Lucas Asensio"
+                  placeholder="Ex: Raul Lucas Asensio"
                 />
               </div>
 
               <div className={styles.field}>
-                <label className={styles.label}>Curso</label>
+                <label className={styles.label}>Curs</label>
                 <input
                   type="text"
                   value={attendee.course}
                   onChange={(e) => handleAttendeeChange(index, 'course', e.target.value)}
                   className={styles.input}
-                  placeholder="Ej: 1er I i3"
+                  placeholder="Ex: 1er I i3"
                 />
               </div>
             </div>
 
             <div className={styles.field}>
-              <label className={styles.label}>Nombre del asistente</label>
+              <label className={styles.label}>Nom de l'assistent</label>
               <input
                 type="text"
                 value={attendee.attendantName}
                 onChange={(e) => handleAttendeeChange(index, 'attendantName', e.target.value)}
                 className={styles.input}
-                placeholder="Ej: Arianna Vila Rosales"
+                placeholder="Ex: Arianna Vila Rosales"
               />
             </div>
           </div>
         ))}
 
         <button type="button" onClick={addAttendee} className={styles.addButton}>
-          + Añadir asistente
+          + Afegir assistent
         </button>
       </div>
 
       <div className={styles.section}>
-        <h2 className={styles.sectionTitle}>Información de convocatoria</h2>
+        <h2 className={styles.sectionTitle}>Informació de convocatòria</h2>
 
         <div className={styles.field}>
-          <label className={styles.label}>Texto de convocatoria</label>
+          <label className={styles.label}>Text de convocatòria</label>
           <textarea
             name="convocationInfo"
             value={formData.convocationInfo}
             onChange={handleChange}
             className={styles.textarea}
             rows={3}
-            placeholder="Información sobre la convocatoria previa"
+            placeholder="Informació sobre la convocatòria prèvia"
           />
         </div>
 
         <div className={styles.field}>
-          <label className={styles.label}>Mensaje de bienvenida (cursiva)</label>
+          <label className={styles.label}>Missatge de benvinguda (cursiva)</label>
           <textarea
             name="welcomeMessage"
             value={formData.welcomeMessage}
             onChange={handleChange}
             className={styles.textarea}
             rows={3}
-            placeholder="Mensaje inicial que aparecerá en cursiva"
+            placeholder="Missatge inicial que apareixerà en cursiva"
           />
         </div>
       </div>
 
       <div className={styles.section}>
-        <h2 className={styles.sectionTitle}>Temas de disfressa</h2>
+        <h2 className={styles.sectionTitle}>Temes de disfressa</h2>
 
         <div className={styles.topicInput}>
           <input
@@ -299,10 +299,10 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
             onChange={(e) => setTopicInput(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTopic())}
             className={styles.input}
-            placeholder="Ej: Fer un grup de comparsa"
+            placeholder="Ex: Fer un grup de comparsa"
           />
           <button type="button" onClick={addTopic} className={styles.addButton}>
-            Añadir tema
+            Afegir tema
           </button>
         </div>
 
@@ -325,11 +325,11 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
       </div>
 
       <div className={styles.section}>
-        <h2 className={styles.sectionTitle}>Contenido de la reunión</h2>
+        <h2 className={styles.sectionTitle}>Contingut de la reunió</h2>
 
         <div className={styles.field}>
           <label className={styles.label}>
-            Desarrollo de la reunión <span className={styles.required}>*</span>
+            Desenvolupament de la reunió <span className={styles.required}>*</span>
           </label>
           <textarea
             name="content"
@@ -337,7 +337,7 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
             onChange={handleChange}
             className={styles.textarea}
             rows={10}
-            placeholder="Describe el desarrollo de la reunión..."
+            placeholder="Descriu el desenvolupament de la reunió..."
             required
           />
         </div>
@@ -351,17 +351,17 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
               onChange={handleChange}
               className={styles.checkbox}
             />
-            <span>¿Hubo preguntas por parte de los asistentes?</span>
+            <span>Hi va haver preguntes per part dels assistents?</span>
           </label>
         </div>
       </div>
 
       <div className={styles.section}>
-        <h2 className={styles.sectionTitle}>Firmante</h2>
+        <h2 className={styles.sectionTitle}>Signant</h2>
 
         <div className={styles.field}>
           <label className={styles.label}>
-            Nombre del firmante <span className={styles.required}>*</span>
+            Nom del signant <span className={styles.required}>*</span>
           </label>
           <input
             type="text"
@@ -369,14 +369,14 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
             value={formData.signerName}
             onChange={handleChange}
             className={styles.input}
-            placeholder="Ej: Elena Gómez"
+            placeholder="Ex: Elena Gómez"
             required
           />
         </div>
 
         <div className={styles.field}>
           <label className={styles.label}>
-            Rol del firmante <span className={styles.required}>*</span>
+            Rol del signant <span className={styles.required}>*</span>
           </label>
           <input
             type="text"
@@ -384,7 +384,7 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
             value={formData.signerRole}
             onChange={handleChange}
             className={styles.input}
-            placeholder="Ej: Vicepresidenta AMPA"
+            placeholder="Ex: Vicepresidenta AMPA"
             required
           />
         </div>
@@ -397,10 +397,10 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
           className={styles.cancelButton}
           disabled={loading}
         >
-          Cancelar
+          Cancel·lar
         </button>
         <button type="submit" className={styles.submitButton} disabled={loading}>
-          {loading ? 'Guardando...' : isEdit ? 'Guardar cambios' : 'Crear parte'}
+          {loading ? 'Guardant...' : isEdit ? 'Guardar canvis' : 'Crear parte'}
         </button>
       </div>
     </form>

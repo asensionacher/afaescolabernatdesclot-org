@@ -36,9 +36,9 @@ export default async function EditarPartePage({ params }: EditarPartePageProps) 
     <div className={styles.container}>
       <header className={styles.header}>
         <Link href="/partes" className={styles.backLink}>
-          ← Volver a la lista
+          ← Tornar a la llista
         </Link>
-        <h1 className={styles.title}>Editar Parte de Reunión</h1>
+        <h1 className={styles.title}>Editar Parte de Reunió</h1>
       </header>
 
       <MeetingReportForm initialData={report} isEdit />

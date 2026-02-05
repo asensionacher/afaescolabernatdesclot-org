@@ -20,11 +20,11 @@ export default function LoginForm() {
       if (success) {
         window.location.reload()
       } else {
-        setError('Contraseña incorrecta')
+        setError('Contrasenya incorrecta')
         setPassword('')
       }
     } catch (err) {
-      setError('Error al iniciar sesión')
+      setError('Error en iniciar sessió')
       console.error(err)
     } finally {
       setLoading(false)
@@ -34,15 +34,15 @@ export default function LoginForm() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <h1 className={styles.title}>Partes de Reunión</h1>
-        <p className={styles.subtitle}>Introduce la contraseña para acceder</p>
+        <h1 className={styles.title}>Partes de Reunió</h1>
+        <p className={styles.subtitle}>Introdueix la contrasenya per accedir</p>
         
         <form onSubmit={handleSubmit} className={styles.form}>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Contraseña"
+            placeholder="Contrasenya"
             className={styles.input}
             disabled={loading}
             required
@@ -55,7 +55,7 @@ export default function LoginForm() {
             className={styles.button}
             disabled={loading}
           >
-            {loading ? 'Verificando...' : 'Acceder'}
+            {loading ? 'Verificant...' : 'Accedir'}
           </button>
         </form>
       </div>
