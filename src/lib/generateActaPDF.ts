@@ -64,12 +64,6 @@ export function generateActaPDF(report: MeetingReport): Buffer {
   doc.text(`Data: ${formattedDate}`, margin, y)
   y += 10
 
-  // Status
-  checkNewPage()
-  doc.setFont('helvetica', 'bold')
-  doc.text(`Estat: ${report.status === 'draft' ? 'Esborrany' : 'Tancat'}`, margin, y)
-  y += 10
-
   // Attendees section
   checkNewPage(20)
   doc.setFontSize(12)
