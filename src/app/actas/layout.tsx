@@ -1,11 +1,15 @@
 import '../[locale]/globals.css'
 
 export const metadata = {
-  title: 'Partes de Reunió - AMPA Bernat Desclot',
-  description: 'Sistema de gestió de partes de reunió',
+  title: 'Actes de Reunió - AMPA Bernat Desclot',
+  description: 'Sistema de gestió d\'actes de reunió de l\'AMPA Escola Bernat Desclot',
+  robots: {
+    index: false,
+    follow: false,
+  },
 }
 
-export default function PartesLayout({
+export default function ActasLayout({
   children,
 }: {
   children: React.ReactNode
