@@ -56,13 +56,6 @@ function getPasswordHash(): string {
   // Decode from base64
   const hash = Buffer.from(hashBase64, 'base64').toString('utf-8')
   
-  // DEBUG: Log what we're getting
-  console.log('🔍 ENV DEBUG: Getting password hash from environment')
-  console.log('🔍 Base64 value:', hashBase64)
-  console.log('🔍 Decoded hash length:', hash.length)
-  console.log('🔍 Decoded hash starts with:', hash.substring(0, 10))
-  console.log('🔍 Decoded hash full value:', hash)
-  
   return hash
 }
 
@@ -131,19 +124,11 @@ function getClientIdentifier(): string {
 export async function verifyPassword(password: string): Promise<boolean> {
   try {
     const passwordHash = getPasswordHash()
-    
-    // DEBUG LOGGING
-    console.log('🔍 DEBUG: Verifying password...')
-    console.log('🔍 Password received (length):', password.length)
-    console.log('🔍 Password received (first 10 chars):', password.substring(0, 10))
-    console.log('🔍 Password hash from env:', passwordHash.substring(0, 30) + '...')
-    
-    const result = await bcrypt.compare(password, passwordHash)
-    console.log('🔍 bcrypt.compare result:', result)
-    
-    return result
+    return await bcrypt.compare(password, passwordHash)
   } catch (error) {
-    console.error('❌ Password verification error:', error)
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Password verification error:', error)
+    }
     return false
   }
 }
@@ -187,26 +172,17 @@ async function verifySessionToken(token: string): Promise<boolean> {
 export async function login(password: string): Promise<{ success: boolean; error?: string }> {
   const clientId = getClientIdentifier()
 
-  console.log('🔐 LOGIN ATTEMPT STARTED')
-  console.log('🔐 Password received (length):', password.length)
-  console.log('🔐 Client ID:', clientId)
-
   // Check rate limiting
   const rateLimitCheck = checkRateLimit(clientId)
   if (!rateLimitCheck.allowed) {
-    console.log('❌ RATE LIMIT EXCEEDED')
     return {
       success: false,
       error: 'Massa intents fallits. Torna-ho a provar més tard.',
     }
   }
 
-  console.log('✅ Rate limit check passed. Remaining attempts:', rateLimitCheck.remainingAttempts)
-
   // Verify password
   const isValid = await verifyPassword(password)
-
-  console.log('🔑 Password verification result:', isValid)
 
   // Record attempt
   recordLoginAttempt(clientId, isValid)
@@ -226,10 +202,10 @@ export async function login(password: string): Promise<{ success: boolean; error
         path: '/',
       })
 
-      console.log(`✅ Successful login for ${clientId}`)
+      console.log(`Successful login for ${clientId}`)
       return { success: true }
     } catch (error) {
-      console.error('❌ Error creating session:', error)
+      console.error('Error creating session:', error)
       return {
         success: false,
         error: 'Error en crear la sessió',
@@ -237,7 +213,6 @@ export async function login(password: string): Promise<{ success: boolean; error
     }
   }
 
-  console.log('❌ Login failed - invalid password')
   return {
     success: false,
     error: `Contrasenya incorrecta${rateLimitCheck.remainingAttempts !== undefined ? ` (${rateLimitCheck.remainingAttempts} intents restants)` : ''}`,

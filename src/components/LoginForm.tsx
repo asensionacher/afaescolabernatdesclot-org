@@ -14,12 +14,6 @@ export default function LoginForm() {
     setError('')
     setLoading(true)
 
-    // DEBUG: Log password details in browser console
-    console.log('🔍 CLIENT DEBUG:')
-    console.log('   Password length:', password.length)
-    console.log('   Password hex:', Array.from(password).map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join(' '))
-    console.log('   Password:', password)
-
     try {
       const result = await login(password)
       
