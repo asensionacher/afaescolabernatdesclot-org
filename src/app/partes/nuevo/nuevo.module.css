@@ -1,40 +1,44 @@
 .container {
   min-height: 100vh;
-  background: var(--color-background);
+  background: var(--color-bg);
 }
 
 .header {
-  background: white;
-  border-bottom: 2px solid var(--color-border);
-  padding: 1.5rem 2rem;
+  background: var(--color-bg-alt);
+  border-bottom: 3px solid var(--color-accent);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
 }
 
 .backLink {
   display: inline-block;
   color: var(--color-primary);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 0.75rem;
   transition: var(--transition);
+  font-family: var(--font-secondary);
 }
 
 .backLink:hover {
-  text-decoration: underline;
+  color: var(--color-secondary);
+  transform: translateX(-4px);
 }
 
 .title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--color-text);
+  font-family: var(--font-primary);
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--color-primary);
   margin: 0;
 }
 
 @media (max-width: 768px) {
   .header {
-    padding: 1rem;
+    padding: 1.5rem 1rem;
   }
 
   .title {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
   }
 }
