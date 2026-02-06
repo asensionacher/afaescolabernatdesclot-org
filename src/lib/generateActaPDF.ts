@@ -45,11 +45,18 @@ export function generateActaPDF(report: MeetingReport): Buffer {
   doc.text('AMPA ESCOLA BERNAT DESCLOT', pageWidth / 2, y, { align: 'center' })
   y += 10
 
-  // Title (remove emojis)
+  // Title (remove emojis) - with word wrap
   doc.setFontSize(14)
   const cleanTitle = removeEmojis(report.title)
-  doc.text(cleanTitle, pageWidth / 2, y, { align: 'center' })
-  y += 15
+  const titleLines = doc.splitTextToSize(cleanTitle, maxWidth)
+  
+  // Center each line of the title
+  titleLines.forEach((line: string) => {
+    doc.text(line, pageWidth / 2, y, { align: 'center' })
+    y += 7
+  })
+  
+  y += 8 // Extra space after title
 
   // Meeting Date
   doc.setFontSize(11)
