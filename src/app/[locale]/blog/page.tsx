@@ -7,6 +7,10 @@ import Image from 'next/image';
 import styles from './page.module.css';
 import type { Metadata } from 'next';
 
+// Force dynamic rendering to avoid stale cache
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface Post {
   _id: string;
   title: {
@@ -33,7 +37,9 @@ interface Post {
 
 async function getPosts(): Promise<Post[]> {
   try {
-    const posts = await client.fetch(
+    // Create a fresh client without CDN for this page
+    const freshClient = client.withConfig({ useCdn: false });
+    const posts = await freshClient.fetch(
       `*[_type == "post"] | order(publishedAt desc) {
         _id,
         title,
