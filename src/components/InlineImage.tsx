@@ -1,5 +1,3 @@
-'use client';
-
 import Image from 'next/image';
 import { urlFor } from '@/sanity/client';
 import styles from './InlineImage.module.css';
