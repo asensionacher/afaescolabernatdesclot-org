@@ -1,0 +1,39 @@
+.figure {
+  margin: 2rem 0;
+  width: 100%;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background-color: var(--color-gray-100);
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.caption {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-gray-600);
+  text-align: center;
+  font-style: italic;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .figure {
+    margin: 1.5rem 0;
+  }
+
+  .caption {
+    font-size: 0.8125rem;
+  }
+}

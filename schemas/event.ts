@@ -6,10 +6,10 @@ export const localeString = {
   type: 'object',
   fields: [
     { name: 'ca', type: 'string', title: 'Català' },
-    { name: 'es', type: 'string', title: 'Español' },
-    { name: 'en', type: 'string', title: 'English' },
-    { name: 'ar', type: 'string', title: 'العربية' },
-    { name: 'ur', type: 'string', title: 'اردو' },
+    { name: 'es', type: 'string', title: 'Castellà' },
+    { name: 'en', type: 'string', title: 'Anglès' },
+    { name: 'ar', type: 'string', title: 'Àrab' },
+    { name: 'ur', type: 'string', title: 'Urdú' },
   ],
 }
 
@@ -19,10 +19,10 @@ export const localeText = {
   type: 'object',
   fields: [
     { name: 'ca', type: 'text', title: 'Català', rows: 4 },
-    { name: 'es', type: 'text', title: 'Español', rows: 4 },
-    { name: 'en', type: 'text', title: 'English', rows: 4 },
-    { name: 'ar', type: 'text', title: 'العربية', rows: 4 },
-    { name: 'ur', type: 'text', title: 'اردو', rows: 4 },
+    { name: 'es', type: 'text', title: 'Castellà', rows: 4 },
+    { name: 'en', type: 'text', title: 'Anglès', rows: 4 },
+    { name: 'ar', type: 'text', title: 'Àrab', rows: 4 },
+    { name: 'ur', type: 'text', title: 'Urdú', rows: 4 },
   ],
 }
 
@@ -37,42 +37,47 @@ export const localeBlockContent = {
       title: 'Català',
       of: [
         { type: 'block' },
+        { type: 'inlineImage' },
         { type: 'youtube' },
       ],
     },
     {
       name: 'es',
       type: 'array',
-      title: 'Español',
+      title: 'Castellà',
       of: [
         { type: 'block' },
+        { type: 'inlineImage' },
         { type: 'youtube' },
       ],
     },
     {
       name: 'en',
       type: 'array',
-      title: 'English',
+      title: 'Anglès',
       of: [
         { type: 'block' },
+        { type: 'inlineImage' },
         { type: 'youtube' },
       ],
     },
     {
       name: 'ar',
       type: 'array',
-      title: 'العربية',
+      title: 'Àrab',
       of: [
         { type: 'block' },
+        { type: 'inlineImage' },
         { type: 'youtube' },
       ],
     },
     {
       name: 'ur',
       type: 'array',
-      title: 'اردو',
+      title: 'Urdú',
       of: [
         { type: 'block' },
+        { type: 'inlineImage' },
         { type: 'youtube' },
       ],
     },

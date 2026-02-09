@@ -8,6 +8,7 @@ import { notFound } from 'next/navigation';
 import styles from './page.module.css';
 import type { Metadata } from 'next';
 import YouTubeEmbed from '@/components/YouTubeEmbed';
+import InlineImage from '@/components/InlineImage';
 
 interface Post {
   _id: string;
@@ -135,6 +136,7 @@ export default async function PostPage({
   const portableTextComponents = {
     types: {
       youtube: YouTubeEmbed,
+      inlineImage: InlineImage,
     },
   };
 
