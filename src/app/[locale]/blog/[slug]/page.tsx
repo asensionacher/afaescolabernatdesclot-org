@@ -76,12 +76,18 @@ export async function generateMetadata({
   const title = post.title?.[locale as keyof typeof post.title] || post.title?.ca || 'AFA Bernat Desclot';
   const description = post.excerpt?.[locale as keyof typeof post.excerpt] || post.excerpt?.ca || 'Asociación de Familias de Alumnos del colegio Bernat Desclot';
   
-  // Get image URL from Sanity
-  const imageUrl = post.mainImage 
-    ? urlFor(post.mainImage).width(1200).height(630).url()
-    : `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/logo.webp`;
+  // Get image URL from Sanity - ensure it's absolute
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://afaescolabernatdesclot.org';
+  let imageUrl = post.mainImage 
+    ? urlFor(post.mainImage).width(1200).height(630).format('jpg').quality(90).url()
+    : `${baseUrl}/logo.webp`;
+  
+  // Ensure image URL is absolute for social media
+  if (imageUrl && !imageUrl.startsWith('http')) {
+    imageUrl = `${baseUrl}${imageUrl}`;
+  }
 
-  const url = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/${locale}/blog/${slug}`;
+  const url = `${baseUrl}/${locale}/blog/${slug}`;
 
   return {
     title: `${title} | AFA Bernat Desclot`,
@@ -102,13 +108,16 @@ export async function generateMetadata({
       locale: locale,
       type: 'article',
       publishedTime: post.publishedAt,
+      authors: post.author ? [post.author] : undefined,
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
       images: [imageUrl],
+      creator: '@AFABernatDesclot',
     },
+    metadataBase: new URL(baseUrl),
   };
 }
 
