@@ -27,6 +27,44 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'daily',
       priority: 0.8,
     })
+    
+    // Calendar page
+    staticPages.push({
+      url: `${baseUrl}/${locale}/calendari`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    })
+    
+    // Registration page
+    staticPages.push({
+      url: `${baseUrl}/${locale}/inscripcion`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    })
+    
+    // Legal pages
+    staticPages.push({
+      url: `${baseUrl}/${locale}/legal/privacy`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    })
+    
+    staticPages.push({
+      url: `${baseUrl}/${locale}/legal/legal-notice`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    })
+    
+    staticPages.push({
+      url: `${baseUrl}/${locale}/legal/cookies`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    })
   })
   
   // Blog post pages

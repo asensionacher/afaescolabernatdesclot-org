@@ -17,29 +17,100 @@ export async function generateMetadata({
   const { locale } = await params;
   
   const titles: Record<string, string> = {
-    ca: 'AFA Bernat Desclot - Associació de Famílies de Barcelona',
-    es: 'AFA Bernat Desclot - Asociación de Familias de Barcelona',
-    en: 'AFA Bernat Desclot - Family Association in Barcelona',
-    ar: 'AFA Bernat Desclot - جمعية العائلات في برشلونة',
-    ur: 'AFA Bernat Desclot - بارسلونا میں خاندانی انجمن',
+    ca: 'AFA Bernat Desclot - AMPA Escola Hospitalet de Llobregat Barcelona',
+    es: 'AFA Bernat Desclot - AMPA Escuela Hospitalet de Llobregat Barcelona',
+    en: 'AFA Bernat Desclot - Parent Association School Hospitalet Barcelona',
+    ar: 'AFA Bernat Desclot - جمعية الآباء مدرسة هوسبيتاليت برشلونة',
+    ur: 'AFA Bernat Desclot - والدین کی انجمن اسکول ہوسپٹالیٹ بارسلونا',
   };
 
   const descriptions: Record<string, string> = {
-    ca: 'Associació de Famílies de l\'escola Bernat Desclot a Barcelona. Oferim activitats extraescolars, acollida matinal i de tardes, casals, colònies i molt més!',
-    es: 'Asociación de Familias de la escuela Bernat Desclot en Barcelona. Ofrecemos actividades extraescolares, acogida matinal y de tardes, casales, colonias y mucho más!',
-    en: 'Family Association of Bernat Desclot school in Barcelona. We offer extracurricular activities, morning and afternoon care, camps, and much more!',
-    ar: 'جمعية العائلات لمدرسة برنات ديسكلوت في برشلونة. نقدم أنشطة خارج المنهج ورعاية صباحية ومسائية ومخيمات وأكثر من ذلك بكثير!',
-    ur: 'بارسلونا میں برنات ڈیسکلوٹ اسکول کی فیملی ایسوسی ایشن۔ ہم نصابی سرگرمیاں، صبح اور دوپہر کی دیکھ بھال، کیمپس، اور بہت کچھ پیش کرتے ہیں!',
+    ca: 'AMPA de l\'Escola Bernat Desclot a l\'Hospitalet de Llobregat (Barcelona). Associació de famílies del col·legi públic amb activitats extraescolars, casals d\'estiu, acollida matinal, biblioteca, esports i tallers per als alumnes.',
+    es: 'AMPA de la Escuela Bernat Desclot en Hospitalet de Llobregat (Barcelona). Asociación de familias del colegio público con actividades extraescolares, casales de verano, acogida matinal, biblioteca, deportes y talleres para los alumnos.',
+    en: 'Parent Association (AMPA) of Bernat Desclot School in Hospitalet de Llobregat (Barcelona). Public school family association with extracurricular activities, summer camps, morning care, library, sports and workshops for students.',
+    ar: 'جمعية الآباء (AMPA) لمدرسة برنات ديسكلوت في هوسبيتاليت دي لوبريغات (برشلونة). جمعية عائلات المدرسة العامة مع أنشطة خارج المنهج، مخيمات صيفية، رعاية صباحية، مكتبة، رياضة وورش عمل للطلاب.',
+    ur: 'برنات ڈیسکلوٹ اسکول کی والدین کی انجمن (AMPA) ہوسپٹالیٹ ڈی لوبریگات (بارسلونا) میں۔ سرکاری اسکول کی خاندانی انجمن نصابی سرگرمیاں، گرمیوں کے کیمپ، صبح کی دیکھ بھال، لائبریری، کھیل اور طلباء کے لیے ورکشاپس کے ساتھ۔',
+  };
+
+  const keywords: Record<string, string[]> = {
+    ca: [
+      'afa bernat desclot',
+      'ampa bernat desclot',
+      'escola bernat desclot',
+      'col·legi bernat desclot hospitalet',
+      'escola pública hospitalet',
+      'col·legi hospitalet de llobregat',
+      'ampa hospitalet',
+      'activitats extraescolars hospitalet',
+      'casals estiu hospitalet',
+      'acollida matinal barcelona',
+      'associació famílies escola',
+      'escola infantil hospitalet',
+      'escola primària hospitalet',
+      'educació pública barcelona',
+    ],
+    es: [
+      'afa bernat desclot',
+      'ampa bernat desclot',
+      'escuela bernat desclot',
+      'colegio bernat desclot hospitalet',
+      'escuela pública hospitalet',
+      'colegio hospitalet de llobregat',
+      'ampa hospitalet',
+      'actividades extraescolares hospitalet',
+      'casales verano hospitalet',
+      'acogida matinal barcelona',
+      'asociación familias escuela',
+      'escuela infantil hospitalet',
+      'escuela primaria hospitalet',
+      'educación pública barcelona',
+    ],
+    en: [
+      'afa bernat desclot',
+      'ampa bernat desclot',
+      'bernat desclot school',
+      'public school hospitalet',
+      'hospitalet de llobregat school',
+      'parent association barcelona',
+      'extracurricular activities hospitalet',
+      'summer camps hospitalet',
+      'morning care barcelona',
+      'family association school',
+      'primary school hospitalet',
+      'public education barcelona',
+    ],
+    ar: [
+      'afa bernat desclot',
+      'ampa bernat desclot',
+      'مدرسة برنات ديسكلوت',
+      'مدرسة هوسبيتاليت',
+      'مدرسة عامة برشلونة',
+      'جمعية الآباء',
+      'أنشطة خارج المنهج',
+      'مخيمات صيفية',
+    ],
+    ur: [
+      'afa bernat desclot',
+      'ampa bernat desclot',
+      'برنات ڈیسکلوٹ اسکول',
+      'ہوسپٹالیٹ اسکول',
+      'سرکاری اسکول بارسلونا',
+      'والدین کی انجمن',
+      'نصابی سرگرمیاں',
+      'گرمیوں کے کیمپ',
+    ],
   };
 
   const title = titles[locale] || titles.ca;
   const description = descriptions[locale] || descriptions.ca;
+  const keywordList = keywords[locale] || keywords.ca;
   const imageUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/logo.webp`;
   const url = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/${locale}`;
 
   return {
     title,
     description,
+    keywords: keywordList,
     openGraph: {
       title,
       description,
@@ -83,8 +154,55 @@ export default async function HomePage({
   const events = await getAllEvents();
   const posts = await getRecentPosts(3);
 
+  // Structured data for SEO
+  const organizationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'AFA Bernat Desclot',
+    alternateName: 'AMPA Bernat Desclot',
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}/${locale}`,
+    logo: `${process.env.NEXT_PUBLIC_BASE_URL}/logo.webp`,
+    description: t('description'),
+    email: 'afaescolabernatdesclot@gmail.com',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Escola Bernat Desclot',
+      addressLocality: 'Hospitalet de Llobregat',
+      addressRegion: 'Barcelona',
+      addressCountry: 'ES',
+    },
+    areaServed: {
+      '@type': 'City',
+      name: 'Hospitalet de Llobregat',
+    },
+    sameAs: [
+      'https://www.instagram.com/afaescolabernatdesclot/',
+    ],
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: t('title'),
+        item: `${process.env.NEXT_PUBLIC_BASE_URL}/${locale}`,
+      },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <Navigation locale={locale} />
       <main className={styles.main}>
         {/* Hero Section */}
