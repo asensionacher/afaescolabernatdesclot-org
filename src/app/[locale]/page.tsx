@@ -155,29 +155,67 @@ export default async function HomePage({
   const posts = await getRecentPosts(3);
 
   // Structured data for SEO
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://afaescolabernatdesclot.org';
+  
   const organizationSchema = {
     '@context': 'https://schema.org',
-    '@type': 'Organization',
+    '@type': 'EducationalOrganization',
+    '@id': `${baseUrl}/#organization`,
     name: 'AFA Bernat Desclot',
-    alternateName: 'AMPA Bernat Desclot',
-    url: `${process.env.NEXT_PUBLIC_BASE_URL}/${locale}`,
-    logo: `${process.env.NEXT_PUBLIC_BASE_URL}/logo.webp`,
+    alternateName: ['AMPA Bernat Desclot', 'Associació de Famílies Escola Bernat Desclot'],
+    url: baseUrl,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${baseUrl}/logo.webp`,
+      width: 512,
+      height: 512,
+    },
+    image: `${baseUrl}/logo.webp`,
     description: t('description'),
     email: 'afaescolabernatdesclot@gmail.com',
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Escola Bernat Desclot',
+      streetAddress: 'Carrer de Bernat Desclot',
       addressLocality: 'Hospitalet de Llobregat',
       addressRegion: 'Barcelona',
+      postalCode: '08901',
       addressCountry: 'ES',
     },
-    areaServed: {
-      '@type': 'City',
-      name: 'Hospitalet de Llobregat',
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 41.3590,
+      longitude: 2.1086,
+    },
+    areaServed: [
+      {
+        '@type': 'City',
+        name: 'Hospitalet de Llobregat',
+      },
+      {
+        '@type': 'City',
+        name: 'Barcelona',
+      },
+    ],
+    parentOrganization: {
+      '@type': 'EducationalOrganization',
+      name: 'Escola Bernat Desclot',
     },
     sameAs: [
       'https://www.instagram.com/afaescolabernatdesclot/',
     ],
+  };
+
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${baseUrl}/#website`,
+    url: baseUrl,
+    name: 'AFA Bernat Desclot',
+    description: t('description'),
+    publisher: {
+      '@id': `${baseUrl}/#organization`,
+    },
+    inLanguage: ['ca', 'es', 'en', 'ar', 'ur'],
   };
 
   const breadcrumbSchema = {
@@ -187,8 +225,8 @@ export default async function HomePage({
       {
         '@type': 'ListItem',
         position: 1,
-        name: t('title'),
-        item: `${process.env.NEXT_PUBLIC_BASE_URL}/${locale}`,
+        name: 'Inicio',
+        item: `${baseUrl}/${locale}`,
       },
     ],
   };
@@ -198,6 +236,10 @@ export default async function HomePage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
       />
       <script
         type="application/ld+json"
