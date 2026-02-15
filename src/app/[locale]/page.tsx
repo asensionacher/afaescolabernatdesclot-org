@@ -175,16 +175,16 @@ export default async function HomePage({
     email: 'afaescolabernatdesclot@gmail.com',
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Carrer de Bernat Desclot',
+      streetAddress: 'Carrer de de l\'Aprestadora, 35',
       addressLocality: 'Hospitalet de Llobregat',
       addressRegion: 'Barcelona',
-      postalCode: '08901',
+      postalCode: '08902',
       addressCountry: 'ES',
     },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: 41.3590,
-      longitude: 2.1086,
+      latitude: 41.3635434,
+      longitude: 2.1308204
     },
     areaServed: [
       {
