@@ -69,22 +69,46 @@ Archivo robots.txt optimizado:
 - ✅ Bloquea carpetas administrativas (/api/, /studio/, /_next/)
 - ✅ Referencia al sitemap.xml
 
-### 5. Datos estructurados JSON-LD
+### 5. Datos estructurados JSON-LD (Mejorados)
 
-Se han agregado schemas de Schema.org:
+Se han agregado 3 schemas de Schema.org para Rich Results:
 
-**Organization Schema:**
+**EducationalOrganization Schema:**
 ```json
 {
-  "@type": "Organization",
+  "@type": "EducationalOrganization",
+  "@id": "https://afaescolabernatdesclot.org/#organization",
   "name": "AFA Bernat Desclot",
-  "alternateName": "AMPA Bernat Desclot",
+  "alternateName": ["AMPA Bernat Desclot", "Associació de Famílies Escola Bernat Desclot"],
+  "email": "afaescolabernatdesclot@gmail.com",
   "address": "Hospitalet de Llobregat, Barcelona",
-  "email": "afaescolabernatdesclot@gmail.com"
+  "geo": { "latitude": 41.3590, "longitude": 2.1086 }
 }
 ```
 
+**WebSite Schema:** Soporte multilingüe con 5 idiomas
+
 **Breadcrumb Schema:** Mejora la navegación en resultados de búsqueda
+
+## Cómo probar los Rich Results
+
+### Opción 1: Usar archivo de prueba
+1. Abre en tu navegador: `http://localhost:3000/test-rich-results.html` (en desarrollo)
+2. Copia todo el código HTML
+3. Ve a: https://search.google.com/test/rich-results
+4. Pega el código en "CODE" 
+5. Haz clic en "TEST CODE"
+
+### Opción 2: Probar URL en producción
+1. Despliega los cambios a producción
+2. Ve a: https://search.google.com/test/rich-results
+3. Ingresa tu URL: `https://tudominio.com/ca`
+4. Haz clic en "TEST URL"
+
+### Resultados esperados:
+✅ **EducationalOrganization** detectada
+✅ **WebSite** detectado  
+✅ **BreadcrumbList** detectada
 
 ## Verificación y próximos pasos
 
