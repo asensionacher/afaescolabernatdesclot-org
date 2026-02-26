@@ -107,7 +107,12 @@ async function testWebLogin(password) {
   }
 }
 
-const password = process.argv[2] || 'Wildness4-Chop8-Stung1-Theme0';
+const password = process.argv[2];
+if (!password) {
+  log('❌ Usage: node scripts/test-web-login.js "YourPassword"', 'red');
+  log('   You must provide the password as an argument.', 'yellow');
+  process.exit(1);
+}
 testWebLogin(password).catch(error => {
   log(`\n❌ Fatal error: ${error.message}`, 'red');
   console.error(error);
