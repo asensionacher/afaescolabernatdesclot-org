@@ -46,12 +46,13 @@ export async function POST(_request: NextRequest, { params }: RouteParams) {
 
     if (botToken && chatId) {
       try {
-        const filename = `acta_${closedReport.meetingDate.split('T')[0]}.pdf`
+        const actaNum = closedReport.actaNumber ? `_${closedReport.actaNumber}` : ''
+        const filename = `acta${actaNum}_${closedReport.meetingDate.split('T')[0]}.pdf`
         
         const formData = new FormData()
         formData.append('chat_id', chatId)
         formData.append('document', new Blob([new Uint8Array(pdfBuffer)], { type: 'application/pdf' }), filename)
-        formData.append('caption', `📄 Acta tancada: ${closedReport.title}\nData: ${new Date(closedReport.meetingDate).toLocaleDateString('ca-ES')}`)
+        formData.append('caption', `📄 Acta ${closedReport.actaNumber ? `#${closedReport.actaNumber}` : ''} tancada: ${closedReport.title}\nData: ${new Date(closedReport.meetingDate).toLocaleDateString('ca-ES')}`)
 
         const telegramResponse = await fetch(
           `https://api.telegram.org/bot${botToken}/sendDocument`,

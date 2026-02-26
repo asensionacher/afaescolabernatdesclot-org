@@ -76,6 +76,7 @@ export default function MeetingReportsList() {
     setCreatingTest(true)
     try {
       const testData = {
+        actaNumber: 'TEST-001',
         title: 'Reunió Extraordinària de l\'AMPA',
         meetingDate: new Date().toISOString(),
         attendees: [
@@ -177,7 +178,10 @@ export default function MeetingReportsList() {
           reports.map((report) => (
             <div key={report._id} className={styles.card}>
               <div className={styles.cardHeader}>
-                <h2 className={styles.cardTitle}>{report.title}</h2>
+                <div>
+                  <span className={styles.actaNumber}>Acta #{report.actaNumber}</span>
+                  <h2 className={styles.cardTitle}>{report.title}</h2>
+                </div>
                 <span className={`${styles.badge} ${styles[report.status]}`}>
                   {report.status === 'draft' ? '📝 Esborrany' : '✅ Tancat'}
                 </span>

@@ -22,6 +22,67 @@ function removeEmojis(text: string): string {
     .trim()
 }
 
+// Decode HTML entities to their plain text equivalents
+function decodeHTMLEntities(text: string): string {
+  // Named entities
+  const namedEntities: Record<string, string> = {
+    '&amp;': '&',
+    '&lt;': '<',
+    '&gt;': '>',
+    '&quot;': '"',
+    '&apos;': "'",
+    '&nbsp;': ' ',
+    '&iexcl;': '\u00A1',
+    '&iquest;': '\u00BF',
+    '&ntilde;': '\u00F1',
+    '&Ntilde;': '\u00D1',
+    '&aacute;': '\u00E1',
+    '&Aacute;': '\u00C1',
+    '&eacute;': '\u00E9',
+    '&Eacute;': '\u00C9',
+    '&iacute;': '\u00ED',
+    '&Iacute;': '\u00CD',
+    '&oacute;': '\u00F3',
+    '&Oacute;': '\u00D3',
+    '&uacute;': '\u00FA',
+    '&Uacute;': '\u00DA',
+    '&uuml;': '\u00FC',
+    '&Uuml;': '\u00DC',
+    '&ccedil;': '\u00E7',
+    '&Ccedil;': '\u00C7',
+    '&laquo;': '\u00AB',
+    '&raquo;': '\u00BB',
+    '&euro;': '\u20AC',
+    '&ndash;': '\u2013',
+    '&mdash;': '\u2014',
+    '&lsquo;': '\u2018',
+    '&rsquo;': '\u2019',
+    '&ldquo;': '\u201C',
+    '&rdquo;': '\u201D',
+    '&bull;': '\u2022',
+    '&hellip;': '\u2026',
+    '&copy;': '\u00A9',
+    '&reg;': '\u00AE',
+    '&trade;': '\u2122',
+    '&deg;': '\u00B0',
+    '&ordf;': '\u00AA',
+    '&ordm;': '\u00BA',
+  }
+
+  return text
+    // Decode numeric decimal entities (e.g. &#39; &#233;)
+    .replace(/&#(\d+);/g, (_match, dec) => String.fromCharCode(parseInt(dec, 10)))
+    // Decode numeric hex entities (e.g. &#x27; &#xE9;)
+    .replace(/&#x([0-9a-fA-F]+);/g, (_match, hex) => String.fromCharCode(parseInt(hex, 16)))
+    // Decode named entities
+    .replace(/&[a-zA-Z]+;/g, (entity) => namedEntities[entity] ?? entity)
+}
+
+// Clean text for PDF rendering: decode HTML entities then strip emojis
+function cleanText(text: string): string {
+  return removeEmojis(decodeHTMLEntities(text))
+}
+
 export function generateActaPDF(report: MeetingReport): Buffer {
   const doc = new jsPDF()
   addFont(doc)
@@ -43,11 +104,19 @@ export function generateActaPDF(report: MeetingReport): Buffer {
   doc.setFontSize(16)
   doc.setFont('helvetica', 'bold')
   doc.text('AMPA ESCOLA BERNAT DESCLOT', pageWidth / 2, y, { align: 'center' })
+  y += 8
+
+  // Acta number
+  doc.setFontSize(11)
+  doc.setFont('helvetica', 'normal')
+  const cleanActaNumber = cleanText(report.actaNumber || '')
+  doc.text(`Acta núm.: ${cleanActaNumber}`, pageWidth / 2, y, { align: 'center' })
   y += 10
 
   // Title (remove emojis) - with word wrap
   doc.setFontSize(14)
-  const cleanTitle = removeEmojis(report.title)
+  doc.setFont('helvetica', 'bold')
+  const cleanTitle = cleanText(report.title)
   const titleLines = doc.splitTextToSize(cleanTitle, maxWidth)
   
   // Center each line of the title
@@ -83,9 +152,9 @@ export function generateActaPDF(report: MeetingReport): Buffer {
   
   report.attendees.forEach((attendee) => {
     checkNewPage(15)
-    const cleanStudentName = removeEmojis(attendee.studentName)
-    const cleanCourse = removeEmojis(attendee.course)
-    const cleanAttendantName = removeEmojis(attendee.attendantName)
+    const cleanStudentName = cleanText(attendee.studentName)
+    const cleanCourse = cleanText(attendee.course)
+    const cleanAttendantName = cleanText(attendee.attendantName)
     
     doc.text(`• Alumne/a: ${cleanStudentName}`, margin + 5, y)
     y += 5
@@ -108,20 +177,15 @@ export function generateActaPDF(report: MeetingReport): Buffer {
   doc.setFont('helvetica', 'normal')
 
   // Parse HTML content and render as plain text with basic formatting
-  const tempDiv = {
-    innerHTML: report.content,
-    querySelectorAll: () => [],
-    textContent: report.content
-      .replace(/<br\s*\/?>/gi, '\n')
-      .replace(/<\/p>/gi, '\n')
-      .replace(/<p>/gi, '')
-      .replace(/<li>/gi, '• ')
-      .replace(/<\/li>/gi, '\n')
-      .replace(/<[^>]+>/g, '')
-      .replace(/&nbsp;/g, ' ')
-  }
+  const plainContent = report.content
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n')
+    .replace(/<p>/gi, '')
+    .replace(/<li>/gi, '• ')
+    .replace(/<\/li>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
 
-  const cleanContent = removeEmojis(tempDiv.textContent || '')
+  const cleanContent = cleanText(plainContent)
   const contentLines = doc.splitTextToSize(cleanContent, maxWidth)
   
   contentLines.forEach((line: string) => {
@@ -140,11 +204,11 @@ export function generateActaPDF(report: MeetingReport): Buffer {
   y += 7
   
   doc.setFont('helvetica', 'bold')
-  doc.text(removeEmojis(report.signerName), margin, y)
+  doc.text(cleanText(report.signerName), margin, y)
   y += 5
   
   doc.setFont('helvetica', 'normal')
-  doc.text(removeEmojis(report.signerRole), margin, y)
+  doc.text(cleanText(report.signerRole), margin, y)
 
   // Generate PDF buffer
   return Buffer.from(doc.output('arraybuffer'))

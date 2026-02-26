@@ -21,6 +21,7 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
   const [error, setError] = useState('')
 
   const [formData, setFormData] = useState({
+    actaNumber: initialData?.actaNumber || '',
     title: initialData?.title || '',
     meetingDate: initialData?.meetingDate 
       ? new Date(initialData.meetingDate).toISOString().slice(0, 16) 
@@ -140,6 +141,37 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
       <div className={styles.section}>
         <h2 className={styles.sectionTitle}>Informació bàsica</h2>
 
+        <div className={styles.fieldRow}>
+          <div className={styles.field}>
+            <label className={styles.label}>
+              Número d&apos;acta <span className={styles.required}>*</span>
+            </label>
+            <input
+              type="text"
+              name="actaNumber"
+              value={formData.actaNumber}
+              onChange={handleChange}
+              className={styles.input}
+              placeholder="Ex: 001, 2024-A1, etc."
+              required
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>
+              Data i hora de la reunió <span className={styles.required}>*</span>
+            </label>
+            <input
+              type="datetime-local"
+              name="meetingDate"
+              value={formData.meetingDate}
+              onChange={handleChange}
+              className={styles.input}
+              required
+            />
+          </div>
+        </div>
+
         <div className={styles.field}>
           <label className={styles.label}>
             Títol de la reunió <span className={styles.required}>*</span>
@@ -151,20 +183,6 @@ export default function MeetingReportForm({ initialData, isEdit = false }: Meeti
             onChange={handleChange}
             className={styles.input}
             placeholder="Ex: REUNIÓ PROPOSTES I VOTACIÓ DISFRESSA"
-            required
-          />
-        </div>
-
-        <div className={styles.field}>
-          <label className={styles.label}>
-            Data i hora de la reunió <span className={styles.required}>*</span>
-          </label>
-          <input
-            type="datetime-local"
-            name="meetingDate"
-            value={formData.meetingDate}
-            onChange={handleChange}
-            className={styles.input}
             required
           />
         </div>

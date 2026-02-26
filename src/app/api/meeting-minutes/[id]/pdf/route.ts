@@ -31,10 +31,11 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     const pdfBuffer = generateActaPDF(report)
 
     // Return PDF
+    const actaNum = report.actaNumber ? `_${report.actaNumber}` : ''
     return new NextResponse(pdfBuffer as unknown as BodyInit, {
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="acta_${report.meetingDate.split('T')[0]}.pdf"`,
+        'Content-Disposition': `attachment; filename="acta${actaNum}_${report.meetingDate.split('T')[0]}.pdf"`,
       },
     })
   } catch (error) {

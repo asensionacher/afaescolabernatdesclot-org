@@ -6,6 +6,13 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'actaNumber',
+      title: "Número d'acta",
+      type: 'string',
+      description: "Identificador únic de l'acta (ex: 001, 2024-A1, etc.)",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'title',
       title: 'Títol de la reunió',
       type: 'string',
@@ -83,13 +90,15 @@ export default defineType({
   preview: {
     select: {
       title: 'title',
+      actaNumber: 'actaNumber',
       date: 'meetingDate',
       status: 'status',
     },
     prepare(selection) {
-      const { title, date, status } = selection
+      const { title, actaNumber, date, status } = selection
+      const numberPrefix = actaNumber ? `[${actaNumber}] ` : ''
       return {
-        title: title,
+        title: `${numberPrefix}${title}`,
         subtitle: `${date ? new Date(date).toLocaleDateString('ca-ES') : 'Sense data'} - ${status === 'draft' ? '📝 Esborrany' : '✅ Tancat'}`,
       }
     },

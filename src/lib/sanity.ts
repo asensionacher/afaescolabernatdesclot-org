@@ -176,6 +176,7 @@ export interface Attendee {
 export interface MeetingReport {
   _id: string
   _type: 'meetingReport'
+  actaNumber: string
   title: string
   meetingDate: string
   attendees: Attendee[]
@@ -192,6 +193,7 @@ export async function getAllMeetingReports(): Promise<MeetingReport[]> {
   const query = `*[_type == "meetingReport"] | order(meetingDate desc) {
     _id,
     _type,
+    actaNumber,
     title,
     meetingDate,
     attendees,
@@ -212,6 +214,7 @@ export async function getMeetingReportById(id: string): Promise<MeetingReport | 
   const query = `*[_type == "meetingReport" && _id == $id][0] {
     _id,
     _type,
+    actaNumber,
     title,
     meetingDate,
     attendees,
