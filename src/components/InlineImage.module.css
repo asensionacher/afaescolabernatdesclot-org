@@ -1,5 +1,9 @@
+/* ============================================
+   Inline Image - Blog post images with captions
+   ============================================ */
+
 .figure {
-  margin: 2rem 0;
+  margin: 2.5rem 0;
   width: 100%;
 }
 
@@ -9,7 +13,14 @@
   height: auto;
   overflow: hidden;
   border-radius: var(--radius);
-  background-color: var(--color-gray-100);
+  background-color: var(--color-bg);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.imageWrapper:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 .image {
@@ -17,20 +28,26 @@
   height: auto;
   display: block;
   object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.imageWrapper:hover .image {
+  transform: scale(1.02);
 }
 
 .caption {
   margin-top: 0.75rem;
   font-size: 0.875rem;
-  color: var(--color-gray-600);
+  color: var(--color-text-muted);
   text-align: center;
   font-style: italic;
+  line-height: 1.5;
 }
 
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 768px) {
   .figure {
-    margin: 1.5rem 0;
+    margin: 1.75rem 0;
   }
 
   .caption {

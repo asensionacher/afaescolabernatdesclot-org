@@ -1,33 +1,68 @@
 /* ============================================
-   Variables i Colors
+   Design System - AFA Bernat Desclot
+   A playful, warm design for a school community
    ============================================ */
 :root {
-    /* Colores principales de la escuela */
-    --color-primary: #003B5C;        /* Azul marino oscuro */
-    --color-secondary: #005A87;      /* Azul marino medio */
-    --color-accent: #FFD54F;         /* Amarillo suave/dorado */
+    /* Primary palette - keeping the school navy & gold */
+    --color-primary: #003B5C;
+    --color-primary-dark: #002A42;
+    --color-primary-light: #E8F4FD;
+    --color-secondary: #005A87;
+    --color-accent: #FFD54F;
+    --color-accent-dark: #FFC107;
+    --color-accent-light: #FFF8E1;
+
+    /* Semantic colors */
     --color-success: #26DE81;
     --color-info: #45AAF2;
-    --color-warning: #FFB74D;        /* Amarillo/naranja advertencia */
-    
-    --color-bg: #FFF9E6;             /* Fondo amarillo muy suave */
+    --color-warning: #FFB74D;
+    --color-coral: #FF6B6B;
+    --color-lavender: #A78BFA;
+    --color-mint: #6EE7B7;
+    --color-sky: #7DD3FC;
+    --color-peach: #FDBA74;
+
+    /* Surfaces */
+    --color-bg: #FEFCF3;
     --color-bg-alt: #FFFFFF;
-    --color-text: #1A1A2E;           /* Texto oscuro para legibilidad */
-    --color-text-light: #5A6B7D;     /* Texto secundario */
-    
+    --color-bg-warm: #FFF9E6;
+    --color-bg-cool: #F0F7FF;
+    --color-border: #E8E0D0;
+
+    /* Text */
+    --color-text: #1A1A2E;
+    --color-text-light: #5A6B7D;
+    --color-text-muted: #8D99AE;
+
+    /* Typography */
     --font-primary: 'Baloo 2', cursive;
     --font-secondary: 'Nunito', sans-serif;
-    
-    --shadow-sm: 0 2px 10px rgba(0, 59, 92, 0.1);
-    --shadow-md: 0 4px 20px rgba(0, 59, 92, 0.15);
-    --shadow-lg: 0 8px 30px rgba(0, 59, 92, 0.2);
-    
-    --radius: 20px;
+
+    /* Shadows - layered for depth */
+    --shadow-xs: 0 1px 2px rgba(0, 59, 92, 0.05);
+    --shadow-sm: 0 2px 8px rgba(0, 59, 92, 0.08);
+    --shadow-md: 0 4px 16px rgba(0, 59, 92, 0.12);
+    --shadow-lg: 0 8px 32px rgba(0, 59, 92, 0.16);
+    --shadow-xl: 0 16px 48px rgba(0, 59, 92, 0.2);
+    --shadow-glow: 0 0 20px rgba(255, 213, 79, 0.3);
+    --shadow-card: 0 2px 12px rgba(0, 59, 92, 0.06), 0 0 0 1px rgba(0, 59, 92, 0.03);
+
+    /* Layout */
+    --radius-sm: 8px;
+    --radius: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+    --radius-full: 9999px;
+
+    /* Motion */
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* ============================================
-   Reset i Base
+   Reset & Base
    ============================================ */
 * {
     margin: 0;
@@ -35,11 +70,17 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 body {
     font-family: var(--font-secondary);
     background-color: var(--color-bg);
     color: var(--color-text);
-    line-height: 1.6;
+    line-height: 1.7;
     overflow-x: hidden;
     position: relative;
 }
@@ -49,6 +90,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 800;
     line-height: 1.2;
     margin-bottom: 1rem;
+    letter-spacing: -0.01em;
 }
 
 a {
@@ -64,4 +106,91 @@ a:hover {
 img {
     max-width: 100%;
     height: auto;
+}
+
+::selection {
+    background: var(--color-accent);
+    color: var(--color-primary);
+}
+
+/* ============================================
+   Utility Animations
+   ============================================ */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-12px) rotate(3deg); }
+    75% { transform: translateY(-6px) rotate(-2deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
+@keyframes wave {
+    0% { transform: rotate(0deg); }
+    10% { transform: rotate(14deg); }
+    20% { transform: rotate(-8deg); }
+    30% { transform: rotate(14deg); }
+    40% { transform: rotate(-4deg); }
+    50% { transform: rotate(10deg); }
+    60% { transform: rotate(0deg); }
+    100% { transform: rotate(0deg); }
+}
+
+@keyframes slideInLeft {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+@keyframes bounceIn {
+    0% { opacity: 0; transform: scale(0.3); }
+    50% { opacity: 1; transform: scale(1.05); }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: var(--radius-full);
+    border: 2px solid var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-secondary);
 }

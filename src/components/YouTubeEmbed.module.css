@@ -1,18 +1,27 @@
-/* YouTube Embed Container */
+/* ============================================
+   YouTube Embed - Video player in blog posts
+   ============================================ */
+
 .container {
-  margin: 2rem 0;
+  margin: 2.5rem 0;
   width: 100%;
 }
 
-/* Responsive wrapper using aspect ratio trick */
+/* Responsive 16:9 wrapper with polished border */
 .videoWrapper {
   position: relative;
-  padding-bottom: 56.25%; /* 16:9 aspect ratio (9 / 16 = 0.5625) */
+  padding-bottom: 56.25%; /* 16:9 */
   height: 0;
   overflow: hidden;
   border-radius: var(--radius);
-  background: var(--color-bg);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: var(--color-primary);
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+}
+
+.videoWrapper:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
 }
 
 .videoWrapper iframe {
@@ -28,8 +37,8 @@
 /* Error state */
 .error {
   padding: 2rem;
-  background: #fff3cd;
-  border: 2px solid #ffc107;
+  background: var(--color-accent-light);
+  border: 2px solid var(--color-accent);
   border-radius: var(--radius);
   text-align: center;
   margin: 2rem 0;
@@ -37,8 +46,9 @@
 
 .error p {
   margin: 0;
-  color: #856404;
+  color: var(--color-text);
   font-weight: 600;
+  font-size: 0.95rem;
 }
 
 /* Tablet and larger */
