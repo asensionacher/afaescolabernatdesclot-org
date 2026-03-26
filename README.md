@@ -245,7 +245,7 @@ Una vez desplegado en Vercel, puedes:
 ## Enlaces
 
 - Blog de la escuela: https://agora.xtec.cat/ceip-bernatdesclot/
-- Kampi ki Pugui: Actividades extraescolares
+- Peti ki Peti: Actividades extraescolares
 
 ## Contribuir
 
