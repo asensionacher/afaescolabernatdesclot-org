@@ -87,7 +87,8 @@
     "readMore": "اقرأ المزيد",
     "noEvents": "لا توجد أحداث متاحة",
     "schoolBlog": "مدونة المدرسة",
-    "upcomingEvents": "الفعاليات القادمة"
+    "upcomingEvents": "الفعاليات القادمة",
+    "downloadPdf": "تحميل وثيقة PDF"
   },
   "calendar": {
     "previousMonth": "الشهر السابق",

@@ -9,6 +9,7 @@ import styles from './page.module.css';
 import type { Metadata } from 'next';
 import YouTubeEmbed from '@/components/YouTubeEmbed';
 import InlineImage from '@/components/InlineImage';
+import Link from 'next/link';
 
 interface Post {
   _id: string;
@@ -26,16 +27,17 @@ interface Post {
     ar?: string;
     ur?: string;
   };
-  body?: {
-    ca?: any[];
-    es?: any[];
-    en?: any[];
-    ar?: any[];
-    ur?: any[];
-  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  body?: Record<string, any[]>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   mainImage?: any;
   publishedAt: string;
   author?: string;
+  attachment?: {
+    asset?: {
+      url?: string;
+    };
+  };
 }
 
 async function getPost(slug: string): Promise<Post | null> {
@@ -48,7 +50,8 @@ async function getPost(slug: string): Promise<Post | null> {
         body,
         mainImage,
         publishedAt,
-        author
+        author,
+        attachment { asset->{ url } }
       }`,
       { slug }
     );
@@ -128,18 +131,21 @@ export default async function PostPage({
 }) {
   const { locale, slug } = await params;
   const post = await getPost(slug);
+  const t = await getTranslations('blog');
 
   if (!post) {
     notFound();
   }
 
   const title = post.title?.[locale as keyof typeof post.title] || post.title?.ca || '';
-  const body = post.body?.[locale as keyof typeof post.body] || post.body?.ca || [];
+  const body = post.body?.[locale] || post.body?.ca || [];
   const date = new Date(post.publishedAt).toLocaleDateString(locale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
+
+  const attachmentUrl = post.attachment?.asset?.url;
 
   // Custom components for PortableText
   const portableTextComponents = {
@@ -170,6 +176,19 @@ export default async function PostPage({
                   className={styles.image}
                   priority
                 />
+              </div>
+            )}
+
+            {attachmentUrl && (
+              <div className={styles.attachmentBanner}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                <Link href={attachmentUrl} target="_blank" rel="noopener noreferrer" className={styles.attachmentLink}>
+                  {t('downloadPdf')}
+                </Link>
               </div>
             )}
 

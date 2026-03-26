@@ -87,7 +87,8 @@
     "readMore": "Read more",
     "noEvents": "No events available",
     "schoolBlog": "School blog",
-    "upcomingEvents": "Upcoming Events"
+    "upcomingEvents": "Upcoming Events",
+    "downloadPdf": "Download PDF document"
   },
   "calendar": {
     "previousMonth": "Previous month",

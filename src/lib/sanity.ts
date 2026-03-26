@@ -76,6 +76,13 @@ export interface Post {
       _type: 'reference'
     }
   }
+  attachment?: {
+    asset: {
+      _ref: string
+      _type: 'reference'
+      url: string
+    }
+  }
 }
 
 // Fetch upcoming events (sorted by event date, most recent first)
@@ -159,7 +166,8 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     publishedAt,
     excerpt,
     body,
-    mainImage
+    mainImage,
+    attachment { asset->{ _ref, url } }
   }`
   
   return client.fetch(query, { slug })

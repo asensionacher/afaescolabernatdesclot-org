@@ -56,6 +56,14 @@ export default defineType({
       title: 'Body',
       type: 'localeBlockContent',
     }),
+    defineField({
+      name: 'attachment',
+      title: 'Document adjunt (PDF)',
+      type: 'file',
+      options: {
+        accept: '.pdf',
+      },
+    }),
   ],
   preview: {
     select: {

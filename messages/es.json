@@ -87,7 +87,8 @@
     "readMore": "Leer más",
     "noEvents": "No hay eventos disponibles",
     "schoolBlog": "Blog de la escuela",
-    "upcomingEvents": "Próximos Eventos"
+    "upcomingEvents": "Próximos Eventos",
+    "downloadPdf": "Descargar documento PDF"
   },
   "calendar": {
     "previousMonth": "Mes anterior",
