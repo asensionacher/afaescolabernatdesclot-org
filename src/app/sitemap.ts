@@ -28,14 +28,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     })
     
-    // Calendar page
-    staticPages.push({
-      url: `${baseUrl}/${locale}/calendari`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    })
-    
     // Registration page
     staticPages.push({
       url: `${baseUrl}/${locale}/inscripcion`,

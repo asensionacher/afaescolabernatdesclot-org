@@ -76,9 +76,6 @@ export default function Navigation({ locale }: { locale: string }) {
           <Link href="/#serveis" className={styles.menuLink}>
             {t('services')}
           </Link>
-          <Link href="/calendario" className={pathname === '/calendario' ? styles.active : styles.menuLink}>
-            {t('calendar')}
-          </Link>
           <Link href="/blog" className={pathname === '/blog' ? styles.active : styles.menuLink}>
             Blog
           </Link>
@@ -96,9 +93,6 @@ export default function Navigation({ locale }: { locale: string }) {
               </Link>
               <Link href="/#serveis" className={styles.mobileMenuLink} onClick={closeMenu}>
                 {t('services')}
-              </Link>
-              <Link href="/calendario" className={styles.mobileMenuLink} onClick={closeMenu}>
-                {t('calendar')}
               </Link>
               <Link href="/blog" className={styles.mobileMenuLink} onClick={closeMenu}>
                 Blog

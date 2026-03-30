@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { getAllEvents } from '@/lib/sanity';
 import EventCalendar from '@/components/EventCalendar';
@@ -23,6 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 }
 
 export default async function CalendarPage({ params }: { params: Promise<{ locale: string }> }) {
+  notFound();
   const { locale } = await params;
   const tCalendar = await getTranslations('calendar');
   const tPage = await getTranslations('calendarPage');

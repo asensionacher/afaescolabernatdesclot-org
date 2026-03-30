@@ -35,9 +35,6 @@ export default function UpcomingEvents({ events, locale, translations }: Upcomin
     return (
       <div className={styles.container}>
         <p className={styles.noEvents}>{translations.noEvents}</p>
-        <Link href="/calendario" className={styles.viewAllButton}>
-          {translations.viewFullCalendar}
-        </Link>
       </div>
     );
   }
@@ -82,9 +79,6 @@ export default function UpcomingEvents({ events, locale, translations }: Upcomin
       </div>
 
       <div className={styles.buttonContainer}>
-        <Link href="/calendario" className={styles.viewAllButton}>
-          {translations.viewFullCalendar}
-        </Link>
       </div>
     </div>
   );
