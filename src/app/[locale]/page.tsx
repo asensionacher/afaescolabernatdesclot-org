@@ -1,9 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import UpcomingEvents from '@/components/UpcomingEvents';
 import { Link } from '@/i18n/routing';
-import { getAllEvents, getRecentPosts } from '@/lib/sanity';
 import styles from './page.module.css';
 import type { Metadata } from 'next';
 
@@ -148,12 +146,6 @@ export default async function HomePage({
   const tBlog = await getTranslations('blog');
   const tContact = await getTranslations('contact');
   const tSchedule = await getTranslations('schedule');
-  const tCalendar = await getTranslations('calendar');
-  
-  // Fetch events and blog posts from Sanity
-  const events = await getAllEvents();
-  const posts = await getRecentPosts(3);
-
   // Structured data for SEO
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://afaescolabernatdesclot.org';
   
@@ -254,7 +246,7 @@ export default async function HomePage({
             <p className={styles.subtitle}>{t('subtitle')}</p>
             <p className={styles.description}>{t('description')}</p>
             <div className={styles.ctaButtons}>
-              <a href="#esdeveniments" className={styles.cta}>
+              <a href="#serveis" className={styles.cta}>
                 {t('cta')} 🎉
               </a>
               <Link href="/blog" className={styles.ctaSecondary}>
@@ -375,21 +367,6 @@ export default async function HomePage({
             </div>
 
             <p className={styles.finalMessage}>{tAbout('finalMessage')}</p>
-          </div>
-        </section>
-
-        {/* Events Section - Esdeveniments */}
-        <section id="esdeveniments" className={styles.sectionAlt}>
-          <div className={styles.container}>
-            <h2>📅 {tBlog('upcomingEvents')}</h2>
-            <UpcomingEvents 
-              events={events}
-              locale={locale}
-              translations={{
-                viewFullCalendar: tCalendar('viewFullCalendar'),
-                noEvents: tCalendar('noEvents'),
-              }}
-            />
           </div>
         </section>
 
