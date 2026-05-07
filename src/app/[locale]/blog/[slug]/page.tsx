@@ -138,7 +138,33 @@ export default async function PostPage({
   }
 
   const title = post.title?.[locale as keyof typeof post.title] || post.title?.ca || '';
-  const body = post.body?.[locale] || post.body?.ca || [];
+  const rawBody: unknown[] = post.body?.[locale] || post.body?.ca || [];
+  // Sanitize body: ensure all span nodes have a text field (required by @portabletext/react)
+  const body = rawBody.map((block) => {
+    if (
+      block !== null &&
+      typeof block === 'object' &&
+      (block as Record<string, unknown>)._type === 'block' &&
+      Array.isArray((block as Record<string, unknown>).children)
+    ) {
+      const b = block as Record<string, unknown>;
+      return {
+        ...b,
+        children: (b.children as unknown[]).map((child) => {
+          if (
+            child !== null &&
+            typeof child === 'object' &&
+            (child as Record<string, unknown>)._type === 'span' &&
+            (child as Record<string, unknown>).text === undefined
+          ) {
+            return { ...(child as Record<string, unknown>), text: '' };
+          }
+          return child;
+        }),
+      };
+    }
+    return block;
+  });
   const date = new Date(post.publishedAt).toLocaleDateString(locale, {
     year: 'numeric',
     month: 'long',
@@ -193,7 +219,7 @@ export default async function PostPage({
             )}
 
             <div className={styles.content}>
-              <PortableText value={body} components={portableTextComponents} />
+              <PortableText value={body as Parameters<typeof PortableText>[0]['value']} components={portableTextComponents} />
             </div>
           </div>
         </article>
