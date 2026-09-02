@@ -411,12 +411,14 @@ export default async function HomePage({
                     >
                       {tSchedule('download')}
                     </a>
-                    <Link 
-                      href="/inscripcion"
+                    <a
+                      href="https://forms.gle/nqmeTwBiCQkpMFe7A"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className={styles.onlineFormLink}
                     >
                       {tSchedule('onlineForm')}
-                    </Link>
+                    </a>
                   </div>
                 </div>
               </div>
