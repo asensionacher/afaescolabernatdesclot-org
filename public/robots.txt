@@ -1,12 +1,11 @@
 # robots.txt for AFA Bernat Desclot
 
-# Allow all bots to crawl the site
 User-agent: *
 Allow: /
 
-# Disallow admin and private areas
-Disallow: /studio/
+# Zonas privadas
+Disallow: /admin/
 Disallow: /api/
+Disallow: /el-meu-compte
 
-# Sitemap location
 Sitemap: https://afaescolabernatdesclot.org/sitemap.xml

@@ -1,144 +1,130 @@
-# AGENTS.md - AFA Bernat Desclot Website
+# AGENTS.md - AFA Bernat Desclot (web de formularios)
 
 ## Stack
 
-- **Framework**: Next.js 15 (App Router) + TypeScript 5 (strict mode)
-- **CMS**: Sanity v3 (Studio at `/studio`, project `cpaqkfmb`, dataset `production`)
-- **i18n**: next-intl (locales: `ca` [default], `es`, `en`, `ar`, `ur`)
-- **Styling**: CSS Modules (mobile-first), no Tailwind
-- **PDF**: jsPDF + pdf-lib
-- **Package Manager**: pnpm
-- **Deployment**: Vercel
+- **Framework**: Next.js 15 (App Router) + React 19 + TypeScript 5 (strict)
+- **Base de datos**: PostgreSQL + Prisma 6
+- **Auth**: JWT (jose) en cookie HttpOnly + bcryptjs
+- **Mutaciones**: Server Actions (`'use server'`), no API REST
+- **i18n**: detección por cookie/navegador, 2 idiomas (`ca`, `es`), sin prefijo de URL
+- **Estilos**: CSS Modules (mobile-first), sin Tailwind
+- **PDF**: jsPDF · **Correo**: nodemailer
+- **Paquetes**: pnpm · **Despliegue**: Vercel
 
-## Commands
+## Comandos
 
 ```bash
-pnpm dev          # Dev server at localhost:3000 (Studio at /studio)
-pnpm build        # Production build (includes type check + lint)
-pnpm start        # Start production server
-pnpm lint         # ESLint (uses eslint-config-next defaults, no custom config)
-pnpm lint --fix   # Auto-fix lint issues
+pnpm dev          # desarrollo en :3000
+pnpm build        # prisma generate + next build (incluye typecheck y lint)
+pnpm start        # producción
+pnpm lint         # ESLint
+pnpm typecheck    # tsc --noEmit
 
-# Lint a single file
-npx next lint --file src/path/to/file.tsx
+pnpm db:migrate   # migraciones en desarrollo
+pnpm db:deploy    # migraciones en producción
+pnpm db:seed      # admin/admin + curso 2026/2027
+pnpm db:studio    # Prisma Studio
 
-# Clean rebuild
-rm -rf .next && pnpm build
-
-# No test suite configured. No Prettier configured.
+pnpm exec tsx scripts/test-flow.ts          # prueba de lógica de negocio
+pnpm exec tsx scripts/cleanup-test-data.ts  # limpia datos de prueba
+pnpm exec tsx scripts/reset-admin-password.ts [usuario] [contraseña]
 ```
 
-## Project Structure
+Postgres local: `docker compose up -d` (usuario/contraseña/DB = `afa`/`afa`/`afa`).
+
+## Estructura
 
 ```
 src/
   app/
-    layout.tsx, page.tsx          # Root layout + redirect to /ca
-    robots.ts, sitemap.ts         # SEO
-    [locale]/                     # i18n pages (see routes below)
-    api/                          # API routes (outside i18n)
-    studio/[[...tool]]/           # Sanity Studio
-    actas/                        # Meeting minutes (password-protected, outside i18n)
-  components/                     # 14 React components (each with .module.css)
-  lib/
-    sanity.ts                     # Sanity client, interfaces, all GROQ queries
-    auth.ts                       # JWT auth (jose), bcrypt, rate limiting, sessions
-    generateActaPDF.ts            # PDF generation for meeting reports
+    layout.tsx, page.tsx, globals.css, not-found.tsx, robots.ts, sitemap.ts
+    login/                       Login
+    el-meu-compte/               Cuenta del miembro
+    formularis/[slug]/           Formulario público
+    admin/                       Panel (layout con requireAdmin)
+      membres/, membres/nou/, membres/[id]/
+      anys-escolars/, anys-escolars/[id]/
+      formularis/, formularis/nou/, formularis/[id]/
+      respostes/, respostes/[id]/
+      configuracio/
+      actions/                   Server Actions (members, school-years, forms, submissions, settings)
+    actions/                     Server Actions públicas (auth, submissions)
+    api/submissions/[id]/pdf/    Descarga PDF (admin o propietario)
+    api/uploads/[id]/            Descarga de adjuntos
+  components/                    Componentes (Header, Footer, FormCard, FormFiller, admin/*)
   i18n/
-    routing.ts                    # Locale config, exports Link/redirect/usePathname/useRouter
-    request.ts                    # Server-side locale resolution
-  sanity/client.ts                # Sanity client + urlFor() image helper
-  middleware.ts                   # next-intl middleware (excludes /studio, /actas)
-schemas/                          # Sanity schemas (event, post, meetingReport, youtube, inlineImage)
-messages/                         # Translation JSON files (ca.json, es.json, en.json, ar.json, ur.json)
+    config.ts                    LOCALES, detectLocale (sin dependencias de servidor)
+    messages.ts                  Diccionarios ca/es (tipados: es debe cumplir el tipo de ca)
+  lib/
+    db.ts, auth.ts, i18n.ts, translator.ts
+    forms.ts                     Tipos de campos, orden del listado, precios en céntimos
+    pricing.ts                   resolvePrice: miembro vs no miembro
+    school-year.ts               Curso actual, cuotas
+    settings.ts, crypto.ts       SMTP cifrado (AES-256-GCM)
+    email.ts, pdf.ts, uploads.ts
+prisma/
+  schema.prisma, migrations/, seed.ts
+scripts/                         Utilidades de mantenimiento y pruebas
 ```
 
-**Locale routes** under `[locale]/`: `/` (home), `/blog`, `/blog/[slug]`, `/calendario`, `/inscripcion`, `/cookies-policy`, `/legal`, `/privacy`
+## Reglas del proyecto
 
-**API routes**: `/api/register` (POST), `/api/calendar.ics` (GET), `/api/meeting-minutes` (GET/POST), `/api/meeting-minutes/[id]` (PATCH/DELETE), `/api/meeting-minutes/[id]/close` (POST), `/api/meeting-minutes/[id]/pdf` (GET)
+### TypeScript
 
-## TypeScript
+- Modo estricto. **Nunca** uses `any` (usa `unknown`).
+- `interface` para objetos, tipos explícitos en funciones exportadas.
+- Alias `@/` para `src/`. Nunca imports relativos `../`.
 
-- Strict mode is ON. Always provide types; never use `any` (use `unknown` if needed).
-- Use `interface` for object shapes, not `type` aliases for objects.
-- Exported functions must have explicit return types.
-- Path alias: always use `@/` for `src/` imports (never relative `../`).
+### Orden de imports
 
-## Import Order
+1. React / Next.js
+2. Librerías de terceros
+3. Alias internos `@/`
+4. Imports relativos
+5. CSS Modules (siempre al final)
 
-1. React / Next.js imports
-2. Third-party libraries
-3. Internal `@/` aliases
-4. Relative imports
-5. CSS modules (always last)
+### Componentes
 
-```typescript
-import { getTranslations } from 'next-intl/server';
-import Navigation from '@/components/Navigation';
-import { Link } from '@/i18n/routing';
-import styles from './page.module.css';
-```
+- **Server Components por defecto**. Añade `'use client'` sólo si hay hooks o handlers.
+- Los formularios interactivos usan `useActionState` + `useFormStatus`.
+- Las Server Actions se pasan a los client components **como props** (`action={serverAction}`).
+- CSS Modules: un `.module.css` por componente.
 
-## Component Conventions
+### i18n
 
-- **Default to Server Components** (no `'use client'`). Only add `'use client'` when you need hooks or event handlers.
-- **Next.js 15 params**: Always `await` the `params` prop -- it's a `Promise`.
-  ```typescript
-  export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
-    const { locale } = await params;
-  }
-  ```
-- **Naming**: PascalCase for components (`Navigation.tsx`), matching CSS module (`Navigation.module.css`).
-- **SEO**: Every page should export `generateMetadata` with title, description, and openGraph.
+- **Nunca** escribas texto visible directamente: usa `getT()` (`src/lib/translator.ts`)
+  y las claves de `src/i18n/messages.ts`.
+- Las claves nuevas deben añadirse **a los dos idiomas** (ca y es); `es` está tipado
+  contra `ca`, así que TypeScript avisa si falta alguna.
+- `src/i18n/config.ts` no importa nada de Next.js: es seguro para client components.
 
-## Internationalization
+### Reglas de negocio
 
-- 5 locales: `ca` (default, no URL prefix), `es`, `en`, `ar`, `ur`
-- RTL: `ar` and `ur` use right-to-left direction automatically.
-- Always fallback to `ca` for multilingual Sanity content:
-  ```typescript
-  const title = post.title?.[locale] || post.title?.ca || '';
-  ```
-- Never hardcode user-visible text. Use `getTranslations('namespace')` and translation keys.
-- Add new strings to all 5 `messages/*.json` files.
+- Los importes se guardan **en céntimos** (`eurosToCents` / `centsToEuros`).
+- Precio de miembro = usuario con sesión **y** cuota `PAID`/`EXEMPT` del curso
+  (`resolvePrice` en `src/lib/pricing.ts`).
+- Sólo el `ADMIN` crea miembros; el resto de acciones de admin comprueban el rol en el
+  servidor (`requireAdmin`).
+- Denegar una respuesta **siempre** exige motivo (validación en cliente y en servidor).
+- Un formulario sólo aparece en la portada si es del **curso actual** y está `PUBLISHED`.
+- Caducados (`closesAt` < hoy) van al final y en gris (`sortFormsForListing`).
 
-## CSS Modules
+### Prisma
 
-- One `.module.css` per component. Use CSS custom properties from `globals.css`.
-- Mobile-first: base styles for mobile, then `@media (min-width: 768px)` for desktop.
-- No Tailwind, no styled-components for page components (styled-components is only for Sanity Studio).
+- Después de cambiar `schema.prisma`: `pnpm db:migrate` (y `pnpm db:generate`).
+- Los campos `Json` necesitan cast a `Prisma.InputJsonValue`.
+- Los campos `Bytes` (PDF, adjuntos) reciben `new Uint8Array(buffer)`.
 
-## Sanity CMS
+### Git
 
-- **Schema types**: `event`, `post`, `meetingReport` (documents); `localeString`, `localeText`, `localeBlockContent`, `youtube`, `inlineImage` (objects)
-- Multilingual fields use `localeString`/`localeText`/`localeBlockContent` objects with `ca`, `es`, `en`, `ar`, `ur` subfields.
-- `meetingReport` is NOT multilingual (Catalan only, used internally).
-- Client config in `src/sanity/client.ts`; queries and interfaces in `src/lib/sanity.ts`.
+Commits en formato convencional: `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `chore:`.
 
-## Error Handling
+## Errores frecuentes
 
-- Wrap Sanity fetches in try/catch; log errors with `console.error`; return `null` on failure.
-- Use `notFound()` from `next/navigation` for missing content (404).
-- API routes for meeting-minutes require JWT auth via `isAuthenticated()` from `@/lib/auth`.
-- Registration API route: `maxDuration = 60`, `dynamic = 'force-dynamic'`.
-
-## Environment Variables
-
-Required in `.env.local` (see `.env.local.example`):
-- `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, `NEXT_PUBLIC_SANITY_API_VERSION`, `SANITY_API_TOKEN`
-- `NEXT_PUBLIC_GA_ID`, `NEXT_PUBLIC_BASE_URL`
-- `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`
-
-## Git Commits
-
-Use conventional commits: `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `perf:`, `test:`
-
-## Common Pitfalls
-
-1. Forgetting `'use client'` for interactive components.
-2. Not `await`-ing `params` in Next.js 15 page/layout props.
-3. Missing multilingual fallbacks (always fall back to `ca`).
-4. Hardcoding text instead of using translation keys.
-5. Placing favicons in `/public` instead of `/src/app/`.
-6. Using relative imports instead of `@/` path alias.
-7. Forgetting to add translation strings to all 5 locale JSON files.
+1. Olvidar `'use client'` en un componente con hooks.
+2. `await` en `params` de Next 15 (`params: Promise<{...}>`).
+3. Olvidar una clave en `messages.ts` (rompe el typecheck).
+4. Importar `next/headers` en un client component (rompe el build) → usar `@/i18n/config`.
+5. **React no envía el `value` del botón pulsado**: usa una Server Action por botón
+   (ver `acceptSubmissionAction` / `denySubmissionAction`).
+6. IDs de formulario duplicados en la misma página (rompe los `<label for>`).

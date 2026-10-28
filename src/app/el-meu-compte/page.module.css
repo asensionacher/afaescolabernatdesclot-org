@@ -1,0 +1,17 @@
+.columns {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 800px) {
+  .columns {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+.quota {
+  border-top: 1px solid var(--color-border);
+  padding-top: 0.75rem;
+}

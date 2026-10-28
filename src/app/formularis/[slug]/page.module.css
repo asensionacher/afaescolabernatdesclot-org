@@ -1,0 +1,64 @@
+.meta {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 1.25rem;
+}
+
+.priceBox {
+  background: var(--color-bg-warm);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.35rem;
+  margin-bottom: 1.5rem;
+}
+
+.stylesPriceTitle {
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+}
+
+.priceGrid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 620px) {
+  .priceGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.priceItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  background: var(--color-bg-alt);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--color-border);
+}
+
+.priceItemAccent {
+  border-color: var(--color-accent-dark);
+  background: var(--color-accent-light);
+}
+
+.priceLabel {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+.priceItem strong {
+  font-family: var(--font-primary);
+  font-size: 1.25rem;
+  color: var(--color-primary);
+}
+
+.priceNote {
+  font-size: 0.85rem;
+  color: var(--color-warning);
+  margin-top: 0.75rem;
+}

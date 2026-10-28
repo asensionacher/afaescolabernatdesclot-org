@@ -1,260 +1,160 @@
-'use server'
-
-/**
- * Secure Authentication System for /actas
- * 
- * Features:
- * - JWT signed tokens (HS256, 512-bit secret)
- * - bcrypt password hashing (12 rounds)
- * - Rate limiting (5 attempts per 15 minutes)
- * - HttpOnly + SameSite cookies
- * - Automatic token expiration (24 hours)
- * - Login attempt logging
- * 
- * Security: Cookies are only modified in Server Actions (login/logout)
- * Read-only operations (isAuthenticated) are safe to call from page components
- */
+import 'server-only'
 
 import { cookies } from 'next/headers'
-import bcrypt from 'bcrypt'
+import { redirect } from 'next/navigation'
+import bcrypt from 'bcryptjs'
 import { SignJWT, jwtVerify } from 'jose'
+import { prisma } from '@/lib/db'
+import type { Role, User } from '@prisma/client'
 
-const SESSION_COOKIE = 'actas_auth'
-const SESSION_DURATION = 60 * 60 * 24 // 24 hours in seconds
+const SESSION_COOKIE = 'afa_session'
+const SESSION_DURATION = 60 * 60 * 24 * 7 // 7 días
 
-// In-memory rate limiting store (for simple implementation)
-// In production, consider using Redis or similar
+const MAX_ATTEMPTS = 5
+const RATE_LIMIT_WINDOW = 15 * 60 * 1000
+
 const loginAttempts = new Map<string, { count: number; resetAt: number }>()
 
-// Rate limiting configuration
-const MAX_ATTEMPTS = 5
-const RATE_LIMIT_WINDOW = 15 * 60 * 1000 // 15 minutes in milliseconds
-
-/**
- * Get JWT secret from environment
- */
-function getJWTSecret(): Uint8Array {
+function getSecret(): Uint8Array {
   const secret = process.env.JWT_SECRET
-  
-  if (!secret) {
-    throw new Error('JWT_SECRET not configured. Run: node scripts/generate-security-credentials.js')
+  if (!secret || secret.length < 32) {
+    throw new Error('JWT_SECRET no configurada (mínimo 32 caracteres)')
   }
-  
   return new TextEncoder().encode(secret)
 }
 
-/**
- * Get password hash from environment
- */
-function getPasswordHash(): string {
-  const hashBase64 = process.env.ACTAS_PASSWORD_HASH_BASE64
-  
-  if (!hashBase64) {
-    throw new Error('ACTAS_PASSWORD_HASH_BASE64 not configured. Run: node scripts/generate-security-credentials.js')
-  }
-  
-  // Decode from base64
-  const hash = Buffer.from(hashBase64, 'base64').toString('utf-8')
-  
-  return hash
+export async function hashPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, 10)
 }
 
-/**
- * Check rate limiting for an identifier (IP address)
- */
-function checkRateLimit(identifier: string): { allowed: boolean; remainingAttempts?: number } {
+export async function verifyPassword(password: string, hash: string): Promise<boolean> {
+  try {
+    return await bcrypt.compare(password, hash)
+  } catch {
+    return false
+  }
+}
+
+function clientIdentifier(): string {
+  return 'local-client'
+}
+
+function checkRateLimit(identifier: string): { allowed: boolean; remaining?: number } {
   const now = Date.now()
   const attempt = loginAttempts.get(identifier)
-
-  // Clean up expired entries
   if (attempt && now > attempt.resetAt) {
     loginAttempts.delete(identifier)
   }
-
   const current = loginAttempts.get(identifier)
-
-  if (!current) {
-    return { allowed: true, remainingAttempts: MAX_ATTEMPTS - 1 }
-  }
-
-  if (current.count >= MAX_ATTEMPTS) {
-    const remainingTime = Math.ceil((current.resetAt - now) / 1000 / 60) // minutes
-    console.warn(`Rate limit exceeded for ${identifier}. Resets in ${remainingTime} minutes.`)
-    return { allowed: false }
-  }
-
-  return { allowed: true, remainingAttempts: MAX_ATTEMPTS - current.count - 1 }
+  if (!current) return { allowed: true, remaining: MAX_ATTEMPTS - 1 }
+  if (current.count >= MAX_ATTEMPTS) return { allowed: false }
+  return { allowed: true, remaining: MAX_ATTEMPTS - current.count - 1 }
 }
 
-/**
- * Record a login attempt
- */
-function recordLoginAttempt(identifier: string, success: boolean): void {
+function recordAttempt(identifier: string, success: boolean): void {
   const now = Date.now()
   const attempt = loginAttempts.get(identifier)
-
   if (!attempt || now > attempt.resetAt) {
-    loginAttempts.set(identifier, {
-      count: success ? 0 : 1,
-      resetAt: now + RATE_LIMIT_WINDOW,
-    })
-  } else {
-    attempt.count += success ? -1 : 1 // Decrease on success, increase on failure
-    if (attempt.count < 0) attempt.count = 0
+    loginAttempts.set(identifier, { count: success ? 0 : 1, resetAt: now + RATE_LIMIT_WINDOW })
+    return
   }
-
-  // Log failed attempts
-  if (!success) {
-    console.warn(`Failed login attempt for ${identifier}. Attempts: ${loginAttempts.get(identifier)?.count || 0}/${MAX_ATTEMPTS}`)
-  }
+  attempt.count = success ? 0 : attempt.count + 1
 }
 
-/**
- * Get client identifier (IP address) for rate limiting
- */
-function getClientIdentifier(): string {
-  // In a real deployment with a proxy, you'd use headers like X-Forwarded-For
-  // For now, we'll use a simple identifier
-  return 'client' // In production, extract from headers
+/** Normaliza el usuario: minúsculas y sin espacios. */
+export function normalizeUsername(username: string): string {
+  return username.trim().toLowerCase()
 }
 
-/**
- * Verify password against stored bcrypt hash
- */
-export async function verifyPassword(password: string): Promise<boolean> {
-  try {
-    const passwordHash = getPasswordHash()
-    return await bcrypt.compare(password, passwordHash)
-  } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Password verification error:', error)
-    }
-    return false
+export interface LoginResult {
+  success: boolean
+  error?: 'invalid' | 'rate_limited' | 'inactive'
+  user?: User
+}
+
+export async function login(username: string, password: string): Promise<LoginResult> {
+  const identifier = clientIdentifier()
+  const limit = checkRateLimit(identifier)
+  if (!limit.allowed) {
+    return { success: false, error: 'rate_limited' }
   }
-}
 
-/**
- * Create a signed JWT token for the session
- */
-async function createSessionToken(): Promise<string> {
-  const secret = getJWTSecret()
-  
-  const token = await new SignJWT({
-    authenticated: true,
-    iat: Math.floor(Date.now() / 1000),
-  })
+  const user = await prisma.user.findUnique({ where: { username: normalizeUsername(username) } })
+  const valid = user ? await verifyPassword(password, user.passwordHash) : false
+
+  if (!user || !valid) {
+    recordAttempt(identifier, false)
+    return { success: false, error: 'invalid' }
+  }
+
+  if (!user.active) {
+    return { success: false, error: 'inactive' }
+  }
+
+  recordAttempt(identifier, true)
+
+  const token = await new SignJWT({ sub: user.id, role: user.role })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
-    .setExpirationTime('24h')
-    .sign(secret)
+    .setExpirationTime(`${SESSION_DURATION}s`)
+    .sign(getSecret())
 
-  return token
+  const cookieStore = await cookies()
+  cookieStore.set(SESSION_COOKIE, token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: SESSION_DURATION,
+    path: '/',
+  })
+
+  return { success: true, user }
 }
 
-/**
- * Verify a JWT token
- */
-async function verifySessionToken(token: string): Promise<boolean> {
-  try {
-    const secret = getJWTSecret()
-    await jwtVerify(token, secret)
-    return true
-  } catch (error) {
-    // Token is invalid or expired
-    return false
-  }
-}
-
-/**
- * Login with password
- * Returns an object with success status and optional error message
- */
-export async function login(password: string): Promise<{ success: boolean; error?: string }> {
-  const clientId = getClientIdentifier()
-
-  // Check rate limiting
-  const rateLimitCheck = checkRateLimit(clientId)
-  if (!rateLimitCheck.allowed) {
-    return {
-      success: false,
-      error: 'Massa intents fallits. Torna-ho a provar més tard.',
-    }
-  }
-
-  // Verify password
-  const isValid = await verifyPassword(password)
-
-  // Record attempt
-  recordLoginAttempt(clientId, isValid)
-
-  if (isValid) {
-    try {
-      // Create JWT token
-      const token = await createSessionToken()
-
-      // Set secure cookie
-      const cookieStore = await cookies()
-      cookieStore.set(SESSION_COOKIE, token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: SESSION_DURATION,
-        path: '/',
-      })
-
-      console.log(`Successful login for ${clientId}`)
-      return { success: true }
-    } catch (error) {
-      console.error('Error creating session:', error)
-      return {
-        success: false,
-        error: 'Error en crear la sessió',
-      }
-    }
-  }
-
-  return {
-    success: false,
-    error: `Contrasenya incorrecta${rateLimitCheck.remainingAttempts !== undefined ? ` (${rateLimitCheck.remainingAttempts} intents restants)` : ''}`,
-  }
-}
-
-/**
- * Logout and clear session
- */
 export async function logout(): Promise<void> {
   const cookieStore = await cookies()
   cookieStore.delete(SESSION_COOKIE)
-  console.log('User logged out')
 }
 
-/**
- * Check if user is authenticated
- * Verifies JWT token signature and expiration
- * Note: This function only reads cookies, doesn't modify them
- */
-export async function isAuthenticated(): Promise<boolean> {
+/** Usuario de la sesión actual (null si no hay sesión válida). */
+export async function getCurrentUser(): Promise<User | null> {
   try {
     const cookieStore = await cookies()
-    const session = cookieStore.get(SESSION_COOKIE)
+    const token = cookieStore.get(SESSION_COOKIE)?.value
+    if (!token) return null
 
-    if (!session?.value) {
-      return false
-    }
+    const { payload } = await jwtVerify(token, getSecret())
+    const userId = payload.sub
+    if (!userId) return null
 
-    // Verify JWT token
-    const isValid = await verifySessionToken(session.value)
-
-    // Note: We don't delete invalid tokens here because this function
-    // is called from page components (not Server Actions).
-    // Invalid tokens will simply fail verification and user will see login form.
-    // The cookie will be overwritten on next successful login.
-
-    return isValid
-  } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Authentication check error:', error)
-    }
-    return false
+    const user = await prisma.user.findUnique({ where: { id: userId } })
+    if (!user || !user.active) return null
+    return user
+  } catch {
+    return null
   }
+}
+
+export async function isAdmin(): Promise<boolean> {
+  const user = await getCurrentUser()
+  return user?.role === 'ADMIN'
+}
+
+/** Exige sesión de administrador; redirige al login si no la hay. */
+export async function requireAdmin(): Promise<User> {
+  const user = await getCurrentUser()
+  if (!user) redirect('/login')
+  if (user.role !== 'ADMIN') redirect('/')
+  return user
+}
+
+/** Exige sesión (admin o miembro). */
+export async function requireUser(): Promise<User> {
+  const user = await getCurrentUser()
+  if (!user) redirect('/login')
+  return user
+}
+
+export function hasRole(user: User, role: Role): boolean {
+  return user.role === role
 }

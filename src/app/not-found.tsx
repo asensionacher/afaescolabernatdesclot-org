@@ -1,20 +1,18 @@
-import Link from 'next/link';
-import styles from './not-found.module.css';
+import Link from 'next/link'
+import { getT } from '@/lib/translator'
+import styles from './not-found.module.css'
 
-export default function NotFound() {
+export default async function NotFound() {
+  const t = await getT()
+
   return (
-    <div className={styles.container}>
-      <div className={styles.content}>
-        <div className={styles.errorCode}>404</div>
-        <h1 className={styles.title}>Pàgina no trobada</h1>
-        <p className={styles.description}>
-          Ho sentim, la pàgina que busques no existeix o ha estat moguda.
-        </p>
-        <div className={styles.emoji}>🤔</div>
-        <Link href="/" className={styles.homeButton}>
-          Tornar a l'inici
-        </Link>
-      </div>
+    <div className={`containerNarrow ${styles.wrapper}`}>
+      <p className={styles.code}>404</p>
+      <h1 className="pageTitle">{t('common.nothingHere')}</h1>
+      <p className="muted">Aquesta pàgina no existeix o ha canviat.</p>
+      <Link href="/" className="btn">
+        {t('nav.home')}
+      </Link>
     </div>
-  );
+  )
 }

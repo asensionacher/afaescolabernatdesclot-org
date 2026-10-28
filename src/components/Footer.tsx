@@ -1,68 +1,25 @@
-'use client';
+import Link from 'next/link'
+import { getT } from '@/lib/translator'
+import styles from './Footer.module.css'
 
-import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/routing';
-import styles from './Footer.module.css';
-
-export default function Footer() {
-  const t = useTranslations('footer');
-  const tBlog = useTranslations('blog');
-  const currentYear = new Date().getFullYear();
-
-  const openCookieSettings = () => {
-    localStorage.removeItem('cookie-consent');
-    window.location.reload();
-  };
+export default async function Footer() {
+  const t = await getT()
+  const year = new Date().getFullYear()
 
   return (
     <footer className={styles.footer}>
-      <div className={styles.container}>
-        <div className={styles.section}>
-          <h3>AFA Bernat Desclot</h3>
-          <p>Escola Bernat Desclot</p>
-          <div className={styles.opensource}>
-            <p>✨ {t('openSource')}</p>
-            <a 
-              href="https://github.com/asensionacher/afaescolabernatdesclot-org" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className={styles.link}
-            >
-              {t('sourceCode')} →
-            </a>
-          </div>
+      <div className={`container ${styles.inner}`}>
+        <div>
+          <p className={styles.title}>{t('site.name')}</p>
+          <p className={styles.text}>{t('footer.madeWith')}</p>
         </div>
-        
-        <div className={styles.section}>
-          <h4>{t('schoolLink')}</h4>
-          <a 
-            href="https://agora.xtec.cat/ceip-bernatdesclot/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className={styles.link}
-          >
-            {tBlog('schoolBlog')}
-          </a>
-        </div>
-
-        <div className={styles.section}>
-          <h4>{t('legalLinks')}</h4>
-          <div className={styles.legalLinks}>
-            <Link href="/privacy" className={styles.link}>
-              {t('privacy')}
-            </Link>
-            <Link href="/legal" className={styles.link}>
-              {t('legal')}
-            </Link>
-            <Link href="/cookies-policy" className={styles.link}>
-              {t('cookies')}
-            </Link>
-            <button onClick={openCookieSettings} className={styles.cookieButton}>
-              ⚙️ {t('configureCookies')}
-            </button>
-          </div>
-        </div>
+        <nav className={styles.nav} aria-label=" Peu de pàgina">
+          <Link href="/">{t('nav.home')}</Link>
+          <Link href="/login">{t('nav.login')}</Link>
+          <Link href="/el-meu-compte">{t('nav.account')}</Link>
+        </nav>
+        <p className={styles.rights}>{t('footer.rights', { year })}</p>
       </div>
     </footer>
-  );
+  )
 }

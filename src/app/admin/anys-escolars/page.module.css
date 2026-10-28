@@ -1,0 +1,19 @@
+.top {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 900px) {
+  .top {
+    grid-template-columns: 1fr 1.4fr;
+    align-items: start;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}

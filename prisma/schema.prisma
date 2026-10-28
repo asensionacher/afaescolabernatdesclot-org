@@ -1,0 +1,203 @@
+// Prisma schema — AFA Escola Bernat Desclot
+// Base de datos: PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+enum MembershipStatus {
+  PENDING
+  PAID
+  EXEMPT
+}
+
+enum FormVisibility {
+  PUBLIC
+  MEMBERS_ONLY
+}
+
+enum FormStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum SubmissionStatus {
+  PENDING
+  ACCEPTED
+  DENIED
+}
+
+enum FieldType {
+  TEXT
+  TEXTAREA
+  EMAIL
+  PHONE
+  NUMBER
+  DATE
+  SELECT
+  RADIO
+  CHECKBOX
+  FILE
+}
+
+/// Persona con acceso a la web. Solo el ADMIN crea cuentas.
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  name         String
+  email        String
+  phone        String?
+  role         Role     @default(MEMBER)
+  active       Boolean  @default(true)
+  note         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  memberships Membership[]
+  submissions Submission[]
+  createdForms Form[]      @relation("FormAuthor")
+  reviewed    Submission[] @relation("SubmissionReviewer")
+
+  @@index([role])
+}
+
+/// Curso escolar (2026/2027). Solo puede haber uno marcado como actual.
+model SchoolYear {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  startDate DateTime
+  endDate   DateTime
+  isCurrent Boolean  @default(false)
+  /// Precio de la cuota anual de affiliated al AFA (céntimos).
+  quotaAmount Int    @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships Membership[]
+  forms       Form[]
+
+  @@index([isCurrent])
+}
+
+/// Cuota del AFA de un miembro para un curso concreto.
+model Membership {
+  id           String           @id @default(cuid())
+  userId       String
+  schoolYearId String
+  status       MembershipStatus @default(PENDING)
+  amount       Int              @default(0)
+  paidAt       DateTime?
+  method       String?
+  note         String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  schoolYear SchoolYear @relation(fields: [schoolYearId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, schoolYearId])
+  @@index([schoolYearId, status])
+}
+
+/// Formulario creado por el administrador.
+model Form {
+  id           String         @id @default(cuid())
+  slug         String         @unique
+  schoolYearId String
+  /// { "ca": "...", "es": "..." }
+  title        Json
+  /// { "ca": "...", "es": "..." }
+  description  Json?
+  /// Definición de los campos: [{ id, label, type, required, options, help }]
+  fields       Json
+  visibility   FormVisibility @default(PUBLIC)
+  status       FormStatus     @default(DRAFT)
+  /// Precio para miembros con la cuota pagada (céntimos). Normalmente 0.
+  memberPrice  Int            @default(0)
+  /// Precio para no miembros o miembros con la cuota pendiente (céntimos).
+  nonMemberPrice Int          @default(0)
+  /// Fecha de publicación: ordena el listado de más nuevo a más antiguo.
+  publishedAt  DateTime?
+  /// Fecha de cierre: a partir de aquí el formulario aparece caducado.
+  closesAt     DateTime?
+  pinned       Boolean        @default(false)
+  /// Aviso visible al abrir el formulario (opcional).
+  notice       Json?
+  createdById  String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  schoolYear SchoolYear  @relation(fields: [schoolYearId], references: [id], onDelete: Cascade)
+  createdBy  User?       @relation("FormAuthor", fields: [createdById], references: [id], onDelete: SetNull)
+  submissions Submission[]
+
+  @@index([schoolYearId, status])
+  @@index([pinned, publishedAt])
+}
+
+/// Respuesta de una familia a un formulario.
+model Submission {
+  id           String           @id @default(cuid())
+  formId       String
+  /// Usuario que envía (null si lo envía alguien sin sesión en un formulario público).
+  userId       String?
+  /// Nombre y email declarados por quien envía (rellenados siempre).
+  contactName  String
+  contactEmail String
+  contactPhone String?
+  /// Respuestas: [{ fieldId, label, type, value }]
+  answers      Json
+  status       SubmissionStatus @default(PENDING)
+  /// Precio aplicable en el momento del envío (céntimos).
+  price        Int             @default(0)
+  priceTier    String          @default("NON_MEMBER")
+  total        Int             @default(0)
+  /// Mensaje obligatorio cuando se deniega.
+  denialReason String?
+  reviewedAt   DateTime?
+  reviewedById String?
+  /// PDF generado al aceptar (almacenado en la base de datos).
+  pdfData      Bytes?
+  pdfFilename  String?
+  pdfGeneratedAt DateTime?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  form       Form  @relation(fields: [formId], references: [id], onDelete: Cascade)
+  user       User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  reviewedBy User? @relation("SubmissionReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+
+  @@index([formId, status])
+  @@index([status, createdAt])
+}
+
+/// Ficheros subidos (justificantes de pago, etc.).
+model Upload {
+  id         String   @id @default(cuid())
+  filename   String
+  mimeType   String
+  size       Int
+  data       Bytes
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+/// Configuración de la web (correo saliente, textos, etc.).
+model Setting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}

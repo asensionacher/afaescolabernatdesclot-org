@@ -1,268 +1,158 @@
-# AFA Escola Bernat Desclot
+# AFA Escola Bernat Desclot — Web de formularios e inscripciones
 
-Web oficial de la Asociación de Familias de Alumnos de la Escuela Bernat Desclot.
+Web de la AFA (Associació de Famílies d'Alumnes) de l'Escola Bernat Desclot para que las
+familias se apunten a las actividades, excursiones y cuotas mediante **formularios
+dinámicos** creados desde el panel de administración.
 
-## ✨ 100% Open Source
+No es una web informativa: es la herramienta de inscripción de la AFA.
 
-Este proyecto es totalmente de código abierto y está disponible para que cualquier AFA o asociación similar pueda utilizarlo, modificarlo y adaptarlo a sus necesidades.
+## Stack
 
-## Características
+- **Next.js 15** (App Router) + **React 19** + **TypeScript** estricto
+- **PostgreSQL** + **Prisma 6** (base de datos)
+- **Server Actions** para toda la mutación de datos (sin API REST salvo descargas)
+- **Sesión con JWT** (`jose`) en cookie `HttpOnly` + **bcrypt** para contraseñas
+- **i18n** detectado por navegador/cookie (català / español), **sin prefijo de URL**
+- **CSS Modules** (mobile-first), sin Tailwind
+- **jsPDF** para el PDF de las respuestas aceptadas
+- **nodemailer** para los correos (SMTP configurable desde el panel)
+- **pnpm** · Docker (Postgres local) · Despliegue en Vercel
 
-- ✅ Next.js 15 con App Router
-- ✅ Sanity Studio integrado para gestión de contenido
-- ✅ Multiidioma: Catalán, Español, Inglés, Árabe, Urdu
-- ✅ Blog de eventos con imágenes
-- ✅ Google Analytics integrado con consentimiento de cookies
-- ✅ Banner de cookies conforme a GDPR
-- ✅ Páginas legales: Política de Privacidad, Aviso Legal, Política de Cookies
-- ✅ Responsive design
-- ✅ Optimizado para Vercel
-
-## Configuración Inicial
-
-### 1. Instalar dependencias
-
-Este proyecto usa **pnpm** como gestor de paquetes:
+## Puesta en marcha
 
 ```bash
-# Instalar pnpm (si no lo tienes)
-npm install -g pnpm
-
-# Instalar dependencias
 pnpm install
+
+# 1. Base de datos local
+docker compose up -d
+
+# 2. Variables de entorno
+cp .env.example .env
+# Genera los secretos:
+#   openssl rand -hex 32   -> JWT_SECRET
+#   openssl rand -hex 32   -> CREDENTIALS_ENCRYPTION_KEY
+
+# 3. Esquema + datos iniciales
+pnpm db:migrate
+pnpm db:seed
+
+# 4. Arrancar
+pnpm dev
 ```
 
-### 2. Configurar Sanity
+La web queda en `http://localhost:3000` y el panel en `http://localhost:3000/admin`.
 
-1. Crea un proyecto en [sanity.io](https://www.sanity.io/)
-2. Copia el archivo `.env.local.example` a `.env.local`
-3. Añade tus credenciales de Sanity:
+### Credenciales iniciales
 
-```env
-NEXT_PUBLIC_SANITY_PROJECT_ID=tu_project_id
-NEXT_PUBLIC_SANITY_DATASET=production
-NEXT_PUBLIC_SANITY_API_VERSION=2024-01-21
-SANITY_API_TOKEN=tu_token
-```
+| Usuario  | Contraseña | Correo                        |
+| -------- | ---------- | ----------------------------- |
+| `admin`  | `admin`    | afaescolabernatdesclot@gmail.com |
 
-### 3. Configurar Google Analytics (Opcional)
-
-Si deseas utilizar Google Analytics:
-
-1. Crea una propiedad en [Google Analytics](https://analytics.google.com/)
-2. Obtén tu ID de medición (formato: G-XXXXXXXXXX)
-3. Añade la variable de entorno:
-
-```env
-NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
-```
-
-**Nota**: La integración de Google Analytics está diseñada para ser conforme a GDPR:
-- Solo se activa después de que el usuario acepte las cookies analíticas
-- Los usuarios pueden rechazar o personalizar las cookies
-- Las preferencias se guardan en localStorage
-
-### 4. Configurar URL base
-
-Para producción, añade tu dominio:
-
-```env
-NEXT_PUBLIC_BASE_URL=https://tu-dominio.com
-```
-
-### 5. Ejecutar en desarrollo
+Se pueden cambiar desde **Configuración → Credenciales del administrador**. A partir de
+ahí la contraseña nueva debe tener **mínimo 8 caracteres** (el seed inicial es la
+excepción). También se pueden restablecer por consola:
 
 ```bash
-pnpm run dev
+pnpm exec tsx scripts/reset-admin-password.ts [usuario] [contraseña]
 ```
 
-La aplicación estará disponible en:
-- Web principal: http://localhost:3000
-- Sanity Studio: http://localhost:3000/studio
+## Modelo de datos
 
-## Estructura del Proyecto
+| Modelo           | Para qué sirve                                                        |
+| ---------------- | --------------------------------------------------------------------- |
+| `User`           | Miembros del AFA. Solo el admin los crea (usuario + contraseña).       |
+| `SchoolYear`     | Curso escolar (`2026/2027`). Solo uno marcado como `isCurrent`.       |
+| `Membership`     | Cuota AFA de un miembro en un curso: `PENDING` / `PAID` / `EXEMPT`.    |
+| `Form`           | Formulario: campos, precios, visibilidad, publicación, caducidad.     |
+| `Submission`     | Respuesta enviada por una familia, con su estado de revisión.         |
+| `Upload`         | Ficheros adjuntos (justificantes). Máximo 8 MB.                        |
+| `Setting`        | Configuración de la web (SMTP, etc.), con la contraseña cifrada.       |
+
+### Precios
+
+Cada formulario tiene dos precios (guardados en céntimos):
+
+- `memberPrice`: para miembros **con la cuota del curso pagada** (o exenta). Normalmente `0 €`.
+- `nonMemberPrice`: para el resto de casos — usuario no registrado, registrado **sin**
+  cuota pagada del curso en cuestión.
+
+La resolución vive en `src/lib/pricing.ts` (`resolvePrice`).
+
+### Listado público
+
+`src/app/page.tsx` muestra **solo los formularios del curso escolar actual**:
+
+1. Los **anclados** (`pinned`) primero.
+2. Después, **de más nuevo a más antiguo** según `publishedAt`.
+3. Los **caducados** (`closesAt` < hoy) se van **al final y en gris**.
+
+### Ciclo de revisión de una respuesta
+
+1. La familia envía el formulario → correo **recibido**.
+2. El admin **acepta** → se genera el **PDF** con todos los datos + correo **aceptado**
+   (con el PDF adjunto).
+3. El admin **deniega** → el **motivo es obligatorio** + correo **denegado**.
+   Una respuesta denegada se puede **aceptar más tarde** manualmente.
+
+## Rutas
 
 ```
-├── src/
-│   ├── app/
-│   │   ├── [locale]/          # Páginas con soporte multiidioma
-│   │   │   ├── page.tsx       # Página principal
-│   │   │   ├── services/      # Página de servicios
-│   │   │   ├── blog/          # Blog de eventos
-│   │   │   ├── contact/       # Página de contacto
-│   │   │   ├── privacy/       # Política de privacidad
-│   │   │   ├── legal/         # Aviso legal
-│   │   │   └── cookies-policy/ # Política de cookies
-│   │   └── studio/            # Sanity Studio
-│   ├── components/            # Componentes reutilizables
-│   │   ├── Navigation.tsx     # Navegación principal
-│   │   ├── Footer.tsx         # Pie de página con enlaces legales
-│   │   ├── CookieBanner.tsx   # Banner de consentimiento de cookies
-│   │   └── GoogleAnalytics.tsx # Integración de Google Analytics
-│   ├── i18n/                  # Configuración de internacionalización
-│   └── sanity/                # Configuración de Sanity
-├── messages/                   # Archivos de traducción (5 idiomas)
-├── schemas/                    # Schemas de Sanity
-├── sanity.config.ts           # Configuración de Sanity Studio
-└── next.config.ts             # Configuración de Next.js
+/                       Portada con el listado de formularios del curso actual
+/login                  Inicio de sesión
+/formularis/[slug]      Rellenar un formulario
+/el-meu-compte          Cuenta del miembro (perfil, cuota, contraseña, sus envíos)
+
+/admin                  Panel
+/admin/membres          Miembros (alta, cuota, activar/desactivar)
+/admin/anys-escolars    Cursos escolares
+/admin/formularis       Formularios (constructor de campos)
+/admin/respostes        Revisión de respuestas
+/admin/configuracio     SMTP + credenciales del administrador
+
+/api/submissions/[id]/pdf   Descarga del PDF (admin o propietario)
+/api/uploads/[id]           Descarga de adjuntos (admin o propietario)
 ```
 
-## Idiomas Soportados
+## Correo
 
-- 🇪🇸 Catalán (ca) - Idioma por defecto
-- 🇪🇸 Español (es)
-- 🇬🇧 Inglés (en)
-- 🇲🇦 Árabe de Marruecos (ar)
-- 🇵🇰 Urdu (ur)
+Por defecto el remitente es `afaescolabernatdesclot@gmail.com`. El SMTP se configura en
+**Configuración → Correo electrónico**: host, puerto, usuario, contraseña (se guarda
+cifrada con AES-256-GCM usando `CREDENTIALS_ENCRYPTION_KEY`), SSL/TLS y remitente.
+Mientras no haya SMTP configurado, los correos se registran en el log del servidor y la
+web sigue funcionando.
 
-## Cumplimiento Legal
-
-### GDPR y Cookies
-
-El proyecto incluye:
-
-1. **Banner de Cookies**: Aparece en la primera visita y permite:
-   - Aceptar todas las cookies
-   - Rechazar cookies no esenciales
-   - Personalizar preferencias
-
-2. **Páginas Legales**: 
-   - Política de Privacidad
-   - Aviso Legal
-   - Política de Cookies
-
-3. **Gestión de Consentimiento**:
-   - Las preferencias se guardan en localStorage
-   - Los usuarios pueden cambiar sus preferencias desde el footer
-   - Google Analytics solo se activa con consentimiento
-
-### Personalización
-
-Para adaptar las páginas legales a tu asociación:
-
-1. Edita los archivos de traducción en `messages/`
-2. Actualiza las secciones de `privacy`, `legal` y `cookiesPolicy`
-3. Modifica el componente `Footer.tsx` si deseas cambiar el enlace al repositorio
-
-## Despliegue en Vercel
-
-### Opción 1: Despliegue desde GitHub (Recomendado)
-
-1. **Sube tu código a GitHub** (si aún no lo has hecho):
-   ```bash
-   git add .
-   git commit -m "Initial commit"
-   git push origin main
-   ```
-
-2. **Conecta con Vercel**:
-   - Ve a [vercel.com](https://vercel.com)
-   - Inicia sesión con tu cuenta de GitHub
-   - Click en "New Project"
-   - Importa tu repositorio de GitHub
-   - Vercel detectará automáticamente:
-     - Framework: Next.js
-     - Package Manager: pnpm (gracias a `pnpm-lock.yaml`)
-     - Build Command: `pnpm run build`
-     - Output Directory: `.next`
-
-3. **Configurar variables de entorno**:
-   
-   En la sección "Environment Variables" de Vercel, añade (IMPORTANTE):
-   
-   ```
-   NEXT_PUBLIC_SANITY_PROJECT_ID=tu_project_id
-   NEXT_PUBLIC_SANITY_DATASET=production
-   NEXT_PUBLIC_SANITY_API_VERSION=2024-01-21
-   SANITY_API_TOKEN=tu_token_aqui
-   NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
-   NEXT_PUBLIC_BASE_URL=https://tu-dominio.vercel.app
-   ```
-   
-   **Nota**: Actualiza `NEXT_PUBLIC_BASE_URL` con tu URL real de Vercel después del primer despliegue.
-
-4. **Desplegar**:
-   - Click en "Deploy"
-   - Vercel compilará y desplegará tu proyecto
-   - Obtendrás una URL como: `https://tu-proyecto.vercel.app`
-
-5. **Actualizar URL base** (después del primer despliegue):
-   - Ve a Settings → Environment Variables
-   - Actualiza `NEXT_PUBLIC_BASE_URL` con tu URL de Vercel
-   - Redeploy el proyecto
-
-### Opción 2: Despliegue desde CLI
+## Scripts
 
 ```bash
-# Instalar Vercel CLI
-pnpm add -g vercel
+pnpm dev            # servidor de desarrollo
+pnpm build          # prisma generate + next build
+pnpm start          # producción
+pnpm lint           # ESLint
+pnpm typecheck      # tsc --noEmit
 
-# Login en Vercel
-vercel login
+pnpm db:migrate     # crear/aplicar migraciones
+pnpm db:deploy      # aplicar migraciones (producción)
+pnpm db:seed        # admin + curso 2026/2027
+pnpm db:studio      # Prisma Studio
 
-# Desplegar (en modo preview)
-vercel
-
-# Desplegar a producción
-vercel --prod
+pnpm exec tsx scripts/test-flow.ts          # prueba de la lógica de negocio
+pnpm exec tsx scripts/cleanup-test-data.ts  # borra los datos de prueba
+pnpm exec tsx scripts/reset-admin-password.ts
 ```
 
-### Dominio personalizado
+## Despliegue (Vercel)
 
-Si tienes un dominio propio:
+1. Crea una base de datos PostgreSQL (Neon, Vercel Postgres o Supabase) y copia la
+   `DATABASE_URL` en las variables de entorno de Vercel.
+2. Añade `JWT_SECRET`, `CREDENTIALS_ENCRYPTION_KEY` y `NEXT_PUBLIC_BASE_URL`.
+3. `pnpm db:deploy` para aplicar las migraciones y `pnpm db:seed` para crear el admin.
+4. `vercel.json` ya define `pnpm install` / `pnpm run build` / `pnpm run start`.
 
-1. Ve a tu proyecto en Vercel → Settings → Domains
-2. Añade tu dominio personalizado
-3. Configura los DNS según las instrucciones de Vercel
-4. Actualiza `NEXT_PUBLIC_BASE_URL` con tu dominio personalizado
+## Seguridad
 
-### Optimizaciones de Vercel
-
-El proyecto ya está optimizado para Vercel con:
-- ✅ `vercel.json` configurado para pnpm
-- ✅ Build caching automático
-- ✅ Edge functions para mejor rendimiento
-- ✅ Sitemap.xml dinámico
-- ✅ robots.txt configurado
-- ✅ Open Graph meta tags para redes sociales
-- ✅ Headers de seguridad
-
-### Monitorización y Logs
-
-Una vez desplegado en Vercel, puedes:
-- Ver logs en tiempo real en el dashboard
-- Configurar notificaciones de despliegue
-- Ver métricas de rendimiento
-- Configurar alertas de errores
-
-## Uso del CMS (Sanity Studio)
-
-1. Accede a `/studio` en tu navegación
-2. Inicia sesión con tu cuenta de Sanity
-3. Crea nuevos eventos con contenido en los 5 idiomas
-4. Los cambios se reflejarán automáticamente en la web
-
-## Enlaces
-
-- Blog de la escuela: https://agora.xtec.cat/ceip-bernatdesclot/
-- Peti ki Peti: Actividades extraescolares
-
-## Contribuir
-
-Este es un proyecto open source. Si deseas contribuir:
-
-1. Haz un fork del repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Haz commit de tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-## Licencia
-
-El código fuente está disponible bajo licencia MIT - siéntete libre de usarlo para tu propia AFA o asociación.
-
-El contenido específico de AFA Escola Bernat Desclot está protegido por derechos de autor © 2025 AFA Escola Bernat Desclot.
-
-## Soporte
-
-Si tienes preguntas o necesitas ayuda para configurar este proyecto para tu AFA, abre un issue en GitHub.
+- Contraseñas con bcrypt (10 rondas); nunca se guardan en claro.
+- Cookie de sesión `HttpOnly`, `SameSite=Lax`, `Secure` en producción, JWT HS256 de 7 días.
+- Limitación de intentos de login (5 por 15 minutos y por cliente).
+- Todas las acciones de administración comprueban el rol `ADMIN` en el servidor.
+- Los ficheros subidos se sirven sólo al admin o al propietario de la respuesta.
+- Los `id` de los formularios son *slugs* y los de las respuestas son *cuid* (no enumerables).
