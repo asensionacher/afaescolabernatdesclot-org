@@ -43,6 +43,25 @@ export default async function EditFormPage({ params }: { params: Promise<{ id: s
   }
 
   const labels: FormEditorLabels = {
+    editorHelp: t('forms.editorHelp'),
+    contentHelp: t('forms.contentHelp'),
+    fieldsHelp: t('forms.fieldsHelp'),
+    publishingHelp: t('forms.publishingHelp'),
+    untitledField: t('forms.untitledField'),
+    slugHelp: t('forms.slugHelp'),
+    fieldTypes: {
+      TEXT: t('forms.fieldTypes.TEXT'),
+      TEXTAREA: t('forms.fieldTypes.TEXTAREA'),
+      EMAIL: t('forms.fieldTypes.EMAIL'),
+      PHONE: t('forms.fieldTypes.PHONE'),
+      NUMBER: t('forms.fieldTypes.NUMBER'),
+      DATE: t('forms.fieldTypes.DATE'),
+      SELECT: t('forms.fieldTypes.SELECT'),
+      RADIO: t('forms.fieldTypes.RADIO'),
+      CHECKBOX: t('forms.fieldTypes.CHECKBOX'),
+      FILE: t('forms.fieldTypes.FILE'),
+    },
+    archived: t('common.archived'),
     general: t('forms.general'),
     content: t('forms.content'),
     fields: t('forms.fields'),

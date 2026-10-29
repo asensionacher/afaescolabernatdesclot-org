@@ -2,6 +2,7 @@
 
 import { useActionState } from 'react'
 import type { ActionState } from '@/app/admin/actions/types'
+import { usePreservedForm } from '@/lib/use-preserved-form'
 import ActionFeedback from './ActionFeedback'
 import SubmitButton from './SubmitButton'
 
@@ -45,6 +46,7 @@ export default function MemberForm({
   messages: Record<string, string>
 }) {
   const [state, formAction] = useActionState<ActionState, FormData>(action, { status: 'idle' })
+  const formRef = usePreservedForm()
 
   const fieldError = (key: string): string | undefined => {
     const code = state.fieldErrors?.[key]
@@ -53,7 +55,7 @@ export default function MemberForm({
   }
 
   return (
-    <form action={formAction} className="stack">
+    <form ref={formRef} action={formAction} className="stack">
       <ActionFeedback state={state} messages={messages} />
 
       {member ? <input type="hidden" name="id" value={member.id} /> : null}

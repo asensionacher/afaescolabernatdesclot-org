@@ -120,8 +120,8 @@ export default async function SubmissionDetailPage({
             <p>
               <strong>{submission.contactName}</strong>
             </p>
-            <p className="small">{submission.contactEmail}</p>
-            {submission.contactPhone ? <p className="small">{submission.contactPhone}</p> : null}
+            <p><a href={`mailto:${submission.contactEmail}`}>{submission.contactEmail}</a></p>
+            {submission.contactPhone ? <p><a href={`tel:${submission.contactPhone}`}>{submission.contactPhone}</a></p> : null}
             {submission.user ? (
               <p className="small muted">
                 {submission.user.username} · {submission.user.name}
@@ -154,6 +154,7 @@ export default async function SubmissionDetailPage({
 
           <section className="card">
             <h3 className="cardTitle">{t('submissions.review')}</h3>
+            <p className="small muted mb2">{t('submissions.reviewHelp')}</p>
             <ReviewForm
               acceptAction={acceptSubmissionAction}
               denyAction={denySubmissionAction}

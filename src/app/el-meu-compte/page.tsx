@@ -39,6 +39,8 @@ export default async function AccountPage() {
   return (
     <div className="containerNarrow">
       <h1 className="pageTitle">{t('account.title')}</h1>
+      <p className="pageSubtitle">{t('account.intro')}</p>
+      <Link href="/#formularis" className="btn btnAccent mb2">{t('home.browse')} →</Link>
 
       <div className={styles.columns}>
         <section className="card">
@@ -88,8 +90,9 @@ export default async function AccountPage() {
           ) : null}
         </section>
 
-        <section className="card">
-          <h2 className="cardTitle">{t('account.changePassword')}</h2>
+        <details className="card">
+          <summary className={styles.passwordSummary}>{t('account.changePassword')}</summary>
+          <div className="mt2">
           <ChangePasswordForm
             action={changeOwnPasswordAction}
             labels={{
@@ -101,7 +104,8 @@ export default async function AccountPage() {
             }}
             messages={messages}
           />
-        </section>
+          </div>
+        </details>
       </div>
 
       <section className="card mt2">
@@ -109,27 +113,15 @@ export default async function AccountPage() {
         {submissions.length === 0 ? (
           <p className="muted">{t('account.noSubmissions')}</p>
         ) : (
-          <div className="tableWrap">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>{t('submissions.form')}</th>
-                  <th>{t('submissions.submittedAt')}</th>
-                  <th>{t('submissions.priceAtSubmit')}</th>
-                  <th>{t('common.status')}</th>
-                </tr>
-              </thead>
-              <tbody>
+          <div className={styles.submissions}>
                 {submissions.map((submission) => (
-                  <tr key={submission.id}>
-                    <td>
+                  <article className={styles.submission} key={submission.id}>
+                    <div className="rowBetween mb1">
+                      <h3 className="cardTitle">
                       <Link href={`/formularis/${submission.form.slug}`}>
                         {localizedValue(submission.form.title, locale)}
                       </Link>
-                    </td>
-                    <td className="small muted">{formatDate(submission.createdAt, locale)}</td>
-                    <td>{formatPrice(submission.price, locale)}</td>
-                    <td>
+                      </h3>
                       <span
                         className={
                           submission.status === 'PENDING'
@@ -145,11 +137,28 @@ export default async function AccountPage() {
                             ? t('common.accepted')
                             : t('common.denied')}
                       </span>
-                    </td>
-                  </tr>
+                    </div>
+                    <p className="small muted">
+                      {t('submissions.submittedAt')}: {formatDate(submission.createdAt, locale)}
+                      {' · '}{t('common.price')}: {formatPrice(submission.price, locale)}
+                    </p>
+                    <p className="mt1">
+                      {submission.status === 'PENDING' ? t('account.pendingHelp')
+                        : submission.status === 'ACCEPTED' ? t('account.acceptedHelp')
+                          : t('account.deniedHelp')}
+                    </p>
+                    {submission.status === 'DENIED' && submission.denialReason ? (
+                      <p className="alert alertWarning mt1">
+                        <strong>{t('submissions.denialReason')}: </strong>{submission.denialReason}
+                      </p>
+                    ) : null}
+                    {submission.status === 'ACCEPTED' && submission.pdfFilename ? (
+                      <a href={`/api/submissions/${submission.id}/pdf`} className="btn btnSecondary mt1">
+                        {t('submissions.downloadPdf')}
+                      </a>
+                    ) : null}
+                  </article>
                 ))}
-              </tbody>
-            </table>
           </div>
         )}
       </section>

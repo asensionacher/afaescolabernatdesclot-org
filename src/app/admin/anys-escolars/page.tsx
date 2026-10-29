@@ -5,7 +5,7 @@ import { getLocale, formatDate, formatPrice } from '@/lib/i18n'
 import {
   createSchoolYearAction,
   setCurrentSchoolYearAction,
-} from '../actions/school-years'
+} from '@/app/admin/actions/school-years'
 import SchoolYearForm from '@/components/admin/SchoolYearForm'
 import ConfirmButton from '@/components/admin/ConfirmButton'
 import styles from './page.module.css'
@@ -70,7 +70,7 @@ export default async function SchoolYearsPage() {
                 <tbody>
                   {years.map((year) => (
                     <tr key={year.id}>
-                      <td>
+                      <td data-label={t('schoolYears.name')}>
                         <Link href={`/admin/anys-escolars/${year.id}`}>
                           <strong>{year.name}</strong>
                         </Link>
@@ -78,18 +78,18 @@ export default async function SchoolYearsPage() {
                           {t('schoolYears.membersCount', { count: year._count.memberships })}
                         </div>
                       </td>
-                      <td className="small muted">
+                      <td data-label={t('common.date')} className="small muted">
                         {formatDate(year.startDate, locale)} → {formatDate(year.endDate, locale)}
                       </td>
-                      <td>{formatPrice(year.quotaAmount, locale)}</td>
-                      <td>
+                      <td data-label={t('schoolYears.quotaAmount')}>{formatPrice(year.quotaAmount, locale)}</td>
+                      <td data-label={t('common.status')}>
                         {year.isCurrent ? (
                           <span className="badge badgeSuccess">{t('schoolYears.current')}</span>
                         ) : (
                           <span className="badge badgeMuted">{t('schoolYears.notCurrent')}</span>
                         )}
                       </td>
-                      <td>
+                      <td data-label={t('common.actions')}>
                         <div className={styles.actions}>
                           {!year.isCurrent ? (
                             <ConfirmButton

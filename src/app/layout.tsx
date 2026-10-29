@@ -1,21 +1,22 @@
 import type { Metadata } from 'next'
 import { Baloo_2, Nunito } from 'next/font/google'
-import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { getLocale } from '@/lib/i18n'
+import { getT } from '@/lib/translator'
+import './globals.css'
 
 const baloo = Baloo_2({
   subsets: ['latin'],
   weight: ['400', '600', '700', '800'],
-  variable: '--font-primary',
+  variable: '--font-heading',
   display: 'swap',
 })
 
 const nunito = Nunito({
   subsets: ['latin'],
   weight: ['400', '600', '700'],
-  variable: '--font-secondary',
+  variable: '--font-body',
   display: 'swap',
 })
 
@@ -41,12 +42,14 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = await getLocale()
+  const t = await getT()
 
   return (
     <html lang={locale} className={`${baloo.variable} ${nunito.variable}`}>
       <body>
+        <a href="#main-content" className="skipLink">{t('nav.skip')}</a>
         <Header />
-        <main className="page">{children}</main>
+        <main id="main-content" className="page" tabIndex={-1}>{children}</main>
         <Footer />
       </body>
     </html>

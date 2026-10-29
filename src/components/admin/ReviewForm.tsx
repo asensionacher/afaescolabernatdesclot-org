@@ -2,7 +2,8 @@
 
 import { useActionState } from 'react'
 import type { ActionState } from '@/app/admin/actions/types'
-import ActionFeedback from './ActionFeedback'
+import ActionFeedback from '@/components/admin/ActionFeedback'
+import SubmitButton from '@/components/admin/SubmitButton'
 
 export default function ReviewForm({
   acceptAction,
@@ -23,10 +24,10 @@ export default function ReviewForm({
   }
   messages: Record<string, string>
 }) {
-  const [acceptState, acceptFormAction] = useActionState<ActionState, FormData>(acceptAction, {
+  const [acceptState, acceptFormAction, accepting] = useActionState<ActionState, FormData>(acceptAction, {
     status: 'idle',
   })
-  const [denyState, denyFormAction] = useActionState<ActionState, FormData>(denyAction, {
+  const [denyState, denyFormAction, denying] = useActionState<ActionState, FormData>(denyAction, {
     status: 'idle',
   })
 
@@ -38,16 +39,19 @@ export default function ReviewForm({
       <form action={acceptFormAction} className="stack">
         <input type="hidden" name="id" value={submissionId} />
         <div>
-          <button type="submit" className="btn btnSuccess">
-            ✓ {labels.accept}
-          </button>
+          <SubmitButton
+            label={`✓ ${labels.accept}`}
+            pendingLabel={labels.saving}
+            className="btn btnSuccess btnBlock"
+            disabled={denying}
+          />
         </div>
       </form>
 
       <form action={denyFormAction} className="stack">
         <input type="hidden" name="id" value={submissionId} />
         <div className="field">
-          <label className="label" htmlFor="reason">
+          <label className="label labelRequired" htmlFor="reason">
             {labels.reason}
           </label>
           <textarea
@@ -56,15 +60,20 @@ export default function ReviewForm({
             className="textarea"
             required
             placeholder={labels.reason}
+            aria-invalid={Boolean(denyState.fieldErrors?.reason)}
+            aria-describedby={denyState.fieldErrors?.reason ? 'reason-error' : undefined}
           />
           {denyState.fieldErrors?.reason ? (
-            <span className="errorText">{labels.reasonRequired}</span>
+            <span id="reason-error" className="errorText">{labels.reasonRequired}</span>
           ) : null}
         </div>
         <div>
-          <button type="submit" className="btn btnDanger">
-            ✕ {labels.deny}
-          </button>
+          <SubmitButton
+            label={`✕ ${labels.deny}`}
+            pendingLabel={labels.saving}
+            className="btn btnDanger btnBlock"
+            disabled={accepting}
+          />
         </div>
       </form>
     </div>

@@ -5,6 +5,7 @@
   gap: 1rem;
   flex-wrap: wrap;
   margin-top: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .user {
@@ -13,7 +14,8 @@
 }
 
 .nav {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.4rem;
   flex-wrap: wrap;
   border-bottom: 2px solid var(--color-border);
@@ -28,6 +30,13 @@
   font-size: 0.93rem;
   color: var(--color-text-light);
   transition: var(--transition);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 48px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-alt);
 }
 
 .navItem:hover {
@@ -37,4 +46,17 @@
 
 .content {
   padding-bottom: 3rem;
+  min-width: 0;
+}
+
+.navItem[aria-current='page'] {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+@media (min-width: 760px) {
+  .nav {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
 }

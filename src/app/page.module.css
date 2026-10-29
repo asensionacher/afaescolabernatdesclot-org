@@ -1,43 +1,17 @@
-.hero {
-  padding: 1.5rem 0 2rem;
-  max-width: 720px;
+.formsSection {
+  margin-top: 0.5rem;
 }
 
 .title {
-  font-size: clamp(1.9rem, 5vw, 2.75rem);
-  margin-bottom: 0.75rem;
+  font-size: clamp(1.6rem, 4vw, 2.15rem);
+  margin-bottom: 1.25rem;
 }
 
-.intro {
-  color: var(--color-text-light);
-  font-size: 1.05rem;
-  margin-bottom: 1rem;
-}
-
-.yearBadge {
-  display: inline-block;
-  background: var(--color-accent-light);
-  color: #8a6d00;
-  border: 1px solid var(--color-accent);
-  padding: 0.3rem 0.9rem;
-  border-radius: var(--radius-full);
-  font-size: 0.9rem;
-}
-
-.formsSection {
-  margin-top: 1rem;
-}
-
-.grid {
-  display: grid;
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
-  grid-template-columns: 1fr;
-}
-
-@media (min-width: 720px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 .empty {

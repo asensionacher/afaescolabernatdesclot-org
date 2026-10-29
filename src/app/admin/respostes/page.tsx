@@ -15,9 +15,9 @@ export default async function AdminSubmissionsPage({
   const locale = await getLocale()
   const params = await searchParams
 
-  const status =
-    params.status && params.status !== 'ALL'
-      ? (params.status as SubmissionStatus)
+  const status: SubmissionStatus | undefined =
+    params.status === 'PENDING' || params.status === 'ACCEPTED' || params.status === 'DENIED'
+      ? params.status
       : undefined
   const formId = params.form || undefined
 
@@ -55,10 +55,11 @@ export default async function AdminSubmissionsPage({
             key={tab.value}
             href={
               tab.value === 'ALL'
-                ? '/admin/respostes'
+                ? `/admin/respostes${formId ? `?form=${encodeURIComponent(formId)}` : ''}`
                 : `/admin/respostes?status=${tab.value}${formId ? `&form=${formId}` : ''}`
             }
             className={styles.tab}
+            aria-current={(status ?? 'ALL') === tab.value ? 'page' : undefined}
           >
             {tab.label}
             {tab.value === 'ALL'
@@ -69,13 +70,18 @@ export default async function AdminSubmissionsPage({
       </div>
 
       <form method="get" className={styles.filter}>
-        <select name="status" className="select" defaultValue={status ?? 'ALL'}>
+        <div className="field">
+        <label className="label" htmlFor="filter-status">{t('common.status')}</label>
+        <select id="filter-status" name="status" className="select" defaultValue={status ?? 'ALL'}>
           <option value="ALL">{t('submissions.all')}</option>
           <option value="PENDING">{t('submissions.pending')}</option>
           <option value="ACCEPTED">{t('submissions.accepted')}</option>
           <option value="DENIED">{t('submissions.denied')}</option>
         </select>
-        <select name="form" className="select" defaultValue={formId ?? ''}>
+        </div>
+        <div className="field">
+        <label className="label" htmlFor="filter-form">{t('submissions.form')}</label>
+        <select id="filter-form" name="form" className="select" defaultValue={formId ?? ''}>
           <option value="">{t('submissions.all')}</option>
           {forms.map((form) => (
             <option key={form.id} value={form.id}>
@@ -83,13 +89,17 @@ export default async function AdminSubmissionsPage({
             </option>
           ))}
         </select>
+        </div>
         <button type="submit" className="btn btnSecondary">
           {t('common.filter')}
         </button>
+        {status || formId ? (
+          <Link href="/admin/respostes" className="btn btnGhost">{t('common.clearFilters')}</Link>
+        ) : null}
       </form>
 
       {submissions.length === 0 ? (
-        <p className="muted">{t('submissions.noSubmissions')}</p>
+        <p className="alert">{status || formId ? t('common.noResults') : t('submissions.noSubmissions')}</p>
       ) : (
         <div className="tableWrap">
           <table className="table">
@@ -106,13 +116,13 @@ export default async function AdminSubmissionsPage({
             <tbody>
               {submissions.map((submission) => (
                 <tr key={submission.id}>
-                  <td>{localizedValue(submission.form.title, locale)}</td>
-                  <td>
+                  <td data-label={t('submissions.form')}>{localizedValue(submission.form.title, locale)}</td>
+                  <td data-label={t('submissions.applicant')}>
                     <strong>{submission.contactName}</strong>
                     <div className="small muted">{submission.contactEmail}</div>
                   </td>
-                  <td className="small muted">{formatDateTime(submission.createdAt, locale)}</td>
-                  <td className="small">
+                  <td data-label={t('submissions.submittedAt')} className="small muted">{formatDateTime(submission.createdAt, locale)}</td>
+                  <td data-label={t('submissions.priceAtSubmit')} className="small">
                     {formatPrice(submission.price, locale)}
                     <div className="small muted">
                       {submission.priceTier === 'MEMBER'
@@ -120,7 +130,7 @@ export default async function AdminSubmissionsPage({
                         : t('submissions.nonMember')}
                     </div>
                   </td>
-                  <td>
+                  <td data-label={t('common.status')}>
                     <span
                       className={
                         submission.status === 'PENDING'
@@ -137,8 +147,12 @@ export default async function AdminSubmissionsPage({
                           : t('common.denied')}
                     </span>
                   </td>
-                  <td>
-                    <Link href={`/admin/respostes/${submission.id}`} className="btn btnSmall btnGhost">
+                  <td data-label={t('common.actions')}>
+                    <Link
+                      href={`/admin/respostes/${submission.id}`}
+                      className="btn btnSmall btnSecondary"
+                      aria-label={`${t('common.view')}: ${submission.contactName} — ${localizedValue(submission.form.title, locale)}`}
+                    >
                       {t('common.view')}
                     </Link>
                   </td>

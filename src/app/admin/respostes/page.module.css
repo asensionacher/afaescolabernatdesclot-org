@@ -13,6 +13,9 @@
   color: var(--color-text-light);
   background: var(--color-bg-alt);
   border: 1px solid var(--color-border);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .tab:hover {
@@ -25,8 +28,25 @@
   gap: 0.5rem;
   flex-wrap: wrap;
   margin-bottom: 1.25rem;
+  align-items: flex-end;
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-bg-alt);
+}
+
+.filter > div {
+  margin-bottom: 0;
+  flex: 1 1 180px;
+  min-width: 0;
 }
 
 .filter select {
-  max-width: 260px;
+  max-width: 100%;
+}
+
+.tab[aria-current='page'] {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
 }

@@ -6,6 +6,7 @@ import { getLocale, formatPrice } from '@/lib/i18n'
 import { getT } from '@/lib/translator'
 import { fieldLabel, isFormExpired, localizedValue, parseFields } from '@/lib/forms'
 import { resolvePrice } from '@/lib/pricing'
+import { submitFormAction } from '@/app/actions/submissions'
 import FormFiller, { type FillerField } from '@/components/FormFiller'
 import styles from './page.module.css'
 
@@ -51,7 +52,7 @@ export default async function FormPage({ params }: { params: Promise<{ slug: str
   }))
 
   const notice = localizedValue(form.notice, locale)
-  const locked = expired || !published
+  const locked = expired || !published || (membersOnly && !user)
 
   return (
     <div className="containerNarrow">
@@ -70,6 +71,9 @@ export default async function FormPage({ params }: { params: Promise<{ slug: str
             })}`
           : ''}
       </p>
+      {localizedValue(form.description, locale) ? (
+        <p className="pageSubtitle">{localizedValue(form.description, locale)}</p>
+      ) : null}
 
       {membersOnly && !user ? (
         <div className="alert alertWarning">
@@ -81,11 +85,12 @@ export default async function FormPage({ params }: { params: Promise<{ slug: str
       ) : null}
 
       {expired ? <div className="alert alertWarning">{t('formPage.formExpired')}</div> : null}
+      {!published ? <div className="alert alertWarning">{t('formPage.notPublished')}</div> : null}
 
       {notice ? <div className="alert">{notice}</div> : null}
 
       <section className={styles.priceBox}>
-        <h2 className="stylesPriceTitle">{t('formPage.priceTitle')}</h2>
+        <h2 className="cardTitle">{t('formPage.priceTitle')}</h2>
         <div className={styles.priceGrid}>
           <div className={styles.priceItem}>
             <span className={styles.priceLabel}>{t('formPage.memberPrice')}</span>
@@ -109,13 +114,25 @@ export default async function FormPage({ params }: { params: Promise<{ slug: str
 
       {fields.length > 0 ? (
         <FormFiller
-          formId={form.id}
+          action={submitFormAction.bind(null, form.id)}
           fields={fields}
           locked={locked}
           defaultName={user?.name ?? ''}
           defaultEmail={user?.email ?? ''}
           defaultPhone={user?.phone ?? ''}
           labels={{
+            contactName: t('formPage.contactName'),
+            email: t('common.email'),
+            phone: t('common.phone'),
+            contactHelp: t('formPage.contactHelp'),
+            fieldsLegend: t('formPage.fieldsLegend'),
+            successTitle: t('formPage.success'),
+            backToForms: t('formPage.backToForms'),
+            checkTitle: t('formPage.checkTitle'),
+            checkHelp: t('formPage.checkHelp'),
+            totalLabel: t('formPage.totalToPay'),
+            totalPrice: formatPrice(price.price, locale),
+            fileHint: t('formPage.fileHint'),
             contactLegend: t('formPage.contactLegend'),
             submit: t('formPage.submit'),
             submitting: t('formPage.submitting'),
@@ -128,7 +145,7 @@ export default async function FormPage({ params }: { params: Promise<{ slug: str
             errors: {
               required: t('common.errorRequired'),
               email: t('common.errorEmail'),
-              number: t('common.errorRequired'),
+              number: t('common.errorNumber'),
               fileTooBig: t('formPage.fileTooBig'),
             },
           }}

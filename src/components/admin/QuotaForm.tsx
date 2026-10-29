@@ -2,6 +2,7 @@
 
 import { useActionState } from 'react'
 import type { ActionState } from '@/app/admin/actions/types'
+import { usePreservedForm } from '@/lib/use-preserved-form'
 import SubmitButton from './SubmitButton'
 
 export interface QuotaYear {
@@ -37,30 +38,36 @@ export default function QuotaForm({
     note: string
     save: string
     saving: string
+    saved: string
+    error: string
     pending: string
     paid: string
     exempt: string
   }
 }) {
   const [state, formAction] = useActionState<ActionState, FormData>(action, { status: 'idle' })
+  const formRef = usePreservedForm()
 
   return (
-    <form action={formAction} className="stack">
+    <form ref={formRef} action={formAction} className="stack">
       <input type="hidden" name="userId" value={userId} />
 
       {state.status === 'success' ? (
         <div className="alert alertSuccess" role="status">
-          {labels.save}
+          {labels.saved}
         </div>
+      ) : null}
+      {state.status === 'error' ? (
+        <div className="alert alertError" role="alert">{labels.error}</div>
       ) : null}
 
       <div className="formGrid">
         <div className="field">
-          <label className="label" htmlFor="schoolYearId">
+          <label className="label" htmlFor="quota-schoolYearId">
             {labels.year}
           </label>
           <select
-            id="schoolYearId"
+            id="quota-schoolYearId"
             name="schoolYearId"
             className="select"
             defaultValue={currentYearId ?? years[0]?.id ?? ''}
@@ -74,10 +81,10 @@ export default function QuotaForm({
         </div>
 
         <div className="field">
-          <label className="label" htmlFor="status">
+          <label className="label" htmlFor="quota-status">
             {labels.status}
           </label>
-          <select id="status" name="status" className="select" defaultValue={values.status}>
+          <select id="quota-status" name="status" className="select" defaultValue={values.status}>
             <option value="PENDING">{labels.pending}</option>
             <option value="PAID">{labels.paid}</option>
             <option value="EXEMPT">{labels.exempt}</option>
@@ -85,11 +92,11 @@ export default function QuotaForm({
         </div>
 
         <div className="field">
-          <label className="label" htmlFor="amount">
+          <label className="label" htmlFor="quota-amount">
             {labels.amount}
           </label>
           <input
-            id="amount"
+            id="quota-amount"
             name="amount"
             type="number"
             step="0.01"
@@ -100,11 +107,11 @@ export default function QuotaForm({
         </div>
 
         <div className="field">
-          <label className="label" htmlFor="method">
+          <label className="label" htmlFor="quota-method">
             {labels.method}
           </label>
           <input
-            id="method"
+            id="quota-method"
             name="method"
             type="text"
             className="input"
@@ -113,11 +120,11 @@ export default function QuotaForm({
         </div>
 
         <div className="field formGridFull">
-          <label className="label" htmlFor="note">
+          <label className="label" htmlFor="quota-note">
             {labels.note}
           </label>
           <input
-            id="note"
+            id="quota-note"
             name="note"
             type="text"
             className="input"

@@ -1,7 +1,7 @@
 .stats {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   margin-bottom: 2.5rem;
 }
 
@@ -24,7 +24,7 @@
 }
 
 .statLabel {
-  font-size: 0.85rem;
+  font-size: 0.93rem;
   color: var(--color-text-muted);
 }
 
@@ -32,6 +32,47 @@
   display: grid;
   gap: 2rem;
   grid-template-columns: 1fr;
+}
+
+.stat:hover,
+.task:hover {
+  border-color: var(--color-secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.tasks {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+}
+
+.task {
+  display: block;
+  padding: 1.25rem;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-bg-alt);
+}
+
+.task:first-child {
+  background: var(--color-accent-light);
+  border-color: var(--color-accent-dark);
+}
+
+.task h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+}
+
+.task p {
+  color: var(--color-text-light);
+  font-size: 0.95rem;
+}
+
+@media (min-width: 760px) {
+  .stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
 @media (min-width: 900px) {

@@ -111,6 +111,8 @@ export default async function MemberDetailPage({
               note: t('members.quotaNote'),
               save: t('common.save'),
               saving: t('common.loading'),
+              saved: t('common.saved'),
+              error: t('common.errorGeneric'),
               pending: t('common.unpaid'),
               paid: t('common.paid'),
               exempt: t('common.exempt'),
@@ -133,16 +135,16 @@ export default async function MemberDetailPage({
             <tbody>
               {member.memberships.map((membership) => (
                 <tr key={membership.id}>
-                  <td>{membership.schoolYear.name}</td>
-                  <td>
+                  <td data-label={t('schoolYears.selectYear')}>{membership.schoolYear.name}</td>
+                  <td data-label={t('common.status')}>
                     {membership.status === 'PAID'
                       ? t('common.paid')
                       : membership.status === 'EXEMPT'
                         ? t('common.exempt')
                         : t('common.unpaid')}
                   </td>
-                  <td>{formatPrice(membership.amount, locale)}</td>
-                  <td className="small muted">{membership.method ?? '—'}</td>
+                  <td data-label={t('members.quotaAmount')}>{formatPrice(membership.amount, locale)}</td>
+                  <td data-label={t('members.quotaMethod')} className="small muted">{membership.method ?? '—'}</td>
                 </tr>
               ))}
             </tbody>
@@ -168,16 +170,16 @@ export default async function MemberDetailPage({
               <tbody>
                 {member.submissions.map((submission) => (
                   <tr key={submission.id}>
-                    <td>
+                    <td data-label={t('submissions.form')}>
                       <Link href={`/admin/respostes/${submission.id}`}>
                         {localizedValue(submission.form.title, locale)}
                       </Link>
                     </td>
-                    <td className="small muted">
+                    <td data-label={t('submissions.submittedAt')} className="small muted">
                       {formatDate(submission.createdAt, locale)}
                     </td>
-                    <td>{formatPrice(submission.price, locale)}</td>
-                    <td>
+                    <td data-label={t('submissions.priceAtSubmit')}>{formatPrice(submission.price, locale)}</td>
+                    <td data-label={t('common.status')}>
                       <span
                         className={
                           submission.status === 'PENDING'

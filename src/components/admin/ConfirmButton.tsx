@@ -1,5 +1,7 @@
 'use client'
 
+import SubmitButton from '@/components/admin/SubmitButton'
+
 export default function ConfirmButton({
   action,
   id,
@@ -26,9 +28,7 @@ export default function ConfirmButton({
       {Object.entries(hiddenFields).map(([name, value]) => (
         <input key={name} type="hidden" name={name} value={value} />
       ))}
-      <button type="submit" className={className}>
-        {label}
-      </button>
+      <SubmitButton label={label} pendingLabel={`${label}…`} className={className} />
     </form>
   )
 }

@@ -28,24 +28,50 @@ export default async function AdminDashboard() {
   ])
 
   const stats = [
-    { label: t('admin.statMembers'), value: members },
-    { label: t('admin.statPaid', { year: schoolYear?.name ?? '—' }), value: paid },
-    { label: t('admin.statPendingSubmissions'), value: pending },
-    { label: t('admin.statForms'), value: forms },
+    { label: t('admin.statPendingSubmissions'), value: pending, href: '/admin/respostes?status=PENDING' },
+    { label: t('admin.statMembers'), value: members, href: '/admin/membres' },
+    { label: t('admin.statPaid', { year: schoolYear?.name ?? '—' }), value: paid, href: '/admin/membres' },
+    { label: t('admin.statForms'), value: forms, href: '/admin/formularis' },
   ]
 
   return (
     <div>
       <p className="pageSubtitle">{t('admin.dashboardIntro')}</p>
 
+      {!schoolYear ? (
+        <div className="alert alertWarning">
+          <h2 className="cardTitle">{t('admin.setupYear')}</h2>
+          <p>{t('admin.setupYearHelp')}</p>
+          <Link href="/admin/anys-escolars" className="btn mt1">{t('admin.schoolYears')} →</Link>
+        </div>
+      ) : null}
+
       <div className={styles.stats}>
         {stats.map((stat) => (
-          <div className={styles.stat} key={stat.label}>
+          <Link href={stat.href} className={styles.stat} key={stat.label}>
             <span className={styles.statValue}>{stat.value}</span>
             <span className={styles.statLabel}>{stat.label}</span>
-          </div>
+          </Link>
         ))}
       </div>
+
+      <section className="mb2">
+        <h2 className="sectionTitle">{t('admin.nextTask')}</h2>
+        <div className={styles.tasks}>
+          {[
+            { href: '/admin/respostes?status=PENDING', title: 'reviewPending', help: 'reviewHelp' },
+            { href: '/admin/membres', title: 'members', help: 'membersHelp' },
+            { href: '/admin/formularis', title: 'forms', help: 'formsHelp' },
+            { href: '/admin/anys-escolars', title: 'schoolYears', help: 'yearsHelp' },
+            { href: '/admin/configuracio', title: 'settings', help: 'settingsHelp' },
+          ].map((task) => (
+            <Link href={task.href} className={styles.task} key={task.href}>
+              <h3>{t(`admin.${task.title}`)} <span aria-hidden="true">→</span></h3>
+              <p>{t(`admin.${task.help}`)}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       <div className={styles.columns}>
         <section>
@@ -72,16 +98,16 @@ export default async function AdminDashboard() {
                 <tbody>
                   {recent.map((submission) => (
                     <tr key={submission.id}>
-                      <td>
+                      <td data-label={t('submissions.form')}>
                         <Link href={`/admin/respostes/${submission.id}`}>
                           {localizedValue(submission.form.title, locale)}
                         </Link>
                       </td>
-                      <td>{submission.contactName}</td>
-                      <td className="small muted">
+                      <td data-label={t('submissions.applicant')}>{submission.contactName}</td>
+                      <td data-label={t('submissions.submittedAt')} className="small muted">
                         {formatDateTime(submission.createdAt, locale)}
                       </td>
-                      <td>
+                      <td data-label={t('common.status')}>
                         <span
                           className={
                             submission.status === 'PENDING'

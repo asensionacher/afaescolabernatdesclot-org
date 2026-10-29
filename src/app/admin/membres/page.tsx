@@ -3,7 +3,7 @@ import { prisma } from '@/lib/db'
 import { getCurrentUser } from '@/lib/auth'
 import { getCurrentSchoolYear } from '@/lib/school-year'
 import { getT } from '@/lib/translator'
-import { deleteMemberAction, toggleMemberActiveAction } from '../actions/members'
+import { deleteMemberAction, toggleMemberActiveAction } from '@/app/admin/actions/members'
 import ConfirmButton from '@/components/admin/ConfirmButton'
 import styles from './page.module.css'
 
@@ -62,13 +62,13 @@ export default async function MembersPage({
         </button>
         {query ? (
           <Link href="/admin/membres" className="btn btnGhost">
-            {t('common.all')}
+            {t('common.clearFilters')}
           </Link>
         ) : null}
       </form>
 
       {members.length === 0 ? (
-        <p className="muted">{t('members.noMembers')}</p>
+        <p className="alert">{query ? t('common.noResults') : t('members.noMembers')}</p>
       ) : (
         <div className="tableWrap">
           <table className="table">
@@ -87,15 +87,15 @@ export default async function MembersPage({
                 const membership = member.memberships[0]
                 return (
                   <tr key={member.id}>
-                    <td>
+                    <td data-label={t('common.name')}>
                       <Link href={`/admin/membres/${member.id}`}>
                         <strong>{member.name}</strong>
                       </Link>
                       {member.phone ? <div className="small muted">{member.phone}</div> : null}
                     </td>
-                    <td className="small">{member.username}</td>
-                    <td className="small">{member.email}</td>
-                    <td>
+                    <td data-label={t('common.username')} className="small">{member.username}</td>
+                    <td data-label={t('common.email')} className="small">{member.email}</td>
+                    <td data-label={t('members.setQuota', { year: schoolYear?.name ?? '—' })}>
                       {membership ? (
                         <span
                           className={
@@ -116,7 +116,7 @@ export default async function MembersPage({
                         <span className="badge badgeMuted">{t('common.none')}</span>
                       )}
                     </td>
-                    <td>
+                    <td data-label={t('common.status')}>
                       {member.role === 'ADMIN' ? (
                         <span className="badge">{t('common.admin')}</span>
                       ) : (
@@ -128,7 +128,7 @@ export default async function MembersPage({
                         </span>
                       ) : null}
                     </td>
-                    <td>
+                    <td data-label={t('common.actions')}>
                       <div className={styles.actions}>
                         <Link href={`/admin/membres/${member.id}`} className="btn btnSmall btnGhost">
                           {t('common.edit')}
@@ -138,7 +138,7 @@ export default async function MembersPage({
                             <ConfirmButton
                               action={toggleMemberActiveAction}
                               id={member.id}
-                              label={member.active ? t('common.inactive') : t('common.active')}
+                              label={member.active ? t('common.deactivate') : t('common.activate')}
                               className="btn btnSmall btnGhost"
                               message={t('common.confirm')}
                             />
@@ -146,8 +146,8 @@ export default async function MembersPage({
                               action={deleteMemberAction}
                               id={member.id}
                               label={t('common.delete')}
-                              className="btn btnSmall btnGhost"
-                              message={t('common.confirm')}
+                              className="btn btnSmall btnDanger"
+                              message={t('common.deleteNamed', { name: member.name })}
                             />
                           </>
                         ) : null}

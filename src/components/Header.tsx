@@ -4,7 +4,8 @@ import { getCurrentUser } from '@/lib/auth'
 import { getLocale } from '@/lib/i18n'
 import { getT } from '@/lib/translator'
 import { logoutAction } from '@/app/actions/auth'
-import LocaleSwitcher from './LocaleSwitcher'
+import LocaleSwitcher from '@/components/LocaleSwitcher'
+import NavLink from '@/components/NavLink'
 import styles from './Header.module.css'
 
 export default async function Header() {
@@ -14,13 +15,13 @@ export default async function Header() {
 
   return (
     <header className={styles.header}>
-      <div className={`container ${styles.inner}`}>
+      <div className={styles.inner}>
         <Link href="/" className={styles.brand}>
           <Image
             src="/logo-small.png"
             alt="AFA Bernat Desclot"
-            width={44}
-            height={44}
+            width={48}
+            height={48}
             priority
           />
           <span className={styles.brandText}>
@@ -29,32 +30,33 @@ export default async function Header() {
           </span>
         </Link>
 
-        <nav className={styles.nav} aria-label="Principal">
-          <Link href="/">{t('nav.home')}</Link>
-          <Link href="/#formularis">{t('nav.forms')}</Link>
+        <nav className={styles.nav} aria-label={t('nav.main')}>
+          <NavLink href="/">{t('nav.forms')}</NavLink>
           {user ? (
             <>
-              <Link href="/el-meu-compte">{t('nav.account')}</Link>
+              <NavLink href="/el-meu-compte">{t('nav.account')}</NavLink>
               {user.role === 'ADMIN' && (
-                <Link href="/admin" className={styles.adminLink}>
+                <NavLink href="/admin" className={styles.adminLink}>
                   {t('nav.admin')}
-                </Link>
+                </NavLink>
               )}
             </>
-          ) : (
-            <Link href="/login">{t('nav.login')}</Link>
-          )}
+          ) : null}
         </nav>
 
         <div className={styles.actions}>
-          <LocaleSwitcher locale={locale} />
+          <LocaleSwitcher locale={locale} label={t('nav.language')} />
           {user ? (
             <form action={logoutAction}>
               <button type="submit" className={styles.logout}>
                 {t('nav.logout')}
               </button>
             </form>
-          ) : null}
+          ) : (
+            <Link href="/login" className={styles.accountButton}>
+              {t('nav.login')}
+            </Link>
+          )}
         </div>
       </div>
     </header>

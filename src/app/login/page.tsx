@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { getCurrentUser } from '@/lib/auth'
 import { getT } from '@/lib/translator'
+import { loginAction } from '@/app/actions/auth'
 import LoginForm from './LoginForm'
 import styles from './page.module.css'
 
@@ -28,6 +29,7 @@ export default async function LoginPage({
         <p className="pageSubtitle">{t('login.subtitle')}</p>
 
         <LoginForm
+          action={loginAction}
           next={next}
           labels={{
             username: t('login.username'),
@@ -35,6 +37,9 @@ export default async function LoginPage({
             submit: t('login.submit'),
             loading: t('common.loading'),
             invalid: t('login.invalid'),
+            rateLimited: t('login.rateLimited'),
+            showPassword: t('login.showPassword'),
+            hidePassword: t('login.hidePassword'),
           }}
         />
 

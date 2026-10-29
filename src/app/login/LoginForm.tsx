@@ -1,8 +1,8 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useActionState, useState } from 'react'
 import { useFormStatus } from 'react-dom'
-import { loginAction, type LoginState } from '@/app/actions/auth'
+import type { LoginState } from '@/app/actions/auth'
 import styles from './LoginForm.module.css'
 
 function SubmitButton({ label, pendingLabel }: { label: string; pendingLabel: string }) {
@@ -15,19 +15,31 @@ function SubmitButton({ label, pendingLabel }: { label: string; pendingLabel: st
 }
 
 export default function LoginForm({
+  action,
   labels,
   next,
 }: {
-  labels: { username: string; password: string; submit: string; loading: string; invalid: string }
+  action: (previous: LoginState, formData: FormData) => Promise<LoginState>
+  labels: {
+    username: string
+    password: string
+    submit: string
+    loading: string
+    invalid: string
+    rateLimited: string
+    showPassword: string
+    hidePassword: string
+  }
   next: string
 }) {
-  const [state, formAction] = useActionState<LoginState, FormData>(loginAction, {})
+  const [state, formAction] = useActionState<LoginState, FormData>(action, {})
+  const [showPassword, setShowPassword] = useState(false)
 
   return (
     <form action={formAction} className={styles.form}>
       {state.error ? (
         <div className="alert alertError" role="alert">
-          {state.error === 'rate_limited' ? labels.invalid : labels.invalid}
+          {state.error === 'rate_limited' ? labels.rateLimited : labels.invalid}
         </div>
       ) : null}
 
@@ -53,11 +65,20 @@ export default function LoginForm({
         <input
           id="password"
           name="password"
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           className="input"
           autoComplete="current-password"
           required
         />
+        <button
+          type="button"
+          className="btn btnGhost mt1"
+          aria-pressed={showPassword}
+          aria-controls="password"
+          onClick={() => setShowPassword((current) => !current)}
+        >
+          {showPassword ? labels.hidePassword : labels.showPassword}
+        </button>
       </div>
 
       {next ? <input type="hidden" name="next" value={next} /> : null}

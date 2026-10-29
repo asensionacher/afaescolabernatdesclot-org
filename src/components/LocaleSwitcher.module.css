@@ -1,29 +1,59 @@
 .switcher {
+  position: relative;
   display: inline-flex;
-  border: 1px solid var(--color-border-strong);
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0 2.6rem 0 1rem;
+  border: 2px solid var(--color-border-strong);
   border-radius: var(--radius-full);
-  overflow: hidden;
   background: var(--color-bg-alt);
-}
-
-.option,
-.active {
-  border: none;
-  background: transparent;
-  padding: 0.35rem 0.75rem;
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
-  color: var(--color-text-light);
+  color: var(--color-primary);
   transition: var(--transition);
 }
 
-.option:hover {
-  background: var(--color-primary-light);
-  color: var(--color-primary);
+.switcher:hover {
+  border-color: var(--color-primary);
 }
 
-.active {
-  background: var(--color-primary);
-  color: #fff;
+.switcher:focus-within {
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px rgba(0, 90, 135, 0.12);
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0.55rem 0;
+  min-width: 108px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.select:focus {
+  outline: none;
+}
+
+.select:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.chevron {
+  position: absolute;
+  right: 0.95rem;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  color: var(--color-primary);
 }

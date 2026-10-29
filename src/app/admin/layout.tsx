@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { requireAdmin } from '@/lib/auth'
 import { getT } from '@/lib/translator'
+import NavLink from '@/components/NavLink'
 import styles from './layout.module.css'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -25,13 +26,14 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             {admin.name} · <strong>{admin.username}</strong>
           </p>
         </div>
+        <Link href="/" className="btn btnSecondary">{t('admin.backToSite')} →</Link>
       </div>
 
       <nav className={styles.nav} aria-label={t('admin.title')}>
         {items.map((item) => (
-          <Link key={item.href} href={item.href} className={styles.navItem}>
+          <NavLink key={item.href} href={item.href} exact={item.href === '/admin'} className={styles.navItem}>
             {item.label}
-          </Link>
+          </NavLink>
         ))}
       </nav>
 

@@ -3,10 +3,20 @@
 import { useActionState, useState } from 'react'
 import type { ActionState } from '@/app/admin/actions/types'
 import type { FormField, FormFieldType } from '@/lib/forms'
-import ActionFeedback from './ActionFeedback'
-import SubmitButton from './SubmitButton'
+import { usePreservedForm } from '@/lib/use-preserved-form'
+import ActionFeedback from '@/components/admin/ActionFeedback'
+import SubmitButton from '@/components/admin/SubmitButton'
+import styles from './FormEditor.module.css'
 
 export interface FormEditorLabels {
+  editorHelp: string
+  contentHelp: string
+  fieldsHelp: string
+  publishingHelp: string
+  untitledField: string
+  slugHelp: string
+  fieldTypes: Record<FormFieldType, string>
+  archived: string
   general: string
   content: string
   fields: string
@@ -71,17 +81,9 @@ export interface FormEditorValues {
   fields: FormField[]
 }
 
-const FIELD_TYPES: { value: FormFieldType; label: string }[] = [
-  { value: 'TEXT', label: 'Text curt' },
-  { value: 'TEXTAREA', label: 'Text llarg' },
-  { value: 'EMAIL', label: 'Correu electrònic' },
-  { value: 'PHONE', label: 'Telèfon' },
-  { value: 'NUMBER', label: 'Número' },
-  { value: 'DATE', label: 'Data' },
-  { value: 'SELECT', label: 'Llista desplegable' },
-  { value: 'RADIO', label: 'Botons d’opció' },
-  { value: 'CHECKBOX', label: 'Casella de marca' },
-  { value: 'FILE', label: 'Adjuntar fitxer' },
+const FIELD_TYPES: FormFieldType[] = [
+  'TEXT', 'TEXTAREA', 'EMAIL', 'PHONE', 'NUMBER',
+  'DATE', 'SELECT', 'RADIO', 'CHECKBOX', 'FILE',
 ]
 
 function newField(index: number): FormField {
@@ -117,6 +119,7 @@ export default function FormEditor({
   const [state, formAction] = useActionState<ActionState, FormData>(action, { status: 'idle' })
   const [fields, setFields] = useState<FormField[]>(form?.fields ?? [])
   const [status, setStatus] = useState(form?.status ?? 'DRAFT')
+  const formRef = usePreservedForm()
 
   const fieldError = (key: string): string | undefined => {
     const code = state.fieldErrors?.[key]
@@ -142,14 +145,26 @@ export default function FormEditor({
   }
 
   return (
-    <form action={formAction} className="stack">
+    <form ref={formRef} action={formAction} className="stack">
       <ActionFeedback state={state} messages={messages} />
+      <p className="muted">{labels.editorHelp}</p>
+      <nav className={styles.steps} aria-label={labels.formTitle}>
+        {[labels.content, labels.fields, labels.pricing, labels.general, labels.publishing].map((label, index) => (
+          <a href={`#editor-step-${index + 1}`} key={label}>
+            <span className="stepNumber">{index + 1}</span>{label}
+          </a>
+        ))}
+      </nav>
 
       {form?.id ? <input type="hidden" name="id" value={form.id} /> : null}
-      <input type="hidden" name="fields" value={JSON.stringify(fields)} />
+      <input type="hidden" name="fields" value={JSON.stringify(fields.map((field) => ({
+        ...field,
+        options: field.options?.map((option) => option.trim()).filter(Boolean),
+      })))} />
 
-      <section className="card">
-        <h3 className="cardTitle">{labels.content}</h3>
+      <section id="editor-step-1" className="card">
+        <h3 className="cardTitle"><span className="stepNumber">1</span>{labels.content}</h3>
+        <p className="muted mb1">{labels.contentHelp}</p>
         <p className="small muted mb2">{labels.languageNote}</p>
 
         <div className="formGrid">
@@ -231,15 +246,16 @@ export default function FormEditor({
         </div>
       </section>
 
-      <section className="card">
-        <h3 className="cardTitle">{labels.fields}</h3>
+      <section id="editor-step-2" className="card">
+        <h3 className="cardTitle"><span className="stepNumber">2</span>{labels.fields}</h3>
+        <p className="muted mb2">{labels.fieldsHelp}</p>
 
         {fields.length === 0 ? <p className="muted mb1">{labels.noFields}</p> : null}
 
         {fields.map((field, index) => (
-          <fieldset className="fieldset" key={field.id}>
+          <fieldset className={styles.question} key={field.id}>
             <legend className="fieldsetLegend">
-              {index + 1}. {field.label || '(sense títol)'}
+              {index + 1}. {field.label || labels.untitledField}
             </legend>
 
             <div className="formGrid">
@@ -252,6 +268,7 @@ export default function FormEditor({
                   type="text"
                   className="input"
                   value={field.label}
+                  required
                   onChange={(event) => updateField(index, { label: event.target.value })}
                 />
               </div>
@@ -282,8 +299,8 @@ export default function FormEditor({
                   }
                 >
                   {FIELD_TYPES.map((type) => (
-                    <option key={type.value} value={type.value}>
-                      {type.label}
+                    <option key={type} value={type}>
+                      {labels.fieldTypes[type]}
                     </option>
                   ))}
                 </select>
@@ -326,10 +343,7 @@ export default function FormEditor({
                     value={(field.options ?? []).join('\n')}
                     onChange={(event) =>
                       updateField(index, {
-                        options: event.target.value
-                          .split('\n')
-                          .map((option) => option.trim())
-                          .filter(Boolean),
+                        options: event.target.value.split('\n'),
                       })
                     }
                   />
@@ -351,6 +365,8 @@ export default function FormEditor({
                     type="button"
                     className="btn btnSmall btnGhost"
                     onClick={() => moveField(index, -1)}
+                    disabled={index === 0}
+                    aria-label={`${labels.moveUp}: ${field.label || labels.untitledField}`}
                   >
                     ↑ {labels.moveUp}
                   </button>
@@ -358,6 +374,8 @@ export default function FormEditor({
                     type="button"
                     className="btn btnSmall btnGhost"
                     onClick={() => moveField(index, 1)}
+                    disabled={index === fields.length - 1}
+                    aria-label={`${labels.moveDown}: ${field.label || labels.untitledField}`}
                   >
                     ↓ {labels.moveDown}
                   </button>
@@ -367,6 +385,7 @@ export default function FormEditor({
                     onClick={() =>
                       setFields((current) => current.filter((_, position) => position !== index))
                     }
+                    aria-label={`${labels.remove}: ${field.label || labels.untitledField}`}
                   >
                     {labels.remove}
                   </button>
@@ -387,8 +406,8 @@ export default function FormEditor({
         </button>
       </section>
 
-      <section className="card">
-        <h3 className="cardTitle">{labels.pricing}</h3>
+      <section id="editor-step-3" className="card">
+        <h3 className="cardTitle"><span className="stepNumber">3</span>{labels.pricing}</h3>
         <div className="formGrid">
           <div className="field">
             <label className="label" htmlFor="memberPrice">
@@ -424,8 +443,8 @@ export default function FormEditor({
         </div>
       </section>
 
-      <section className="card">
-        <h3 className="cardTitle">{labels.general}</h3>
+      <section id="editor-step-4" className="card">
+        <h3 className="cardTitle"><span className="stepNumber">4</span>{labels.general}</h3>
         <div className="formGrid">
           <div className="field">
             <label className="label" htmlFor="schoolYearId">
@@ -459,7 +478,9 @@ export default function FormEditor({
               className="input"
               defaultValue={form?.slug ?? ''}
               placeholder="sortida-nadal-2026"
+              aria-describedby="slug-help"
             />
+            <span id="slug-help" className="help">{labels.slugHelp}</span>
             {fieldError('slug') ? <span className="errorText">{fieldError('slug')}</span> : null}
           </div>
 
@@ -480,8 +501,9 @@ export default function FormEditor({
         </div>
       </section>
 
-      <section className="card">
-        <h3 className="cardTitle">{labels.publishing}</h3>
+      <section id="editor-step-5" className="card">
+        <h3 className="cardTitle"><span className="stepNumber">5</span>{labels.publishing}</h3>
+        <p className="muted mb2">{labels.publishingHelp}</p>
         <div className="formGrid">
           <div className="field">
             <label className="label" htmlFor="publishedAt">
@@ -522,6 +544,7 @@ export default function FormEditor({
             >
               <option value="DRAFT">{labels.draft}</option>
               <option value="PUBLISHED">{labels.published}</option>
+              {form?.status === 'ARCHIVED' ? <option value="ARCHIVED">{labels.archived}</option> : null}
             </select>
           </div>
 
@@ -534,7 +557,10 @@ export default function FormEditor({
         </div>
       </section>
 
-      <div className="row">
+      <div className={styles.save}>
+        <span className={`badge ${status === 'PUBLISHED' ? 'badgeSuccess' : 'badgeWarning'}`}>
+          {status === 'PUBLISHED' ? labels.published : status === 'ARCHIVED' ? labels.archived : labels.draft}
+        </span>
         <SubmitButton label={labels.save} pendingLabel={labels.saving} className="btn btnAccent" />
       </div>
     </form>

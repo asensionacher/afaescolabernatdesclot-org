@@ -26,7 +26,10 @@ services:
     container_name: afa-migrate
     command: ['sh', '-c', 'pnpm db:deploy && pnpm db:seed']
     environment:
-      DATABASE_URL: postgresql://afa:afa@db:5432/afa?schema=public
+      # Si hay DATABASE_URL / DIRECT_URL en el .env se usan (Supabase, Neon, etc.).
+      # Si no, se usa el Postgres del servicio 'db' de este mismo compose.
+      DATABASE_URL: ${DATABASE_URL:-postgresql://afa:afa@db:5432/afa?schema=public}
+      DIRECT_URL: ${DIRECT_URL:-postgresql://afa:afa@db:5432/afa?schema=public}
       JWT_SECRET: ${JWT_SECRET:-0000000000000000000000000000000000000000000000000000000000000000}
       CREDENTIALS_ENCRYPTION_KEY: ${CREDENTIALS_ENCRYPTION_KEY:-1111111111111111111111111111111111111111111111111111111111111111}
     depends_on:
@@ -43,7 +46,8 @@ services:
     ports:
       - '${WEB_PORT:-3000}:3000'
     environment:
-      DATABASE_URL: postgresql://afa:afa@db:5432/afa?schema=public
+      DATABASE_URL: ${DATABASE_URL:-postgresql://afa:afa@db:5432/afa?schema=public}
+      DIRECT_URL: ${DIRECT_URL:-postgresql://afa:afa@db:5432/afa?schema=public}
       JWT_SECRET: ${JWT_SECRET:-0000000000000000000000000000000000000000000000000000000000000000}
       CREDENTIALS_ENCRYPTION_KEY: ${CREDENTIALS_ENCRYPTION_KEY:-1111111111111111111111111111111111111111111111111111111111111111}
       NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL:-http://localhost:3000}
