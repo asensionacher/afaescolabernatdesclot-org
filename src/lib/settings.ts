@@ -1,6 +1,6 @@
 import type { Prisma } from '@prisma/client'
 import { prisma } from '@/lib/db'
-import { decryptSecret, encryptSecret } from '@/lib/crypto'
+import { decryptSecret, encryptSecret, isEncryptionKeyValid } from '@/lib/crypto'
 
 export interface EmailSettings {
   host: string
@@ -79,6 +79,11 @@ export async function saveEmailSettings(settings: EmailSettings): Promise<void> 
     create: { key: EMAIL_SETTING_KEY, value: value as unknown as Prisma.InputJsonValue },
     update: { value: value as unknown as Prisma.InputJsonValue },
   })
+}
+
+/** ¿Se puede cifrar la contraseña del SMTP? (hace falta una clave válida) */
+export function isEncryptionAvailable(): boolean {
+  return isEncryptionKeyValid()
 }
 
 /** ¿Hay suficiente configuración para enviar correo? */

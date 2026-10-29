@@ -27,8 +27,8 @@ services:
     command: ['sh', '-c', 'pnpm db:deploy && pnpm db:seed']
     environment:
       DATABASE_URL: postgresql://afa:afa@db:5432/afa?schema=public
-      JWT_SECRET: ${JWT_SECRET:-development-only-secret-cambia-esto-en-produccion-000000}
-      CREDENTIALS_ENCRYPTION_KEY: ${CREDENTIALS_ENCRYPTION_KEY:-development-only-key-cambia-esto-en-produccion-00000}
+      JWT_SECRET: ${JWT_SECRET:-0000000000000000000000000000000000000000000000000000000000000000}
+      CREDENTIALS_ENCRYPTION_KEY: ${CREDENTIALS_ENCRYPTION_KEY:-1111111111111111111111111111111111111111111111111111111111111111}
     depends_on:
       db:
         condition: service_healthy
@@ -44,8 +44,8 @@ services:
       - '${WEB_PORT:-3000}:3000'
     environment:
       DATABASE_URL: postgresql://afa:afa@db:5432/afa?schema=public
-      JWT_SECRET: ${JWT_SECRET:-development-only-secret-cambia-esto-en-produccion-000000}
-      CREDENTIALS_ENCRYPTION_KEY: ${CREDENTIALS_ENCRYPTION_KEY:-development-only-key-cambia-esto-en-produccion-00000}
+      JWT_SECRET: ${JWT_SECRET:-0000000000000000000000000000000000000000000000000000000000000000}
+      CREDENTIALS_ENCRYPTION_KEY: ${CREDENTIALS_ENCRYPTION_KEY:-1111111111111111111111111111111111111111111111111111111111111111}
       NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL:-http://localhost:3000}
       TZ: ${TZ:-Europe/Madrid}
     depends_on:

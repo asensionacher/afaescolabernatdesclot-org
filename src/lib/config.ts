@@ -1,7 +1,7 @@
 /** Valores de ejemplo que usa docker-compose cuando no hay un .env configurado. */
-export const DEV_JWT_SECRET = 'development-only-secret-cambia-esto-en-produccion-000000'
+export const DEV_JWT_SECRET = '0000000000000000000000000000000000000000000000000000000000000000'
 export const DEV_CREDENTIALS_ENCRYPTION_KEY =
-  'development-only-key-cambia-esto-en-produccion-00000'
+  '1111111111111111111111111111111111111111111111111111111111111111'
 
 /**
  * Valida un secreto de entorno.

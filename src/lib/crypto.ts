@@ -3,13 +3,21 @@ import { DEV_CREDENTIALS_ENCRYPTION_KEY, readSecret } from '@/lib/config'
 
 const ALGORITHM = 'aes-256-gcm'
 
+/** La clave debe ser exactamente 64 caracteres hexadecimales (32 bytes). */
+export function isEncryptionKeyValid(): boolean {
+  const raw = process.env.CREDENTIALS_ENCRYPTION_KEY
+  if (!raw) return false
+  return /^[0-9a-fA-F]{64}$/.test(raw)
+}
+
 function getKey(): Buffer {
   const raw = readSecret('CREDENTIALS_ENCRYPTION_KEY', DEV_CREDENTIALS_ENCRYPTION_KEY)
-  const key = Buffer.from(raw, 'hex')
-  if (key.length !== 32) {
-    throw new Error('CREDENTIALS_ENCRYPTION_KEY debe ser 64 caracteres hexadecimales (32 bytes)')
+  if (!/^[0-9a-fA-F]{64}$/.test(raw)) {
+    throw new Error(
+      'CREDENTIALS_ENCRYPTION_KEY debe ser 64 caracteres hexadecimales (32 bytes). Genera una con: openssl rand -hex 32',
+    )
   }
-  return key
+  return Buffer.from(raw, 'hex')
 }
 
 /** Cifra un texto con AES-256-GCM. Formato: iv:tag:datos (base64) */

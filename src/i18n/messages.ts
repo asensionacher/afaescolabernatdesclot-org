@@ -344,6 +344,10 @@ export const ca = {
     passwordMismatch: 'Les contrasenyes no coincideixen.',
     testEmailNote:
       'Per defecte s’utilitza la conta de l’AFA. Cal un servidor SMTP configurat per enviar correu.',
+    encryptionKeyInvalid:
+      'No s’ha pogut xifrar la contrasenya: la CREDENTIALS_ENCRYPTION_KEY no és vàlida. Genera-la amb «openssl rand -hex 32» i reinicia el servidor.',
+    encryptionKeyWarning:
+      "ATENCIÓ: la CREDENTIALS_ENCRYPTION_KEY del servidor no és vàlida (64 caràcters hexadecimals). Fins que no la configuris correctament no es podrà desar la contrasenya del SMTP.",
   },
   footer: {
     rights: '© {year} AFA Escola Bernat Desclot',
@@ -700,6 +704,10 @@ export const es: Dictionary = {
     passwordMismatch: 'Las contraseñas no coinciden.',
     testEmailNote:
       'Por defecto se usa la cuenta del AFA. Hace falta un servidor SMTP configurado para enviar correo.',
+    encryptionKeyInvalid:
+      'No se ha podido cifrar la contraseña: la CREDENTIALS_ENCRYPTION_KEY no es válida. Genérala con «openssl rand -hex 32» y reinicia el servidor.',
+    encryptionKeyWarning:
+      'ATENCIÓN: la CREDENTIALS_ENCRYPTION_KEY del servidor no es válida (64 caracteres hexadecimales). Hasta que no la configures correctamente no se podrá guardar la contraseña del SMTP.',
   },
   footer: {
     rights: '© {year} AFA Escuela Bernat Desclot',

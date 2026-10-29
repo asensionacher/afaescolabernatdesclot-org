@@ -109,7 +109,23 @@ export async function saveFormAction(
 
   const slugOwner = await prisma.form.findUnique({ where: { slug: payload.slug } })
   if (slugOwner && slugOwner.id !== input.id) {
-    return { status: 'error', message: 'slugTaken', fieldErrors: { slug: 'slugTaken' } }
+    // Si el identificador se ha generado solo a partir del título, se prueba con
+    // suffijos numéricos para no bloquear al administrador.
+    if (!input.slug) {
+      let candidate = payload.slug
+      let suffix = 2
+      while (slugOwner && suffix < 100) {
+        candidate = `${payload.slug}-${suffix}`
+        const existing = await prisma.form.findUnique({ where: { slug: candidate } })
+        if (!existing || existing.id === input.id) {
+          payload.slug = candidate
+          break
+        }
+        suffix += 1
+      }
+    } else {
+      return { status: 'error', message: 'slugTaken', fieldErrors: { slug: 'slugTaken' } }
+    }
   }
 
   if (input.id) {

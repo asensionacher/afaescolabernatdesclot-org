@@ -12,6 +12,7 @@ async function main() {
       OR: [
         { slug: { startsWith: 'test-' } },
         { title: { path: ['ca'], string_contains: 'E2E' } },
+        { title: { path: ['ca'], string_contains: 'Docker' } },
       ],
     },
     select: { id: true, slug: true },
@@ -28,6 +29,7 @@ async function main() {
       OR: [
         { username: { startsWith: 'prova_e2e' } },
         { username: { startsWith: 'familia_' } },
+        { username: { startsWith: 'docker_' } },
       ],
     },
     select: { id: true, username: true },

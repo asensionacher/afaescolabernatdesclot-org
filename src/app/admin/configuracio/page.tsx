@@ -1,6 +1,6 @@
 import { getCurrentUser } from '@/lib/auth'
 import { getT } from '@/lib/translator'
-import { getEmailSettings } from '@/lib/settings'
+import { getEmailSettings, isEncryptionAvailable } from '@/lib/settings'
 import {
   changeAdminCredentialsAction,
   saveEmailSettingsAction,
@@ -13,11 +13,13 @@ export default async function SettingsPage() {
   const t = await getT()
   const admin = await getCurrentUser()
   const email = await getEmailSettings()
+  const encryptionAvailable = isEncryptionAvailable()
 
   const emailMessages: Record<string, string> = {
     emailSaved: t('settings.emailSaved'),
     testEmailSent: t('settings.testEmailSent'),
     testEmailFailed: t('settings.testEmailFailed'),
+    encryptionKeyInvalid: t('settings.encryptionKeyInvalid'),
     default: t('common.errorGeneric'),
     required: t('common.errorRequired'),
   }
@@ -39,6 +41,9 @@ export default async function SettingsPage() {
       <section className="card mb2">
         <h3 className="cardTitle">{t('settings.email')}</h3>
         <p className="small muted mb2">{t('settings.emailIntro')}</p>
+        {!encryptionAvailable ? (
+          <div className="alert alertWarning">{t('settings.encryptionKeyWarning')}</div>
+        ) : null}
         <EmailSettingsForm
           action={saveEmailSettingsAction}
           testAction={sendTestEmailAction}

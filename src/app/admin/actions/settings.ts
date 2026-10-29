@@ -25,15 +25,20 @@ export async function saveEmailSettingsAction(
   const current = await getEmailSettings()
   const password = String(formData.get('password') ?? '')
 
-  await saveEmailSettings({
-    host: String(formData.get('host') ?? '').trim(),
-    port: Number.parseInt(String(formData.get('port') ?? '587'), 10) || 587,
-    user: String(formData.get('user') ?? '').trim(),
-    password: password || current.password,
-    secure: formData.get('secure') === 'on' || formData.get('secure') === 'true',
-    fromName: String(formData.get('fromName') ?? '').trim(),
-    fromEmail: String(formData.get('fromEmail') ?? '').trim(),
-  })
+  try {
+    await saveEmailSettings({
+      host: String(formData.get('host') ?? '').trim(),
+      port: Number.parseInt(String(formData.get('port') ?? '587'), 10) || 587,
+      user: String(formData.get('user') ?? '').trim(),
+      password: password || current.password,
+      secure: formData.get('secure') === 'on' || formData.get('secure') === 'true',
+      fromName: String(formData.get('fromName') ?? '').trim(),
+      fromEmail: String(formData.get('fromEmail') ?? '').trim(),
+    })
+  } catch (error) {
+    console.error('[settings] No se ha podido guardar la configuración de correo:', error)
+    return { status: 'error', message: 'encryptionKeyInvalid' }
+  }
 
   return { status: 'success', message: 'emailSaved' }
 }
