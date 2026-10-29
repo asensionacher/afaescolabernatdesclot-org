@@ -17,5 +17,54 @@ services:
       timeout: 5s
       retries: 10
 
+  # Aplica las migraciones y crea los datos iniciales (admin + curso 2026/2027).
+  # Se ejecuta una vez y termina; la web espera a que termine correctamente.
+  migrate:
+    build:
+      context: .
+    image: afa-bernat-desclot:latest
+    container_name: afa-migrate
+    command: ['sh', '-c', 'pnpm db:deploy && pnpm db:seed']
+    environment:
+      DATABASE_URL: postgresql://afa:afa@db:5432/afa?schema=public
+      JWT_SECRET: ${JWT_SECRET:-development-only-secret-cambia-esto-en-produccion-000000}
+      CREDENTIALS_ENCRYPTION_KEY: ${CREDENTIALS_ENCRYPTION_KEY:-development-only-key-cambia-esto-en-produccion-00000}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: 'no'
+
+  web:
+    build:
+      context: .
+    image: afa-bernat-desclot:latest
+    container_name: afa-web
+    restart: unless-stopped
+    ports:
+      - '${WEB_PORT:-3000}:3000'
+    environment:
+      DATABASE_URL: postgresql://afa:afa@db:5432/afa?schema=public
+      JWT_SECRET: ${JWT_SECRET:-development-only-secret-cambia-esto-en-produccion-000000}
+      CREDENTIALS_ENCRYPTION_KEY: ${CREDENTIALS_ENCRYPTION_KEY:-development-only-key-cambia-esto-en-produccion-00000}
+      NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL:-http://localhost:3000}
+      TZ: ${TZ:-Europe/Madrid}
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
 volumes:
   afa-pgdata:

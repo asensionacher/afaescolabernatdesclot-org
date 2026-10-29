@@ -1,12 +1,10 @@
 import crypto from 'node:crypto'
+import { DEV_CREDENTIALS_ENCRYPTION_KEY, readSecret } from '@/lib/config'
 
 const ALGORITHM = 'aes-256-gcm'
 
 function getKey(): Buffer {
-  const raw = process.env.CREDENTIALS_ENCRYPTION_KEY
-  if (!raw) {
-    throw new Error('CREDENTIALS_ENCRYPTION_KEY no configurada')
-  }
+  const raw = readSecret('CREDENTIALS_ENCRYPTION_KEY', DEV_CREDENTIALS_ENCRYPTION_KEY)
   const key = Buffer.from(raw, 'hex')
   if (key.length !== 32) {
     throw new Error('CREDENTIALS_ENCRYPTION_KEY debe ser 64 caracteres hexadecimales (32 bytes)')

@@ -20,11 +20,48 @@ No es una web informativa: es la herramienta de inscripción de la AFA.
 
 ## Puesta en marcha
 
+### Opción A: todo con Docker (recomendada)
+
+```bash
+cp .env.example .env
+# Genera los secretos y pégalos en .env:
+#   openssl rand -hex 32   -> JWT_SECRET
+#   openssl rand -hex 32   -> CREDENTIALS_ENCRYPTION_KEY
+
+docker compose up -d --build
+```
+
+Se levantan tres servicios:
+
+| Servicio  | Qué hace                                                                  |
+| --------- | ------------------------------------------------------------------------- |
+| `db`      | PostgreSQL 16 con volumen persistente (`afa-pgdata`).                      |
+| `migrate` | Aplica las migraciones (`pnpm db:deploy`) y crea los datos iniciales.     |
+| `web`     | La web en `http://localhost:3000` (cambia el puerto con `WEB_PORT`).      |
+
+El servicio `migrate` se ejecuta una sola vez y la web espera a que termine bien,
+así que `docker compose up -d --build` deja todo listo: base de datos migrada,
+administrador `admin`/`admin` y curso `2026/2027` creado.
+
+```bash
+docker compose logs -f web     # ver el log
+docker compose ps              # ver el estado
+docker compose restart web     # reiniciar la web
+docker compose down            # parar (conserva los datos)
+docker compose down -v         # parar y borrar también la base de datos
+```
+
+Si no creas un `.env`, `docker compose` usa valores de ejemplo **solo para desarrollo**
+(y avisa por consola). Antes de publicar la web, cambia `JWT_SECRET` y
+`CREDENTIALS_ENCRYPTION_KEY` por valores reales.
+
+### Opción B: desarrollo local
+
 ```bash
 pnpm install
 
 # 1. Base de datos local
-docker compose up -d
+docker compose up -d db
 
 # 2. Variables de entorno
 cp .env.example .env
@@ -140,7 +177,18 @@ pnpm exec tsx scripts/cleanup-test-data.ts  # borra los datos de prueba
 pnpm exec tsx scripts/reset-admin-password.ts
 ```
 
-## Despliegue (Vercel)
+## Despliegue
+
+### Con Docker (VPS, NAS, servidor propio)
+
+```bash
+cp .env.example .env      # con secretos reales
+docker compose up -d --build
+```
+
+Coloca un proxy inverso (nginx, Caddy, Traefik) delante del puerto 3000 para HTTPS.
+
+### En Vercel
 
 1. Crea una base de datos PostgreSQL (Neon, Vercel Postgres o Supabase) y copia la
    `DATABASE_URL` en las variables de entorno de Vercel.

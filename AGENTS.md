@@ -30,7 +30,8 @@ pnpm exec tsx scripts/cleanup-test-data.ts  # limpia datos de prueba
 pnpm exec tsx scripts/reset-admin-password.ts [usuario] [contraseña]
 ```
 
-Postgres local: `docker compose up -d` (usuario/contraseña/DB = `afa`/`afa`/`afa`).
+Postgres local: `docker compose up -d db` (usuario/contraseña/DB = `afa`/`afa`/`afa`).
+Web completa en Docker: `docker compose up -d --build` (servicios `db`, `migrate` y `web`).
 
 ## Estructura
 

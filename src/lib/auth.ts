@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import bcrypt from 'bcryptjs'
 import { SignJWT, jwtVerify } from 'jose'
 import { prisma } from '@/lib/db'
+import { DEV_JWT_SECRET, readSecret } from '@/lib/config'
 import type { Role, User } from '@prisma/client'
 
 const SESSION_COOKIE = 'afa_session'
@@ -16,10 +17,7 @@ const RATE_LIMIT_WINDOW = 15 * 60 * 1000
 const loginAttempts = new Map<string, { count: number; resetAt: number }>()
 
 function getSecret(): Uint8Array {
-  const secret = process.env.JWT_SECRET
-  if (!secret || secret.length < 32) {
-    throw new Error('JWT_SECRET no configurada (mínimo 32 caracteres)')
-  }
+  const secret = readSecret('JWT_SECRET', DEV_JWT_SECRET)
   return new TextEncoder().encode(secret)
 }
 
